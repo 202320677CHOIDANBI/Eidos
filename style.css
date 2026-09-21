@@ -174,9 +174,10 @@ img {
   letter-spacing: -0.04em;
 }
 
+```css
 /* =========================
    MEMBERS
-   ========================= */
+========================= */
 
 .members {
   background: #ffffff;
@@ -184,64 +185,152 @@ img {
 
 .member-grid {
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 20px;
 }
 
+/* 카드가 3D로 회전할 수 있도록 설정 */
 .member {
-  cursor: pointer;
-}
-
-.member-image {
+  position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
 
+  cursor: pointer;
+
+  perspective: 1200px;
+}
+
+/* 실제로 회전하는 카드 */
+.member-card {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  transform-style: preserve-3d;
+
+  transition: transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* 마우스를 올리면 180도 회전 */
+.member:hover .member-card {
+  transform: rotateY(180deg);
+}
+
+/* 앞면 / 뒷면 공통 */
+.member-front,
+.member-back {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
   overflow: hidden;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* =========================
+   FRONT
+========================= */
+
+.member-front {
   background: #eeeeee;
 }
 
-.member img {
-  aspect-ratio: 3 / 4;
+.member-front img {
+  width: 100%;
+  height: 100%;
 
-  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+  object-fit: cover;
+
+  display: block;
 }
 
-.member:hover img {
-  transform: scale(1.04);
+/* =========================
+   BACK
+========================= */
+
+.member-back {
+  background: #111111;
+  color: #ffffff;
+
+  transform: rotateY(180deg);
+
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  box-sizing: border-box;
 }
 
-.member-info {
-  display: grid;
-
-  grid-template-columns: 35px 1fr auto;
-
-  align-items: baseline;
-
-  padding-top: 18px;
-
-  border-top: 1px solid #111111;
-
-  margin-top: 15px;
-}
-
-.member-info span {
+/* 멤버 번호 */
+.member-number {
   font-size: 11px;
+  letter-spacing: 0.15em;
+
   color: #888888;
+
+  margin-bottom: 18px;
 }
 
-.member-info h3 {
-  font-size: 18px;
+/* 멤버 이름 */
+.member-back h3 {
+  font-size: 38px;
   font-weight: 600;
 
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+
+  margin-bottom: 12px;
 }
 
-.member-info p {
-  font-size: 11px;
-  color: #888888;
+/* 포지션 */
+.member-position {
+  font-size: 12px;
+
+  color: #aaaaaa;
+
+  letter-spacing: 0.02em;
+
+  margin-bottom: 50px;
 }
+
+/* 상세 정보 */
+.member-detail {
+  border-top: 1px solid #444444;
+
+  padding-top: 20px;
+}
+
+/* POSITION */
+.member-detail span {
+  display: block;
+
+  font-size: 9px;
+
+  letter-spacing: 0.15em;
+
+  color: #777777;
+
+  margin-bottom: 8px;
+}
+
+/* 내용 */
+.member-detail p {
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  color: #ffffff;
+}
+```
+
 
 /* =========================
    MUSIC
