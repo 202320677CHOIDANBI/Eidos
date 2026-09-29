@@ -1,65 +1,93 @@
-// =========================
-// EIDOS — SCRIPT
-// =========================
+/* =========================================
+   EIDOS
+   MEMBER INFORMATION
+========================================= */
 
-// 페이지가 로드되면 실행
-document.addEventListener('DOMContentLoaded', () => {
-  // -------------------------
-  // 스크롤 애니메이션
-  // -------------------------
+const members = [
+  /* DAYEON */
 
-  const sections = document.querySelectorAll('.section');
+  {
+    number: '01',
+    name: 'Dayeon',
+    position: 'Producer & Main Vocalist',
+    info: 'Producer<br>Main Vocalist',
+  },
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    },
-    {
-      threshold: 0.15,
-    },
-  );
+  /* ION */
 
-  sections.forEach((section) => {
-    observer.observe(section);
-  });
+  {
+    number: '02',
+    name: 'Ion',
+    position: 'Main Dancer',
+    info: 'Main Dancer',
+  },
 
-  // -------------------------
-  // 네비게이션 부드러운 이동
-  // -------------------------
+  /* LINA */
 
-  const navLinks = document.querySelectorAll('.nav a');
+  {
+    number: '03',
+    name: 'Lina',
+    position: 'Main Vocalist',
+    info: 'Main Vocalist',
+  },
+];
 
-  navLinks.forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const targetId = link.getAttribute('href');
+/* =========================================
+   OPEN MEMBER
+========================================= */
 
-      if (targetId.startsWith('#')) {
-        event.preventDefault();
+function openMember(index) {
+  const member = members[index];
 
-        const target = document.querySelector(targetId);
+  const popup = document.getElementById('memberPopup');
 
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-          });
-        }
-      }
-    });
-  });
+  const number = document.getElementById('popupNumber');
 
-  // -------------------------
-  // 이미지 로딩 확인
-  // -------------------------
+  const name = document.getElementById('popupName');
 
-  const images = document.querySelectorAll('img');
+  const position = document.getElementById('popupPosition');
 
-  images.forEach((image) => {
-    image.addEventListener('error', () => {
-      console.log('이미지를 찾을 수 없습니다:', image.getAttribute('src'));
-    });
-  });
+  const info = document.getElementById('popupInfo');
+
+  /* 멤버 정보 변경 */
+
+  number.textContent = member.number;
+
+  name.textContent = member.name;
+
+  position.textContent = member.position;
+
+  info.innerHTML = member.info;
+
+  /* 팝업 열기 */
+
+  popup.classList.add('active');
+
+  /* 배경 스크롤 방지 */
+
+  document.body.style.overflow = 'hidden';
+}
+
+/* =========================================
+   CLOSE MEMBER
+========================================= */
+
+function closeMember() {
+  const popup = document.getElementById('memberPopup');
+
+  popup.classList.remove('active');
+
+  /* 스크롤 다시 활성화 */
+
+  document.body.style.overflow = '';
+}
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    closeMember();
+  }
 });
