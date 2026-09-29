@@ -37,57 +37,25 @@ const members = [
 ========================================= */
 
 function openMember(index) {
-  const member = members[index];
+  const membersElements = document.querySelectorAll('.member');
 
-  const popup = document.getElementById('memberPopup');
+  const clickedMember = membersElements[index];
 
-  const number = document.getElementById('popupNumber');
+  /* 이미 열려 있는 멤버를 다시 클릭하면 닫기 */
 
-  const name = document.getElementById('popupName');
+  if (clickedMember.classList.contains('active')) {
+    clickedMember.classList.remove('active');
 
-  const position = document.getElementById('popupPosition');
-
-  const info = document.getElementById('popupInfo');
-
-  /* 멤버 정보 변경 */
-
-  number.textContent = member.number;
-
-  name.textContent = member.name;
-
-  position.textContent = member.position;
-
-  info.innerHTML = member.info;
-
-  /* 팝업 열기 */
-
-  popup.classList.add('active');
-
-  /* 배경 스크롤 방지 */
-
-  document.body.style.overflow = 'hidden';
-}
-
-/* =========================================
-   CLOSE MEMBER
-========================================= */
-
-function closeMember() {
-  const popup = document.getElementById('memberPopup');
-
-  popup.classList.remove('active');
-
-  /* 스크롤 다시 활성화 */
-
-  document.body.style.overflow = '';
-}
-
-/* =========================================
-   ESC KEY
-========================================= */
-
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    closeMember();
+    return;
   }
-});
+
+  /* 다른 멤버가 열려 있다면 닫기 */
+
+  membersElements.forEach(function (member) {
+    member.classList.remove('active');
+  });
+
+  /* 클릭한 멤버 열기 */
+
+  clickedMember.classList.add('active');
+}
