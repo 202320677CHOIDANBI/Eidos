@@ -3,27 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Eidos</title>
 
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- HEADER -->
+    <!-- ========================================
+      HEADER
+    ========================================= -->
     <header class="header">
       <a href="#" class="logo">
         <img src="images/long.png" alt="Eidos" />
       </a>
+
       <nav class="nav">
         <a href="#members">MEMBERS</a>
         <a href="#music">MUSIC</a>
+        <a href="#concept">CONCEPT PHOTO</a>
         <a href="#schedule">SCHEDULE</a>
         <a href="#news">NEWS</a>
       </nav>
     </header>
 
-    <!-- HERO -->
+    <!-- ========================================
+    MAIN
+    ========================================= -->
     <main>
+      <!-- ========================================
+      HERO
+      ========================================= -->
       <section class="hero">
         <div class="hero-image">
           <img src="images/Eidos_t.png" alt="Eidos" />
@@ -38,7 +48,9 @@
         </div>
       </section>
 
-      <!-- MEMBERS -->
+      <!-- ========================================
+      01 MEMBERS
+      ========================================= -->
       <section id="members" class="section members">
         <div class="section-title">
           <span>01</span>
@@ -50,18 +62,19 @@
           <div class="member" onclick="openMember(0)">
             <div class="member-card">
               <div class="member-front">
-                <img src="images/Dayeon_p.png" alt="Dayeon" />
+                <img src="images/Dayeon_ph.png" alt="Dayeon" />
               </div>
 
               <div class="member-info">
-                <span class="member-number">01</span>
+                <span class="member-number"> 01 </span>
 
                 <h3>Dayeon</h3>
 
                 <p class="member-position">Producer & Main Vocalist</p>
 
                 <div class="member-detail">
-                  <span>POSITION</span>
+                  <span> POSITION </span>
+
                   <p>
                     Producer<br />
                     Main Vocalist
@@ -75,18 +88,19 @@
           <div class="member" onclick="openMember(1)">
             <div class="member-card">
               <div class="member-front">
-                <img src="images/Ion_p.png" alt="Ion" />
+                <img src="images/Ion_ph.jpg" alt="Ion" />
               </div>
 
               <div class="member-info">
-                <span class="member-number">02</span>
+                <span class="member-number"> 02 </span>
 
                 <h3>Ion</h3>
 
                 <p class="member-position">Main Dancer</p>
 
                 <div class="member-detail">
-                  <span>POSITION</span>
+                  <span> POSITION </span>
+
                   <p>Main Dancer</p>
                 </div>
               </div>
@@ -97,18 +111,19 @@
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
-                <img src="images/Lina_p.png" alt="Lina" />
+                <img src="images/Lina_ph.png" alt="Lina" />
               </div>
 
               <div class="member-info">
-                <span class="member-number">03</span>
+                <span class="member-number"> 03 </span>
 
                 <h3>Lina</h3>
 
                 <p class="member-position">Main Vocalist</p>
 
                 <div class="member-detail">
-                  <span>POSITION</span>
+                  <span> POSITION </span>
+
                   <p>Main Vocalist</p>
                 </div>
               </div>
@@ -116,18 +131,24 @@
           </div>
         </div>
       </section>
-      <!-- MUSIC -->
+
+      <!-- ========================================
+      02 MUSIC
+      ========================================= -->
       <section id="music" class="section music">
         <div class="section-title">
-          <span>02</span>
+          <span> 02 </span>
+
           <h2>MUSIC</h2>
         </div>
 
         <div class="music-content">
+          <!-- ALBUM COVER -->
           <div class="album">
             <img src="images/album.png" alt="Eidos Album" />
           </div>
 
+          <!-- ALBUM INFO -->
           <div class="album-info">
             <p class="album-label">1ST SINGLE ALBUM</p>
 
@@ -135,75 +156,142 @@
 
             <p class="album-description">Eidos' first single album.</p>
 
-            <a href="#" class="more">LISTEN NOW →</a>
+            <a href="#" class="more"> LISTEN NOW → </a>
           </div>
         </div>
       </section>
 
-      <!-- SCHEDULE -->
+      <!-- ========================================
+      03 CONCEPT PHOTO
+      ========================================= -->
+      <section id="concept" class="section concept">
+        <div class="section-title">
+          <span> 03 </span>
+
+          <h2>CONCEPT PHOTO</h2>
+        </div>
+
+        <!-- CONCEPT BUTTONS -->
+        <div class="concept-tabs">
+          <button type="button" class="concept-tab active" data-concept="0">
+            CONCEPT 01
+          </button>
+
+          <button type="button" class="concept-tab" data-concept="1">
+            CONCEPT 02
+          </button>
+
+          <button type="button" class="concept-tab" data-concept="2">
+            CONCEPT 03
+          </button>
+        </div>
+
+        <!-- CONCEPT PHOTO GALLERY -->
+        <div class="concept-gallery">
+          <div class="concept-track" id="conceptTrack"></div>
+        </div>
+      </section>
+
+      <!-- ========================================
+      04 SCHEDULE
+      ========================================= -->
       <section id="schedule" class="section schedule">
         <div class="section-title">
-          <span>03</span>
+          <span> 04 </span>
+
           <h2>SCHEDULE</h2>
         </div>
 
         <div class="schedule-list">
           <div class="schedule-item">
-            <span>2026.00.00</span>
-            <strong>DEBUT</strong>
+            <span> 2026.11.17 </span>
+
+            <strong> DEBUT </strong>
+
             <p>Eidos 1st Single Album Release</p>
           </div>
 
           <div class="schedule-item">
-            <span>2026.00.00</span>
-            <strong>MEDIA</strong>
+            <span> 2026.00.00 </span>
+
+            <strong> MEDIA </strong>
+
             <p>Official Content Release</p>
           </div>
 
           <div class="schedule-item">
-            <span>2026.00.00</span>
-            <strong>EVENT</strong>
+            <span> 2026.00.00 </span>
+
+            <strong> EVENT </strong>
+
             <p>Special Event</p>
           </div>
         </div>
       </section>
 
-      <!-- NEWS -->
+      <!-- ========================================
+      05 NEWS
+      ========================================= -->
       <section id="news" class="section news">
         <div class="section-title">
-          <span>04</span>
+          <span> 05 </span>
+
           <h2>NEWS</h2>
         </div>
 
         <div class="news-list">
           <a href="#" class="news-item">
-            <span>2026.00.00</span>
+            <span> 2026.00.00 </span>
+
             <h3>Eidos Official Website Open</h3>
-            <span>→</span>
+
+            <span> → </span>
           </a>
 
           <a href="#" class="news-item">
-            <span>2026.00.00</span>
+            <span> 2026.00.00 </span>
+
             <h3>Eidos 1st Single Album Coming Soon</h3>
-            <span>→</span>
+
+            <span> → </span>
           </a>
         </div>
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- ========================================
+    FOOTER
+    ========================================= -->
     <footer class="footer">
       <img src="images/eidosLOGO.png" alt="Eidos" class="hero-logo" />
 
       <div class="social">
-        <a href="#">INSTAGRAM</a>
-        <a href="#">YOUTUBE</a>
-        <a href="#">X</a>
+        <a href="#"> INSTAGRAM </a>
+
+        <a href="#"> YOUTUBE </a>
+
+        <a href="#"> X </a>
       </div>
 
       <p>© 2026 Eidos. All Rights Reserved.</p>
     </footer>
 
+    <!-- ========================================
+         ★ BACKGROUND MUSIC ★
+         
+         여기!!
+         음악은 BODY 맨 아래에 위치
+    ========================================= -->
+
+    <audio id="eidosMusic" autoplay loop preload="auto">
+      <source src="music/eidos.mp3.wav" type="audio/mpeg" />
+    </audio>
+
+    <!-- ========================================
+         JAVASCRIPT
+
+         이것도 BODY 맨 아래
+    ========================================= -->
     <script src="script.js"></script>
   </body>
 </html>
