@@ -13,6 +13,7 @@
     <!-- ========================================
       HEADER
     ========================================= -->
+
     <header class="header">
       <a href="#" class="logo">
         <img src="images/long.png" alt="Eidos" />
@@ -28,17 +29,33 @@
     </header>
 
     <!-- ========================================
-    MAIN
+      MAIN
     ========================================= -->
+
     <main>
       <!-- ========================================
-      HERO
+        HERO - BACKGROUND VIDEO
       ========================================= -->
+
       <section class="hero">
+        <!-- BACKGROUND VIDEO -->
         <div class="hero-image">
-          <img src="images/Eidos_t.png" alt="Eidos" />
+          <video
+            class="hero-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source src="videos/아테나.MOV" type="video/quicktime" />
+
+            브라우저가 동영상 재생을 지원하지 않습니다.
+          </video>
         </div>
 
+        <!-- HERO CONTENT -->
         <div class="hero-content">
           <p class="hero-label">THE 1ST SINGLE ALBUM</p>
 
@@ -49,8 +66,9 @@
       </section>
 
       <!-- ========================================
-      01 MEMBERS
+        01 MEMBERS
       ========================================= -->
+
       <section id="members" class="section members">
         <div class="section-title">
           <span>01</span>
@@ -66,14 +84,14 @@
               </div>
 
               <div class="member-info">
-                <span class="member-number"> 01 </span>
+                <span class="member-number">01</span>
 
                 <h3>Dayeon</h3>
 
-                <p class="member-position">Producer & Main Vocalist</p>
+                <p class="member-position">Producer &amp; Main Vocalist</p>
 
                 <div class="member-detail">
-                  <span> POSITION </span>
+                  <span>POSITION</span>
 
                   <p>
                     Producer<br />
@@ -92,15 +110,14 @@
               </div>
 
               <div class="member-info">
-                <span class="member-number"> 02 </span>
+                <span class="member-number">02</span>
 
                 <h3>Ion</h3>
 
                 <p class="member-position">Main Dancer</p>
 
                 <div class="member-detail">
-                  <span> POSITION </span>
-
+                  <span>POSITION</span>
                   <p>Main Dancer</p>
                 </div>
               </div>
@@ -111,19 +128,18 @@
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
-                <img src="images/rina_pf.png" alt="Lina" />
+                <img src="images/lina_pf.png" alt="Lina" />
               </div>
 
               <div class="member-info">
-                <span class="member-number"> 03 </span>
+                <span class="member-number">03</span>
 
                 <h3>Lina</h3>
 
                 <p class="member-position">Main Vocalist</p>
 
                 <div class="member-detail">
-                  <span> POSITION </span>
-
+                  <span>POSITION</span>
                   <p>Main Vocalist</p>
                 </div>
               </div>
@@ -133,41 +149,98 @@
       </section>
 
       <!-- ========================================
-      02 MUSIC
+        02 MUSIC + REAL-TIME LYRICS
+
+        LEFT   : ALBUM COVER
+        CENTER : ALBUM INFORMATION
+        RIGHT  : LYRICS
       ========================================= -->
+
       <section id="music" class="section music">
         <div class="section-title">
-          <span> 02 </span>
-
+          <span>02</span>
           <h2>MUSIC</h2>
         </div>
 
         <div class="music-content">
-          <!-- ALBUM COVER -->
-          <div class="album">
-            <img src="images/album.png" alt="Eidos Album" />
+          <!-- LEFT : ALBUM COVER -->
+          <div class="music-left">
+            <div class="album">
+              <img src="images/Album Cover.png" alt="Eidos Album" />
+            </div>
           </div>
 
-          <!-- ALBUM INFO -->
+          <!-- CENTER : ALBUM INFORMATION -->
           <div class="album-info">
-            <p class="album-label">1ST SINGLE ALBUM</p>
+            <p class="album-label">1ST SINGLE ALBUM HELIOPHILE</p>
 
-            <h2>Eidos</h2>
+            <h2>HOW CAN I KNOW</h2>
 
             <p class="album-description">Eidos' first single album.</p>
 
-            <a href="#" class="more"> LISTEN NOW → </a>
+            <button
+              type="button"
+              class="more"
+              id="musicButton"
+              aria-pressed="false"
+              aria-controls="lyricsContainer"
+            >
+              LISTEN NOW →
+            </button>
+          </div>
+
+          <!-- RIGHT : REAL-TIME LYRICS -->
+          <div
+            class="lyrics-container"
+            id="lyricsContainer"
+            aria-label="Eidos song lyrics"
+          >
+            <!-- LYRICS HEADER -->
+            <div class="lyrics-header">
+              <span class="lyrics-label"> LYRICS </span>
+
+              <span class="lyrics-song"> EIDOS </span>
+            </div>
+
+            <!-- LYRICS DISPLAY -->
+            <div class="lyrics-display" id="lyricsDisplay">
+              <!-- PREVIOUS LYRIC -->
+              <p class="lyric-line lyric-prev" id="lyricPrev"></p>
+
+              <!-- CURRENT LYRIC -->
+              <p
+                class="lyric-line lyric-current"
+                id="lyricCurrent"
+                aria-live="off"
+              >
+                LISTEN NOW →
+              </p>
+
+              <!-- NEXT LYRIC -->
+              <p class="lyric-line lyric-next" id="lyricNext"></p>
+            </div>
+
+            <!-- MUSIC PROGRESS -->
+            <div class="music-progress">
+              <span class="music-time" id="currentTime"> 0:00 </span>
+
+              <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+
+              <span class="music-time" id="duration"> 0:00 </span>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================
-      03 CONCEPT PHOTO
+        03 CONCEPT PHOTO
       ========================================= -->
+
       <section id="concept" class="section concept">
         <div class="section-title">
-          <span> 03 </span>
-
+          <span>03</span>
           <h2>CONCEPT PHOTO</h2>
         </div>
 
@@ -193,105 +266,95 @@
       </section>
 
       <!-- ========================================
-      04 SCHEDULE
+        04 SCHEDULE
       ========================================= -->
+
       <section id="schedule" class="section schedule">
         <div class="section-title">
-          <span> 04 </span>
-
+          <span>04</span>
           <h2>SCHEDULE</h2>
         </div>
 
         <div class="schedule-list">
           <div class="schedule-item">
-            <span> 2026.11.17 </span>
-
-            <strong> DEBUT </strong>
-
+            <span>2026.11.17</span>
+            <strong>DEBUT</strong>
             <p>Eidos 1st Single Album Release</p>
           </div>
 
           <div class="schedule-item">
-            <span> 2026.00.00 </span>
-
-            <strong> MEDIA </strong>
-
+            <span>2026.00.00</span>
+            <strong>MEDIA</strong>
             <p>Official Content Release</p>
           </div>
 
           <div class="schedule-item">
-            <span> 2026.00.00 </span>
-
-            <strong> EVENT </strong>
-
+            <span>2026.00.00</span>
+            <strong>EVENT</strong>
             <p>Special Event</p>
           </div>
         </div>
       </section>
 
       <!-- ========================================
-      05 NEWS
+        05 NEWS
       ========================================= -->
+
       <section id="news" class="section news">
         <div class="section-title">
-          <span> 05 </span>
-
+          <span>05</span>
           <h2>NEWS</h2>
         </div>
 
         <div class="news-list">
           <a href="#" class="news-item">
-            <span> 2026.00.00 </span>
-
+            <span>2026.00.00</span>
             <h3>Eidos Official Website Open</h3>
-
-            <span> → </span>
+            <span>→</span>
           </a>
 
           <a href="#" class="news-item">
-            <span> 2026.00.00 </span>
-
+            <span>2026.00.00</span>
             <h3>Eidos 1st Single Album Coming Soon</h3>
-
-            <span> → </span>
+            <span>→</span>
           </a>
         </div>
       </section>
     </main>
 
     <!-- ========================================
-    FOOTER
+      FOOTER
     ========================================= -->
+
     <footer class="footer">
       <img src="images/eidosLOGO.png" alt="Eidos" class="hero-logo" />
 
       <div class="social">
-        <a href="#"> INSTAGRAM </a>
-
-        <a href="#"> YOUTUBE </a>
-
-        <a href="#"> X </a>
+        <a href="#">INSTAGRAM</a>
+        <a href="#">YOUTUBE</a>
+        <a href="#">X</a>
       </div>
 
       <p>© 2026 Eidos. All Rights Reserved.</p>
     </footer>
 
     <!-- ========================================
-    ★ BACKGROUND MUSIC ★
-    
-    여기!!
-    음악은 BODY 맨 아래에 위치
+      MUSIC AUDIO
+
+      자동 재생 없음
+      MUSIC 버튼 클릭 시 재생
     ========================================= -->
 
-    <audio id="eidosMusic" autoplay loop preload="auto">
-      <source src="music/eidos.mp3.wav" type="audio/mpeg" />
+    <audio id="eidosMusic" loop preload="metadata">
+      <source src="music/eidos.mp3.wav" type="audio/wav" />
+
+      브라우저가 오디오 재생을 지원하지 않습니다.
     </audio>
 
     <!-- ========================================
-    JAVASCRIPT
-
-    이것도 BODY 맨 아래
+      JAVASCRIPT
     ========================================= -->
+
     <script src="script.js"></script>
   </body>
 </html>
