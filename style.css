@@ -1121,3 +1121,44 @@ img {
 #music .lyrics-container {
   border-color: rgba(255, 255, 255, 0.35) !important;
 }
+
+/* =========================================
+   MUSIC - 가사 왼쪽 세로선 제거
+========================================= */
+
+#music .lyrics-container {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* =========================================
+   CONCEPT PHOTO BUTTON LEFT ALIGN
+========================================= */
+
+/* 컨셉 버튼 전체 왼쪽 정렬 */
+#concept .concept-tabs {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+
+  width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+  gap: 16px;
+  text-align: left !important;
+}
+
+/* 컨셉 버튼 크기 유지 */
+#concept .concept-tab {
+  flex: 0 0 auto;
+}
+
+/* 모바일에서도 왼쪽 정렬 */
+@media (max-width: 768px) {
+  #concept .concept-tabs {
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
