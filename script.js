@@ -4,7 +4,7 @@
 ========================================= */
 
 /* =========================================
-   01 MEMBER INFORMATION
+   01. MEMBERS
 ========================================= */
 
 const members = [
@@ -28,10 +28,6 @@ const members = [
   },
 ];
 
-/* =========================================
-   02 OPEN MEMBER
-========================================= */
-
 function openMember(index) {
   const elements = document.querySelectorAll('.member');
   const clicked = elements[index];
@@ -50,13 +46,10 @@ function openMember(index) {
 }
 
 /* =========================================
-   03 CONCEPT PHOTO DATA
-
-   실제 이미지 파일명 적용
+   02. CONCEPT PHOTO DATA
 ========================================= */
 
 const conceptPhotos = [
-  /* CONCEPT 01 - 6 PHOTOS */
   [
     'images/concept1_1.png',
     'images/concept1_2.jpeg',
@@ -65,16 +58,12 @@ const conceptPhotos = [
     'images/concept1_6.jpeg',
     'images/concept1_7.png',
   ],
-
-  /* CONCEPT 02 - 2 PHOTOS */
   ['images/concept2_1.png', 'images/concept2_2.png'],
-
-  /* CONCEPT 03 - 1 PHOTO */
   ['images/concept3_1.png'],
 ];
 
 /* =========================================
-   04 CONCEPT PHOTO SYSTEM
+   03. CONCEPT PHOTO SYSTEM
 ========================================= */
 
 const conceptTabs = document.querySelectorAll('.concept-tab');
@@ -83,24 +72,17 @@ const conceptTrack = document.getElementById('conceptTrack');
 function changeConcept(index) {
   if (!conceptTrack || !conceptPhotos[index]) return;
 
-  /* 선택한 콘셉트 버튼 활성화 */
-
   conceptTabs.forEach((tab, i) => {
     tab.classList.toggle('active', i === index);
   });
 
-  /* 기존 사진 삭제 */
-
   conceptTrack.innerHTML = '';
-
-  /* 선택한 콘셉트 사진 표시 */
 
   conceptPhotos[index].forEach((src, photoIndex) => {
     const photo = document.createElement('div');
     photo.className = 'concept-photo';
 
     const img = document.createElement('img');
-
     img.src = src;
     img.alt = `Concept ${index + 1} Photo ${photoIndex + 1}`;
     img.loading = 'lazy';
@@ -109,89 +91,69 @@ function changeConcept(index) {
     conceptTrack.appendChild(photo);
   });
 
-  /* 갤러리 스크롤 초기화 */
-
   conceptTrack.scrollLeft = 0;
 }
 
-/* =========================================
-   05 CONCEPT BUTTON EVENT
-========================================= */
-
 conceptTabs.forEach((tab) => {
   tab.addEventListener('click', () => {
-    const index = Number(tab.dataset.concept);
-    changeConcept(index);
+    changeConcept(Number(tab.dataset.concept));
   });
 });
-
-/* 첫 번째 콘셉트 기본 표시 */
 
 changeConcept(0);
 
 /* =========================================
-   06 REAL-TIME LYRICS DATA
+   04. EIDOS LYRICS
 
-   [시작 시간(초), 가사]
+   AI LRC 파일 기준 가사 시간
 
-   아래 시간은 임시 싱크입니다.
-   괄호 속 MV 연출 설명은 제외했습니다.
+   첫 가사 시작 전:
+   HOW CAN I KNOW 표시
+
+   추가 시간 보정 없음
 ========================================= */
 
 const lyrics = [
-  /* VERSE 1 */
+  [38.2, '은근히 푸석한날'],
+  [40.66, '어제로 돌아갔나 내 지난 새벽은 그렇게도 반짝이던가'],
+  [47.07, '오늘은 나아가겠다고 다짐했던 말'],
+  [51.83, '또 헤매어 혼자'],
 
-  [0, ''],
-  [4, '은근히 푸석한날'],
-  [9, '어제로 돌아갔나 내 지난 새벽은 그렇게도 반짝이던가'],
-  [15, '오늘은 나아가겠다고 다짐했던 말'],
-  [20, '또 헤매어 혼자'],
+  [53.98, '그때부터였나 특별하게 다가왔지만'],
+  [60.63, '애써 난 모른척했지 다'],
+  [64.33, '내가 이상할까 전부 비슷한가'],
+  [69.33, '전부 알고싶지만'],
 
-  /* PRE-CHORUS 1 */
+  [71.51, 'how can i know'],
+  [73.02, '워우워우워우워워우워우워'],
+  [74.5, '워우워우워우워워우워우워'],
+  [76.56, '워우워우워우워워우워우워'],
+  [78.62, '스쳐 지나간 기억을 되돌려서'],
+  [81.4, '워우워우워우워워우워우워'],
+  [83.95, '불행히 평범했던 날을'],
+  [87.02, '따라간 너의 두얼굴속 내모습'],
 
-  [25, '그때부터였나 특별하게 다가왔지만'],
-  [30, '애써 난 모른척했지 다'],
-  [35, '내가 이상할까 전부 비슷한가'],
-  [39, '전부 알고싶지만'],
+  [89.29, '먼발치 넘어 매일옆에'],
+  [91.22, '웃었던 모습 기억해 근데 그 모습 넘어에'],
+  [98.32, 'We need to run and run away'],
+  [99.85, '잠겨있는 새장 안속에 있었던 모두 그건 내 착각인걸까'],
 
-  /* HOOK 1 */
+  [106.41, '그때부터였나 특별하게 다가왔지 만'],
+  [112.76, '애써 난 모른척했지 다'],
+  [116.74, '내가 이상할까 전부 비슷한가 전부 알고싶지만'],
 
-  [43, 'how can i know'],
-  [46, '워우워우워우워워우워우워'],
-  [49, '워우워우워우워워우워우워'],
-  [52, '워우워우워우워워우워우워'],
-  [55, '스쳐 지나간 기억을 되돌려서'],
-  [60, '워우워우워우워워우워우워'],
-  [64, '불행히 평범했던 날을'],
-  [68, '따라간 너의 두얼굴속 내모습'],
-
-  /* VERSE 2 */
-
-  [74, '먼발치 넘어 매일옆에'],
-  [78, '웃었던 모습 기억해 근데 그 모습 넘어에'],
-  [84, 'We need to run and run away'],
-  [89, '잠겨있는 새장 안속에 있었던 모두 그건 내 착각인걸까'],
-
-  /* PRE-CHORUS 2 */
-
-  [97, '그때부터였나 특별하게 다가왔지 만'],
-  [102, '애써 난 모른척했지 다'],
-  [107, '내가 이상할까 전부 비슷한가 전부 알고싶지만'],
-
-  /* HOOK 2 */
-
-  [114, 'how can i know'],
-  [117, '워우워우워우워워우워우워'],
-  [120, '워우워우워우워워우워우워'],
-  [123, '워우워우워우워워우워우워'],
-  [126, '스쳐 지나간 기억을 되돌려서'],
-  [132, '워우워우워우워워우워우워'],
-  [137, '불행히 평범했던 날을'],
-  [142, '따라간 너의 두얼굴속 내모습'],
+  [123.88, 'how can i know'],
+  [125.14, '워우워우워우워워우워우워'],
+  [126.74, '워우워우워우워워우워우워'],
+  [128.81, '워우워우워우워워우워우워'],
+  [130.97, '스쳐 지나간 기억을 되돌려서'],
+  [133.23, '워우워우워우워워우워우워'],
+  [136.28, '불행히 평범했던 날을'],
+  [139.43, '따라간 너의 두얼굴속 내모습'],
 ];
 
 /* =========================================
-   07 MUSIC PLAYER ELEMENTS
+   05. MUSIC ELEMENTS
 ========================================= */
 
 const bgMusic = document.getElementById('eidosMusic');
@@ -206,7 +168,7 @@ const durationElement = document.getElementById('duration');
 const progressFill = document.getElementById('progressFill');
 
 /* =========================================
-   08 FORMAT MUSIC TIME
+   06. FORMAT MUSIC TIME
 ========================================= */
 
 function formatMusicTime(seconds) {
@@ -221,7 +183,7 @@ function formatMusicTime(seconds) {
 }
 
 /* =========================================
-   09 FIND CURRENT LYRIC
+   07. FIND CURRENT LYRIC
 ========================================= */
 
 function findCurrentLyricIndex(time) {
@@ -239,7 +201,13 @@ function findCurrentLyricIndex(time) {
 }
 
 /* =========================================
-   10 UPDATE LYRICS
+   08. UPDATE LYRICS
+
+   첫 가사 시작 전:
+   HOW CAN I KNOW
+
+   첫 가사 시작 후:
+   현재 가사 자동 표시
 ========================================= */
 
 let lastLyricIndex = -2;
@@ -247,7 +215,8 @@ let lastLyricIndex = -2;
 function updateLyrics() {
   if (!bgMusic || !lyricCurrent) return;
 
-  const index = findCurrentLyricIndex(bgMusic.currentTime);
+  const currentTime = bgMusic.currentTime;
+  const index = findCurrentLyricIndex(currentTime);
 
   if (index === lastLyricIndex) return;
 
@@ -255,15 +224,15 @@ function updateLyrics() {
 
   /* 첫 가사 시작 전 */
 
-  if (index < 0 || !lyrics[index][1]) {
+  if (index === -1) {
     if (lyricPrev) {
       lyricPrev.textContent = '';
     }
 
-    lyricCurrent.textContent = bgMusic.paused ? 'LISTEN NOW →' : 'EIDOS';
+    lyricCurrent.textContent = 'HOW CAN I KNOW';
 
     if (lyricNext) {
-      lyricNext.textContent = lyrics[1]?.[1] || '';
+      lyricNext.textContent = '';
     }
 
     return;
@@ -272,7 +241,7 @@ function updateLyrics() {
   /* 이전 가사 */
 
   if (lyricPrev) {
-    lyricPrev.textContent = lyrics[index - 1]?.[1] || '';
+    lyricPrev.textContent = index > 0 ? lyrics[index - 1][1] : '';
   }
 
   /* 현재 가사 */
@@ -282,12 +251,13 @@ function updateLyrics() {
   /* 다음 가사 */
 
   if (lyricNext) {
-    lyricNext.textContent = lyrics[index + 1]?.[1] || '';
+    lyricNext.textContent =
+      index < lyrics.length - 1 ? lyrics[index + 1][1] : '';
   }
 }
 
 /* =========================================
-   11 UPDATE MUSIC PROGRESS
+   09. MUSIC PROGRESS
 ========================================= */
 
 function updateMusicProgress() {
@@ -296,19 +266,13 @@ function updateMusicProgress() {
   const current = bgMusic.currentTime;
   const duration = bgMusic.duration;
 
-  /* 현재 재생 시간 */
-
   if (currentTimeElement) {
     currentTimeElement.textContent = formatMusicTime(current);
   }
 
-  /* 전체 재생 시간 */
-
   if (durationElement) {
     durationElement.textContent = formatMusicTime(duration);
   }
-
-  /* 진행 바 */
 
   if (progressFill) {
     const percent =
@@ -321,17 +285,15 @@ function updateMusicProgress() {
 }
 
 /* =========================================
-   12 EIDOS MUSIC PLAYER
+   10. MUSIC PLAYER
 ========================================= */
 
 if (bgMusic && musicButton) {
-  /* MUSIC SETTINGS */
-
   bgMusic.volume = 0.7;
   bgMusic.autoplay = false;
   bgMusic.loop = true;
 
-  /* PLAY / PAUSE BUTTON */
+  /* PLAY / PAUSE */
 
   musicButton.addEventListener('click', async () => {
     if (bgMusic.paused) {
@@ -345,7 +307,7 @@ if (bgMusic && musicButton) {
     }
   });
 
-  /* MUSIC PLAY EVENT */
+  /* PLAY EVENT */
 
   bgMusic.addEventListener('play', () => {
     musicButton.textContent = 'PAUSE MUSIC ❚❚';
@@ -357,7 +319,7 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* MUSIC PAUSE EVENT */
+  /* PAUSE EVENT */
 
   bgMusic.addEventListener('pause', () => {
     musicButton.textContent = 'LISTEN NOW →';
@@ -366,20 +328,20 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* MUSIC METADATA */
+  /* AUDIO METADATA */
 
   bgMusic.addEventListener('loadedmetadata', () => {
     updateMusicProgress();
   });
 
-  /* MUSIC TIME UPDATE */
+  /* AUDIO TIME UPDATE */
 
   bgMusic.addEventListener('timeupdate', () => {
     updateLyrics();
     updateMusicProgress();
   });
 
-  /* MUSIC SEEK EVENT */
+  /* AUDIO SEEK */
 
   bgMusic.addEventListener('seeked', () => {
     lastLyricIndex = -2;
@@ -388,7 +350,16 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* MUSIC END EVENT */
+  /* LOOP RESTART */
+
+  bgMusic.addEventListener('timeupdate', () => {
+    if (bgMusic.currentTime < 0.5 && lastLyricIndex >= 0) {
+      lastLyricIndex = -2;
+      updateLyrics();
+    }
+  });
+
+  /* AUDIO ENDED */
 
   bgMusic.addEventListener('ended', () => {
     musicButton.textContent = 'LISTEN NOW →';
@@ -400,7 +371,7 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* MUSIC ERROR EVENT */
+  /* AUDIO ERROR */
 
   bgMusic.addEventListener('error', () => {
     console.error('Eidos music file could not be loaded.');

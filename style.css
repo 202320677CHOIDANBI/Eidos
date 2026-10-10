@@ -975,3 +975,149 @@ img {
   position: relative;
   z-index: 2;
 }
+
+/* =========================================
+   EIDOS MUSIC - CLEAN LYRICS DESIGN
+========================================= */
+
+/* 기존 가사 제목 숨기기 */
+.music .lyrics-header {
+  display: none !important;
+}
+
+/* 기존 재생 시간 및 진행 바 숨기기 */
+.music .music-progress {
+  display: none !important;
+}
+
+/* 가사 전체 영역 */
+.music .lyrics-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 280px;
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+/* 가사 표시 영역 */
+.music .lyrics-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 230px;
+  gap: 18px;
+
+  text-align: center;
+}
+
+/* 모든 가사 공통 */
+.music .lyric-line {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+  transition: opacity 0.3s ease;
+}
+
+/* 현재 가사 - 가장 크게 표시 */
+.music .lyric-current {
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 700;
+  line-height: 1.7;
+  opacity: 1;
+}
+
+/* 이전 가사 */
+.music .lyric-prev {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0.45;
+}
+
+/* 다음 가사 */
+.music .lyric-next {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0.45;
+}
+
+/* 빈 가사는 공간 차지하지 않도록 */
+.music .lyric-line:empty {
+  display: none;
+}
+
+/* 모바일 화면 */
+@media (max-width: 768px) {
+  .music .lyrics-container {
+    min-height: 220px;
+    padding: 20px 10px;
+  }
+
+  .music .lyrics-display {
+    min-height: 180px;
+    gap: 14px;
+  }
+
+  .music .lyric-current {
+    font-size: 20px;
+  }
+
+  .music .lyric-prev,
+  .music .lyric-next {
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   MUSIC SECTION - WHITE TEXT
+========================================= */
+
+/* MUSIC 제목과 번호 */
+#music .section-title,
+#music .section-title h2,
+#music .section-title span {
+  color: #ffffff !important;
+}
+
+/* 앨범 정보 전체 */
+#music .album-info,
+#music .album-info h2,
+#music .album-label,
+#music .album-description {
+  color: #ffffff !important;
+}
+
+/* LISTEN NOW 버튼 */
+#music .more {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+/* 가사 전체 */
+#music .lyrics-container,
+#music .lyrics-display,
+#music .lyric-line,
+#music .lyric-current {
+  color: #ffffff !important;
+}
+
+/* 이전 가사와 다음 가사는 연한 흰색 */
+#music .lyric-prev,
+#music .lyric-next {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 가사 영역 왼쪽 구분선 */
+#music .lyrics-container {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}

@@ -4,15 +4,150 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Eidos</title>
+    <title>Eidos Official Website</title>
 
     <link rel="stylesheet" href="style.css" />
+
+    <!-- MUSIC 배경 전용 스타일 -->
+    <style>
+      /* ========================================
+       MUSIC BACKGROUND IMAGE
+    ======================================== */
+
+      #music {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        background-color: #101b2b;
+        color: #ffffff;
+      }
+
+      /* 배경 이미지 */
+      #music .music-background {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+
+        background-image:
+          linear-gradient(rgba(8, 18, 35, 0.45), rgba(8, 18, 35, 0.6)),
+          url('images/배경2.jpg');
+
+        background-size: cover;
+        background-position: center 40%;
+        background-repeat: no-repeat;
+      }
+
+      /* 콘텐츠가 배경 위에 표시되도록 */
+      #music .section-title,
+      #music .music-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* MUSIC 제목 */
+      #music .section-title,
+      #music .section-title h2,
+      #music .section-title span {
+        color: #ffffff !important;
+      }
+
+      /* 앨범 정보 */
+      #music .album-info,
+      #music .album-info h2 {
+        color: #ffffff !important;
+      }
+
+      #music .album-label,
+      #music .album-description {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+
+      /* 음악 재생 버튼 */
+      #music .more {
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+      }
+
+      /* 가사 영역 */
+      #music .lyrics-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-color: rgba(255, 255, 255, 0.65) !important;
+      }
+
+      /* 가사 가운데 정렬 */
+      #music .lyrics-display {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        min-height: 230px;
+        gap: 18px;
+
+        text-align: center;
+      }
+
+      /* 모든 가사 */
+      #music .lyric-line {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        overflow-wrap: anywhere;
+      }
+
+      /* 현재 가사 */
+      #music .lyric-current {
+        color: #ffffff !important;
+        font-size: clamp(18px, 2vw, 26px);
+        font-weight: 700;
+        line-height: 1.7;
+      }
+
+      /* 이전 / 다음 가사 */
+      #music .lyric-prev,
+      #music .lyric-next {
+        color: rgba(255, 255, 255, 0.55) !important;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      /* 빈 가사 숨기기 */
+      #music .lyric-line:empty {
+        display: none;
+      }
+
+      /* 기존 가사 제목과 시간 숨기기 */
+      #music .lyrics-header,
+      #music .music-progress {
+        display: none !important;
+      }
+
+      /* 모바일 */
+      @media (max-width: 768px) {
+        #music .music-background {
+          background-position: 55% center;
+        }
+
+        #music .lyrics-display {
+          min-height: 180px;
+        }
+
+        #music .lyric-current {
+          font-size: 20px;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <!-- ========================================
-      HEADER
-    ========================================= -->
+       HEADER
+  ======================================== -->
 
     <header class="header">
       <a href="#" class="logo">
@@ -29,16 +164,15 @@
     </header>
 
     <!-- ========================================
-      MAIN
-    ========================================= -->
+       MAIN
+  ======================================== -->
 
     <main>
       <!-- ========================================
-        HERO - BACKGROUND VIDEO
-      ========================================= -->
+         HERO
+    ======================================== -->
 
       <section class="hero">
-        <!-- BACKGROUND VIDEO -->
         <div class="hero-image">
           <video
             class="hero-video"
@@ -49,13 +183,12 @@
             preload="auto"
             aria-hidden="true"
           >
-            <source src="videos/아테나.MOV" type="video/quicktime" />
+            <source src="videos/아테나.mp4" type="video/mp4" />
 
             브라우저가 동영상 재생을 지원하지 않습니다.
           </video>
         </div>
 
-        <!-- HERO CONTENT -->
         <div class="hero-content">
           <p class="hero-label">THE 1ST SINGLE ALBUM</p>
 
@@ -66,8 +199,8 @@
       </section>
 
       <!-- ========================================
-        01 MEMBERS
-      ========================================= -->
+         01 MEMBERS
+    ======================================== -->
 
       <section id="members" class="section members">
         <div class="section-title">
@@ -77,6 +210,7 @@
 
         <div class="member-grid">
           <!-- DAYEON -->
+
           <div class="member" onclick="openMember(0)">
             <div class="member-card">
               <div class="member-front">
@@ -103,6 +237,7 @@
           </div>
 
           <!-- ION -->
+
           <div class="member" onclick="openMember(1)">
             <div class="member-card">
               <div class="member-front">
@@ -118,6 +253,7 @@
 
                 <div class="member-detail">
                   <span>POSITION</span>
+
                   <p>Main Dancer</p>
                 </div>
               </div>
@@ -125,6 +261,7 @@
           </div>
 
           <!-- LINA -->
+
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
@@ -140,6 +277,7 @@
 
                 <div class="member-detail">
                   <span>POSITION</span>
+
                   <p>Main Vocalist</p>
                 </div>
               </div>
@@ -149,28 +287,35 @@
       </section>
 
       <!-- ========================================
-        02 MUSIC + REAL-TIME LYRICS
-
-        LEFT   : ALBUM COVER
-        CENTER : ALBUM INFORMATION
-        RIGHT  : LYRICS
-      ========================================= -->
+         02 MUSIC
+         HELIOPHILE BACKGROUND
+    ======================================== -->
 
       <section id="music" class="section music">
+        <!-- 배경 이미지 -->
+        <div class="music-background" aria-hidden="true"></div>
+
+        <!-- 섹션 제목 -->
         <div class="section-title">
           <span>02</span>
+
           <h2>MUSIC</h2>
         </div>
 
         <div class="music-content">
           <!-- LEFT : ALBUM COVER -->
+
           <div class="music-left">
             <div class="album">
-              <img src="images/Album Cover.png" alt="Eidos Album" />
+              <img
+                src="images/Album Cover.png"
+                alt="Eidos Heliophile Album Cover"
+              />
             </div>
           </div>
 
           <!-- CENTER : ALBUM INFORMATION -->
+
           <div class="album-info">
             <p class="album-label">1ST SINGLE ALBUM HELIOPHILE</p>
 
@@ -190,61 +335,43 @@
           </div>
 
           <!-- RIGHT : REAL-TIME LYRICS -->
+
           <div
             class="lyrics-container"
             id="lyricsContainer"
             aria-label="Eidos song lyrics"
           >
-            <!-- LYRICS HEADER -->
-            <div class="lyrics-header">
-              <span class="lyrics-label"> LYRICS </span>
-
-              <span class="lyrics-song"> EIDOS </span>
-            </div>
-
-            <!-- LYRICS DISPLAY -->
             <div class="lyrics-display" id="lyricsDisplay">
-              <!-- PREVIOUS LYRIC -->
+              <!-- 이전 가사 -->
               <p class="lyric-line lyric-prev" id="lyricPrev"></p>
 
-              <!-- CURRENT LYRIC -->
+              <!-- 현재 가사 -->
               <p
                 class="lyric-line lyric-current"
                 id="lyricCurrent"
                 aria-live="off"
               >
-                LISTEN NOW →
+                HOW CAN I KNOW
               </p>
 
-              <!-- NEXT LYRIC -->
+              <!-- 다음 가사 -->
               <p class="lyric-line lyric-next" id="lyricNext"></p>
-            </div>
-
-            <!-- MUSIC PROGRESS -->
-            <div class="music-progress">
-              <span class="music-time" id="currentTime"> 0:00 </span>
-
-              <div class="progress-track">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
-
-              <span class="music-time" id="duration"> 0:00 </span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================
-        03 CONCEPT PHOTO
-      ========================================= -->
+         03 CONCEPT PHOTO
+    ======================================== -->
 
       <section id="concept" class="section concept">
         <div class="section-title">
           <span>03</span>
+
           <h2>CONCEPT PHOTO</h2>
         </div>
 
-        <!-- CONCEPT BUTTONS -->
         <div class="concept-tabs">
           <button type="button" class="concept-tab active" data-concept="0">
             CONCEPT 01
@@ -259,63 +386,74 @@
           </button>
         </div>
 
-        <!-- CONCEPT PHOTO GALLERY -->
         <div class="concept-gallery">
           <div class="concept-track" id="conceptTrack"></div>
         </div>
       </section>
 
       <!-- ========================================
-        04 SCHEDULE
-      ========================================= -->
+         04 SCHEDULE
+    ======================================== -->
 
       <section id="schedule" class="section schedule">
         <div class="section-title">
           <span>04</span>
+
           <h2>SCHEDULE</h2>
         </div>
 
         <div class="schedule-list">
           <div class="schedule-item">
             <span>2026.11.17</span>
+
             <strong>DEBUT</strong>
+
             <p>Eidos 1st Single Album Release</p>
           </div>
 
           <div class="schedule-item">
             <span>2026.00.00</span>
+
             <strong>MEDIA</strong>
+
             <p>Official Content Release</p>
           </div>
 
           <div class="schedule-item">
             <span>2026.00.00</span>
+
             <strong>EVENT</strong>
+
             <p>Special Event</p>
           </div>
         </div>
       </section>
 
       <!-- ========================================
-        05 NEWS
-      ========================================= -->
+         05 NEWS
+    ======================================== -->
 
       <section id="news" class="section news">
         <div class="section-title">
           <span>05</span>
+
           <h2>NEWS</h2>
         </div>
 
         <div class="news-list">
           <a href="#" class="news-item">
             <span>2026.00.00</span>
+
             <h3>Eidos Official Website Open</h3>
+
             <span>→</span>
           </a>
 
           <a href="#" class="news-item">
             <span>2026.00.00</span>
+
             <h3>Eidos 1st Single Album Coming Soon</h3>
+
             <span>→</span>
           </a>
         </div>
@@ -323,15 +461,17 @@
     </main>
 
     <!-- ========================================
-      FOOTER
-    ========================================= -->
+       FOOTER
+  ======================================== -->
 
     <footer class="footer">
       <img src="images/eidosLOGO.png" alt="Eidos" class="hero-logo" />
 
       <div class="social">
         <a href="#">INSTAGRAM</a>
+
         <a href="#">YOUTUBE</a>
+
         <a href="#">X</a>
       </div>
 
@@ -339,11 +479,8 @@
     </footer>
 
     <!-- ========================================
-      MUSIC AUDIO
-
-      자동 재생 없음
-      MUSIC 버튼 클릭 시 재생
-    ========================================= -->
+       MUSIC AUDIO
+  ======================================== -->
 
     <audio id="eidosMusic" loop preload="metadata">
       <source src="music/eidos.mp3.wav" type="audio/wav" />
@@ -352,8 +489,8 @@
     </audio>
 
     <!-- ========================================
-      JAVASCRIPT
-    ========================================= -->
+       JAVASCRIPT
+  ======================================== -->
 
     <script src="script.js"></script>
   </body>
