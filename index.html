@@ -4,300 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Eidos Official Website</title>
+    <title>EIDOS OFFICIAL WEBSITE</title>
 
-    <!-- 기존 디자인 유지 -->
     <link rel="stylesheet" href="style.css" />
-
-    <style>
-      /* =========================================
-       EIDOS ADDITIONAL STYLES
-    ========================================= */
-
-      /* 섹션 제목 숫자 숨기기 */
-      .section-title > span {
-        display: none !important;
-      }
-
-      .section-title {
-        gap: 0 !important;
-      }
-
-      /* =========================================
-       HERO LOGOS
-    ========================================= */
-
-      .hero .hero-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .hero .hero-logo {
-        display: block;
-      }
-
-      .hero .hero-flower-logo {
-        display: block;
-        width: 65px;
-        height: auto;
-        object-fit: contain;
-        margin-top: 16px;
-        margin-left: 5px;
-      }
-
-      /* =========================================
-       MUSIC BACKGROUND
-    ========================================= */
-
-      #music {
-        position: relative;
-        isolation: isolate;
-        overflow: hidden;
-        background-color: #101b2b;
-        color: #ffffff;
-      }
-
-      #music .music-background {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-
-        background-image:
-          linear-gradient(rgba(8, 18, 35, 0.45), rgba(8, 18, 35, 0.6)),
-          url('images/배경2.jpg');
-
-        background-size: cover;
-        background-position: center 40%;
-        background-repeat: no-repeat;
-      }
-
-      #music .section-title,
-      #music .music-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      #music .section-title,
-      #music .section-title h2,
-      #music .album-info,
-      #music .album-info h2 {
-        color: #ffffff !important;
-      }
-
-      #music .album-label {
-        color: rgba(255, 255, 255, 0.85) !important;
-      }
-
-      #music .more {
-        color: #ffffff !important;
-        border-color: #ffffff !important;
-      }
-
-      /* =========================================
-       LYRICS CONTAINER
-    ========================================= */
-
-      #music .lyrics-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        border-left: none !important;
-        border-right: none !important;
-      }
-
-      #music .lyrics-display {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        width: 100%;
-        min-height: 230px;
-        gap: 18px;
-
-        text-align: center;
-      }
-
-      #music .lyric-line {
-        width: 100%;
-        margin: 0;
-        text-align: center;
-        overflow-wrap: anywhere;
-      }
-
-      #music .lyric-current {
-        color: #ffffff !important;
-        font-size: clamp(18px, 2vw, 26px);
-        font-weight: 700;
-        line-height: 1.7;
-      }
-
-      #music .lyric-prev,
-      #music .lyric-next {
-        color: rgba(255, 255, 255, 0.55) !important;
-        font-size: 13px;
-        line-height: 1.6;
-      }
-
-      #music .lyric-line:empty {
-        display: none;
-      }
-
-      #music .lyrics-header,
-      #music .music-progress {
-        display: none !important;
-      }
-
-      /* =========================================
-       SPOTIFY STYLE SOUND BARS
-    ========================================= */
-
-      #music .intro-visualizer {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-
-        width: 100%;
-        height: 60px;
-      }
-
-      #music .intro-visualizer.is-visible {
-        display: flex;
-      }
-
-      #music .intro-visualizer span {
-        display: block;
-        width: 4px;
-        height: 12px;
-        border-radius: 10px;
-
-        background: #ffffff;
-
-        transform-origin: center;
-
-        animation: eidosSoundWave 0.85s ease-in-out infinite alternate;
-
-        animation-play-state: paused;
-      }
-
-      #music .intro-visualizer span:nth-child(1) {
-        animation-duration: 0.7s;
-        animation-delay: -0.2s;
-      }
-
-      #music .intro-visualizer span:nth-child(2) {
-        animation-duration: 1.05s;
-        animation-delay: -0.5s;
-      }
-
-      #music .intro-visualizer span:nth-child(3) {
-        animation-duration: 0.8s;
-        animation-delay: -0.1s;
-      }
-
-      #music .intro-visualizer span:nth-child(4) {
-        animation-duration: 1.15s;
-        animation-delay: -0.4s;
-      }
-
-      #music .intro-visualizer span:nth-child(5) {
-        animation-duration: 0.9s;
-        animation-delay: -0.7s;
-      }
-
-      #music .intro-visualizer.is-playing span {
-        animation-play-state: running;
-      }
-
-      @keyframes eidosSoundWave {
-        0% {
-          transform: scaleY(0.45);
-        }
-
-        100% {
-          transform: scaleY(2.5);
-        }
-      }
-
-      /* 전주 중에는 가사 숨기기 */
-      #music .lyrics-display.is-intro .lyric-line {
-        display: none !important;
-      }
-
-      /* =========================================
-       CONCEPT PHOTO LEFT ALIGN
-    ========================================= */
-
-      #concept .concept-tabs {
-        display: flex !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-
-        width: 100%;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-
-        gap: 16px;
-        text-align: left !important;
-      }
-
-      #concept .concept-tab {
-        flex: 0 0 auto;
-      }
-
-      /* =========================================
-       MOBILE
-    ========================================= */
-
-      @media (max-width: 768px) {
-        .hero .hero-flower-logo {
-          width: 45px;
-          margin-top: 12px;
-          margin-left: 3px;
-        }
-
-        #music .music-background {
-          background-position: 55% center;
-        }
-
-        #music .lyrics-display {
-          min-height: 180px;
-        }
-
-        #music .lyric-current {
-          font-size: 20px;
-        }
-
-        #concept .concept-tabs {
-          justify-content: flex-start !important;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        #music .intro-visualizer span {
-          animation: none;
-        }
-      }
-    </style>
+    <script src="script.js" defer></script>
   </head>
 
   <body>
-    <!-- =========================================
+    <!-- =====================================
        HEADER
-  ========================================= -->
+  ====================================== -->
 
     <header class="header">
       <a href="#" class="logo">
-        <img src="images/long.png" alt="Eidos" />
+        <img src="images/long.png" alt="EIDOS" />
       </a>
 
       <nav class="nav">
+        <a href="#about">ABOUT US</a>
         <a href="#members">MEMBERS</a>
         <a href="#music">MUSIC</a>
         <a href="#concept">CONCEPT PHOTO</a>
@@ -307,9 +31,9 @@
     </header>
 
     <main>
-      <!-- =========================================
+      <!-- =====================================
          HERO
-    ========================================= -->
+    ====================================== -->
 
       <section class="hero">
         <div class="hero-image">
@@ -327,21 +51,42 @@
         </div>
 
         <div class="hero-content">
-          <!-- EIDOS 메인 로고 -->
-          <img src="images/eidosLOGO.png" alt="Eidos" class="hero-logo" />
+          <img src="images/eidosLOGO.png" alt="EIDOS" class="hero-logo" />
+        </div>
 
-          <!-- 작은 꽃 로고 -->
-          <img
-            src="images/eidos_flower_halftone.png"
-            alt="Eidos Flower Logo"
-            class="hero-flower-logo"
-          />
+        <img
+          src="images/eidos_flower_halftone.png"
+          alt="EIDOS Flower Logo"
+          class="hero-flower-logo"
+        />
+      </section>
+
+      <!-- =====================================
+         ABOUT US
+    ====================================== -->
+
+      <section id="about" class="section about">
+        <div class="section-title">
+          <h2>ABOUT US</h2>
+        </div>
+
+        <div class="about-content">
+          <p class="about-description">
+            EIDOS는 자유롭고 꾸밈없는 모습으로<br />
+            각자의 개성을 표현하는 그룹입니다.
+          </p>
+
+          <p class="about-description">
+            태양 아래의 따뜻함과 여유, 자유로운 에너지를<br />
+            음악과 이미지에 담아 일상의 평범한 순간을<br />
+            특별하게 전달합니다.
+          </p>
         </div>
       </section>
 
-      <!-- =========================================
+      <!-- =====================================
          MEMBERS
-    ========================================= -->
+    ====================================== -->
 
       <section id="members" class="section members">
         <div class="section-title">
@@ -350,6 +95,7 @@
 
         <div class="member-grid">
           <!-- DAYEON -->
+
           <div class="member" onclick="openMember(0)">
             <div class="member-card">
               <div class="member-front">
@@ -375,6 +121,7 @@
           </div>
 
           <!-- ION -->
+
           <div class="member" onclick="openMember(1)">
             <div class="member-card">
               <div class="member-front">
@@ -397,6 +144,7 @@
           </div>
 
           <!-- LINA -->
+
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
@@ -420,9 +168,9 @@
         </div>
       </section>
 
-      <!-- =========================================
+      <!-- =====================================
          MUSIC
-    ========================================= -->
+    ====================================== -->
 
       <section id="music" class="section music">
         <div class="music-background" aria-hidden="true"></div>
@@ -432,21 +180,27 @@
         </div>
 
         <div class="music-content">
-          <!-- LEFT : ALBUM COVER -->
+          <!-- ALBUM COVER -->
+
           <div class="music-left">
             <div class="album">
               <img
                 src="images/Album Cover.png"
-                alt="Eidos Heliophile Album Cover"
+                alt="EIDOS HELIOPHILE Album Cover"
               />
             </div>
           </div>
 
-          <!-- CENTER : ALBUM INFORMATION -->
+          <!-- ALBUM INFORMATION -->
+
           <div class="album-info">
             <p class="album-label">1ST SINGLE ALBUM HELIOPHILE</p>
 
-            <h2>HOW CAN I KNOW</h2>
+            <!-- 제목 줄바꿈 수정 -->
+            <h2 class="album-title">
+              <span>HOW CAN</span>
+              <span>I KNOW</span>
+            </h2>
 
             <button
               type="button"
@@ -459,16 +213,18 @@
             </button>
           </div>
 
-          <!-- RIGHT : SOUND BARS + LYRICS -->
+          <!-- LYRICS -->
+
           <div
             class="lyrics-container"
             id="lyricsContainer"
-            aria-label="Eidos song lyrics"
+            aria-label="EIDOS song lyrics"
           >
             <div class="lyrics-display is-intro" id="lyricsDisplay">
-              <!-- 전주 사운드 바 -->
+              <!-- SOUND BARS -->
+
               <div
-                class="intro-visualizer is-visible"
+                class="intro-visualizer"
                 id="introVisualizer"
                 aria-hidden="true"
               >
@@ -479,26 +235,25 @@
                 <span></span>
               </div>
 
-              <!-- 이전 가사 -->
+              <!-- PREVIOUS LYRIC -->
+
               <p class="lyric-line lyric-prev" id="lyricPrev"></p>
 
-              <!-- 현재 가사 -->
-              <p
-                class="lyric-line lyric-current"
-                id="lyricCurrent"
-                aria-live="off"
-              ></p>
+              <!-- CURRENT LYRIC -->
 
-              <!-- 다음 가사 -->
+              <p class="lyric-line lyric-current" id="lyricCurrent"></p>
+
+              <!-- NEXT LYRIC -->
+
               <p class="lyric-line lyric-next" id="lyricNext"></p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- =========================================
+      <!-- =====================================
          CONCEPT PHOTO
-    ========================================= -->
+    ====================================== -->
 
       <section id="concept" class="section concept">
         <div class="section-title">
@@ -524,9 +279,9 @@
         </div>
       </section>
 
-      <!-- =========================================
+      <!-- =====================================
          SCHEDULE
-    ========================================= -->
+    ====================================== -->
 
       <section id="schedule" class="section schedule">
         <div class="section-title">
@@ -554,9 +309,9 @@
         </div>
       </section>
 
-      <!-- =========================================
+      <!-- =====================================
          NEWS
-    ========================================= -->
+    ====================================== -->
 
       <section id="news" class="section news">
         <div class="section-title">
@@ -579,12 +334,12 @@
       </section>
     </main>
 
-    <!-- =========================================
+    <!-- =====================================
        FOOTER
-  ========================================= -->
+  ====================================== -->
 
     <footer class="footer">
-      <img src="images/eidosLOGO.png" alt="Eidos" class="hero-logo" />
+      <img src="images/eidosLOGO.png" alt="EIDOS" />
 
       <div class="social">
         <a href="#">INSTAGRAM</a>
@@ -595,386 +350,12 @@
       <p>© 2026 Eidos. All Rights Reserved.</p>
     </footer>
 
-    <!-- =========================================
+    <!-- =====================================
        AUDIO
-  ========================================= -->
+  ====================================== -->
 
     <audio id="eidosMusic" loop preload="metadata">
       <source src="music/eidos.mp3.wav" type="audio/wav" />
     </audio>
-
-    <!-- =========================================
-       JAVASCRIPT
-       HTML 내부에 모두 포함
-  ========================================= -->
-
-    <script>
-      /* =========================================
-       01. MEMBERS
-    ========================================= */
-
-      const members = [
-        {
-          number: '01',
-          name: 'Dayeon',
-          position: 'Producer & Main Vocalist',
-        },
-        {
-          number: '02',
-          name: 'Ion',
-          position: 'Main Dancer',
-        },
-        {
-          number: '03',
-          name: 'Lina',
-          position: 'Main Vocalist',
-        },
-      ];
-
-      function openMember(index) {
-        const elements = document.querySelectorAll('.member');
-        const clicked = elements[index];
-
-        if (!clicked) return;
-
-        const alreadyOpen = clicked.classList.contains('active');
-
-        elements.forEach((member) => {
-          member.classList.remove('active');
-        });
-
-        if (!alreadyOpen) {
-          clicked.classList.add('active');
-        }
-      }
-
-      /* =========================================
-       02. CONCEPT PHOTOS
-    ========================================= */
-
-      const conceptPhotos = [
-        [
-          'images/concept1_1.png',
-          'images/concept1_2.jpeg',
-          'images/concept1_3.png',
-          'images/concept1_5.png',
-          'images/concept1_6.jpeg',
-          'images/concept1_7.png',
-        ],
-        ['images/concept2_1.png', 'images/concept2_2.png'],
-        ['images/concept3_1.png'],
-      ];
-
-      const conceptTabs = document.querySelectorAll('.concept-tab');
-
-      const conceptTrack = document.getElementById('conceptTrack');
-
-      function changeConcept(index) {
-        if (!conceptTrack || !conceptPhotos[index]) {
-          return;
-        }
-
-        conceptTabs.forEach((tab, i) => {
-          tab.classList.toggle('active', i === index);
-        });
-
-        conceptTrack.innerHTML = '';
-
-        conceptPhotos[index].forEach((src, photoIndex) => {
-          const photo = document.createElement('div');
-          photo.className = 'concept-photo';
-
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = `Concept ${index + 1} Photo ${photoIndex + 1}`;
-
-          img.loading = 'lazy';
-
-          photo.appendChild(img);
-          conceptTrack.appendChild(photo);
-        });
-
-        conceptTrack.scrollLeft = 0;
-      }
-
-      conceptTabs.forEach((tab) => {
-        tab.addEventListener('click', () => {
-          changeConcept(Number(tab.dataset.concept));
-        });
-      });
-
-      changeConcept(0);
-
-      /* =========================================
-       03. LYRICS
-
-       기존 LRC 기준 시간
-       추가로 분리된 가사 시간은 임시 배치
-    ========================================= */
-
-      const lyrics = [
-        /* VERSE 1 */
-
-        [38.2, '은근히 푸석한 날'],
-        [40.66, '어제로 돌아갔나'],
-        [43.3, '내 지난 새벽은 그렇게도 반짝이던가'],
-
-        [47.07, '오늘은 나아가겠다고 다짐했던 말'],
-        [51.83, '또 헤매어 혼자'],
-
-        /* PRE-CHORUS 1 */
-
-        [53.98, '그때부터였나'],
-        [57.2, '특별하게 다가왔지만'],
-        [60.63, '애써 난 모른 척했지 다'],
-        [64.33, '내가 이상할까 전부 비슷한가'],
-        [69.33, '전부 난 알고 싶지만'],
-
-        /* CHORUS 1 */
-
-        [71.51, 'HOW CAN I KNOW'],
-        [73.02, 'Whoa-oh-oh-oh-oh-oh'],
-        [74.5, 'Whoa-oh-oh-oh-oh-oh'],
-        [76.56, 'Whoa-oh-oh-oh-oh-oh'],
-        [78.62, '스쳐 지나간 기억을 되돌려서'],
-
-        [81.4, 'Whoa-oh-oh-oh-oh-oh'],
-        [83.95, '불행히 평범했던 날을'],
-        [87.02, '따라간 너의 두 얼굴 속 내 모습'],
-
-        /* VERSE 2 */
-
-        [89.29, '먼발치 넘어 매일 옆에'],
-        [91.22, '웃었던 모습 기억해'],
-        [94.2, '근데 그 노을 너머에'],
-        [96.1, '(넘어간 노을 너머에)'],
-
-        [98.32, 'We need to run and run away'],
-        [99.85, '잠겨있는 새장 안 속에 있었던 모두'],
-        [103.2, '그건 내 착각인걸까'],
-
-        /* PRE-CHORUS 2 */
-
-        [106.41, '그때부터였나 특별하게 다가왔지만'],
-        [112.76, '애써 난 모른 척했지 다'],
-        [116.74, '내가 이상할까 전부 비슷한가'],
-        [120.3, '전부 난 알고 싶지만'],
-
-        /* CHORUS 2 */
-
-        [123.88, 'HOW CAN I KNOW'],
-        [125.14, 'Whoa-oh-oh-oh-oh-oh'],
-        [126.74, 'Whoa-oh-oh-oh-oh-oh'],
-        [128.81, 'Whoa-oh-oh-oh-oh-oh'],
-        [130.97, '스쳐 지나간 기억을 되돌려서'],
-
-        [133.23, 'Whoa-oh-oh-oh-oh-oh'],
-        [136.28, '불행히 평범했던 날을'],
-        [139.43, '따라간 너의 두 얼굴 속 내 모습'],
-      ];
-
-      /* =========================================
-       04. MUSIC ELEMENTS
-    ========================================= */
-
-      const bgMusic = document.getElementById('eidosMusic');
-
-      const musicButton = document.getElementById('musicButton');
-
-      const lyricPrev = document.getElementById('lyricPrev');
-
-      const lyricCurrent = document.getElementById('lyricCurrent');
-
-      const lyricNext = document.getElementById('lyricNext');
-
-      const lyricsDisplay = document.getElementById('lyricsDisplay');
-
-      const introVisualizer = document.getElementById('introVisualizer');
-
-      /* =========================================
-       05. FIND CURRENT LYRIC
-    ========================================= */
-
-      function findCurrentLyricIndex(time) {
-        let index = -1;
-
-        for (let i = 0; i < lyrics.length; i++) {
-          if (time >= lyrics[i][0]) {
-            index = i;
-          } else {
-            break;
-          }
-        }
-
-        return index;
-      }
-
-      /* =========================================
-       06. INTRO VISUALIZER
-    ========================================= */
-
-      function updateIntroVisualizer(isIntro) {
-        if (!bgMusic) return;
-
-        if (introVisualizer) {
-          introVisualizer.classList.toggle('is-visible', isIntro);
-
-          introVisualizer.classList.toggle(
-            'is-playing',
-            isIntro && !bgMusic.paused,
-          );
-        }
-
-        if (lyricsDisplay) {
-          lyricsDisplay.classList.toggle('is-intro', isIntro);
-        }
-      }
-
-      /* =========================================
-       07. UPDATE LYRICS
-    ========================================= */
-
-      let lastLyricIndex = -2;
-
-      function updateLyrics() {
-        if (!bgMusic || !lyricCurrent) return;
-
-        const currentTime = bgMusic.currentTime;
-        const index = findCurrentLyricIndex(currentTime);
-
-        const isIntro = index === -1;
-
-        /* 사운드 바 상태는 항상 갱신 */
-        updateIntroVisualizer(isIntro);
-
-        if (index === lastLyricIndex) {
-          return;
-        }
-
-        lastLyricIndex = index;
-
-        /* 전주 */
-        if (isIntro) {
-          if (lyricPrev) {
-            lyricPrev.textContent = '';
-          }
-
-          lyricCurrent.textContent = '';
-
-          if (lyricNext) {
-            lyricNext.textContent = '';
-          }
-
-          return;
-        }
-
-        /* 이전 가사 */
-        if (lyricPrev) {
-          lyricPrev.textContent = index > 0 ? lyrics[index - 1][1] : '';
-        }
-
-        /* 현재 가사 */
-        lyricCurrent.textContent = lyrics[index][1];
-
-        /* 다음 가사 */
-        if (lyricNext) {
-          lyricNext.textContent =
-            index < lyrics.length - 1 ? lyrics[index + 1][1] : '';
-        }
-      }
-
-      /* =========================================
-       08. MUSIC PLAYER
-    ========================================= */
-
-      if (bgMusic && musicButton) {
-        bgMusic.volume = 0.7;
-        bgMusic.autoplay = false;
-        bgMusic.loop = true;
-
-        /* 재생 / 일시정지 버튼 */
-        musicButton.addEventListener('click', async () => {
-          if (bgMusic.paused) {
-            try {
-              await bgMusic.play();
-            } catch (error) {
-              console.error('Music playback failed:', error);
-            }
-          } else {
-            bgMusic.pause();
-          }
-        });
-
-        /* 음악 재생 */
-        bgMusic.addEventListener('play', () => {
-          musicButton.textContent = 'PAUSE MUSIC ❚❚';
-
-          musicButton.setAttribute('aria-pressed', 'true');
-
-          lastLyricIndex = -2;
-          updateLyrics();
-        });
-
-        /* 음악 일시정지 */
-        bgMusic.addEventListener('pause', () => {
-          musicButton.textContent = 'LISTEN NOW →';
-
-          musicButton.setAttribute('aria-pressed', 'false');
-
-          updateLyrics();
-        });
-
-        /* 재생 위치 변경 */
-        bgMusic.addEventListener('timeupdate', () => {
-          updateLyrics();
-        });
-
-        /* 음악 탐색 */
-        bgMusic.addEventListener('seeked', () => {
-          lastLyricIndex = -2;
-          updateLyrics();
-        });
-
-        /* 반복 재생 시 전주 복귀 */
-        bgMusic.addEventListener('timeupdate', () => {
-          if (bgMusic.currentTime < 0.5 && lastLyricIndex >= 0) {
-            lastLyricIndex = -2;
-            updateLyrics();
-          }
-        });
-
-        /* 음악 종료 */
-        bgMusic.addEventListener('ended', () => {
-          musicButton.textContent = 'LISTEN NOW →';
-
-          musicButton.setAttribute('aria-pressed', 'false');
-
-          lastLyricIndex = -2;
-          updateLyrics();
-        });
-
-        /* 음원 오류 */
-        bgMusic.addEventListener('error', () => {
-          console.error('Eidos music file could not be loaded.');
-
-          musicButton.textContent = 'LISTEN NOW →';
-
-          if (introVisualizer) {
-            introVisualizer.classList.remove('is-visible', 'is-playing');
-          }
-
-          if (lyricsDisplay) {
-            lyricsDisplay.classList.remove('is-intro');
-          }
-
-          if (lyricCurrent) {
-            lyricCurrent.textContent = '음원 파일을 확인해 주세요.';
-          }
-        });
-
-        /* 최초 화면 */
-        updateLyrics();
-      }
-    </script>
   </body>
 </html>

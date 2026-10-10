@@ -1,6 +1,8 @@
 /* =========================================
    EIDOS OFFICIAL WEBSITE
    SCRIPT.JS
+
+   LYRIC SYNC: 1 SECOND EARLIER
 ========================================= */
 
 /* =========================================
@@ -103,14 +105,28 @@ conceptTabs.forEach((tab) => {
 changeConcept(0);
 
 /* =========================================
-   04. EIDOS LYRICS
+   04. LYRIC SYNC SETTINGS
+========================================= */
 
+/*
+  전체 가사 싱크 보정값
+
+  0 = 원래 시간
+  1 = 1초 빠르게 표시
+  2 = 2초 빠르게 표시
+  3 = 3초 빠르게 표시
+
+  현재 설정: 1초 보정
+
+  이전 2초 보정에서 가사가
+  약 1초 빨랐으므로 1로 변경.
+*/
+
+const LYRIC_SYNC_OFFSET = 1;
+
+/* =========================================
+   05. EIDOS LYRICS
    HOW CAN I KNOW
-
-   새 가사 적용 완료
-
-   기존 LRC 시간 기준
-   추가된 줄은 임시 시간 배치
 ========================================= */
 
 const lyrics = [
@@ -119,7 +135,6 @@ const lyrics = [
   [38.2, '은근히 푸석한 날'],
   [40.66, '어제로 돌아갔나'],
   [43.3, '내 지난 새벽은 그렇게도 반짝이던가'],
-
   [47.07, '오늘은 나아가겠다고 다짐했던 말'],
   [51.83, '또 헤매어 혼자'],
 
@@ -138,7 +153,6 @@ const lyrics = [
   [74.5, 'Whoa-oh-oh-oh-oh-oh'],
   [76.56, 'Whoa-oh-oh-oh-oh-oh'],
   [78.62, '스쳐 지나간 기억을 되돌려서'],
-
   [81.4, 'Whoa-oh-oh-oh-oh-oh'],
   [83.95, '불행히 평범했던 날을'],
   [87.02, '따라간 너의 두 얼굴 속 내 모습'],
@@ -149,7 +163,6 @@ const lyrics = [
   [91.22, '웃었던 모습 기억해'],
   [94.2, '근데 그 노을 너머에'],
   [96.1, '(넘어간 노을 너머에)'],
-
   [98.32, 'We need to run and run away'],
   [99.85, '잠겨있는 새장 안 속에 있었던 모두'],
   [103.2, '그건 내 착각인걸까'],
@@ -168,14 +181,13 @@ const lyrics = [
   [126.74, 'Whoa-oh-oh-oh-oh-oh'],
   [128.81, 'Whoa-oh-oh-oh-oh-oh'],
   [130.97, '스쳐 지나간 기억을 되돌려서'],
-
   [133.23, 'Whoa-oh-oh-oh-oh-oh'],
   [136.28, '불행히 평범했던 날을'],
   [139.43, '따라간 너의 두 얼굴 속 내 모습'],
 ];
 
 /* =========================================
-   05. MUSIC ELEMENTS
+   06. MUSIC ELEMENTS
 ========================================= */
 
 const bgMusic = document.getElementById('eidosMusic');
@@ -185,12 +197,15 @@ const lyricPrev = document.getElementById('lyricPrev');
 const lyricCurrent = document.getElementById('lyricCurrent');
 const lyricNext = document.getElementById('lyricNext');
 
+const lyricsDisplay = document.getElementById('lyricsDisplay');
+const introVisualizer = document.getElementById('introVisualizer');
+
 const currentTimeElement = document.getElementById('currentTime');
 const durationElement = document.getElementById('duration');
 const progressFill = document.getElementById('progressFill');
 
 /* =========================================
-   06. FORMAT MUSIC TIME
+   07. FORMAT MUSIC TIME
 ========================================= */
 
 function formatMusicTime(seconds) {
@@ -205,14 +220,18 @@ function formatMusicTime(seconds) {
 }
 
 /* =========================================
-   07. FIND CURRENT LYRIC
+   08. FIND CURRENT LYRIC
 ========================================= */
 
 function findCurrentLyricIndex(time) {
   let index = -1;
 
+  /* 가사를 1초 빠르게 표시 */
+
+  const adjustedTime = time + LYRIC_SYNC_OFFSET;
+
   for (let i = 0; i < lyrics.length; i++) {
-    if (time >= lyrics[i][0]) {
+    if (adjustedTime >= lyrics[i][0]) {
       index = i;
     } else {
       break;
@@ -223,13 +242,35 @@ function findCurrentLyricIndex(time) {
 }
 
 /* =========================================
-   08. UPDATE LYRICS
+   09. SOUND BAR CONTROL
+========================================= */
 
-   첫 가사 전:
-   HOW CAN I KNOW
+/*
+  재생 전: 숨김
+  전주 재생 중: 표시
+  일시정지: 숨김
+  첫 가사 시작: 숨김
+*/
 
-   재생 중:
-   현재 가사 자동 변경
+function updateIntroVisualizer(isIntro) {
+  if (!bgMusic) return;
+
+  const isPlaying = !bgMusic.paused && !bgMusic.ended;
+  const showSoundBar = isIntro && isPlaying;
+
+  if (introVisualizer) {
+    introVisualizer.classList.toggle('is-visible', showSoundBar);
+
+    introVisualizer.classList.toggle('is-playing', showSoundBar);
+  }
+
+  if (lyricsDisplay) {
+    lyricsDisplay.classList.toggle('is-intro', isIntro);
+  }
+}
+
+/* =========================================
+   10. UPDATE LYRICS
 ========================================= */
 
 let lastLyricIndex = -2;
@@ -237,40 +278,35 @@ let lastLyricIndex = -2;
 function updateLyrics() {
   if (!bgMusic || !lyricCurrent) return;
 
-  const currentTime = bgMusic.currentTime;
-  const index = findCurrentLyricIndex(currentTime);
+  const index = findCurrentLyricIndex(bgMusic.currentTime);
+  const isIntro = index === -1;
+
+  updateIntroVisualizer(isIntro);
 
   if (index === lastLyricIndex) return;
 
   lastLyricIndex = index;
 
-  /* 첫 가사 시작 전 */
+  /* INTRO */
 
-  if (index === -1) {
-    if (lyricPrev) {
-      lyricPrev.textContent = '';
-    }
-
-    lyricCurrent.textContent = 'HOW CAN I KNOW';
-
-    if (lyricNext) {
-      lyricNext.textContent = '';
-    }
-
+  if (isIntro) {
+    if (lyricPrev) lyricPrev.textContent = '';
+    lyricCurrent.textContent = '';
+    if (lyricNext) lyricNext.textContent = '';
     return;
   }
 
-  /* 이전 가사 */
+  /* PREVIOUS LYRIC */
 
   if (lyricPrev) {
     lyricPrev.textContent = index > 0 ? lyrics[index - 1][1] : '';
   }
 
-  /* 현재 가사 */
+  /* CURRENT LYRIC */
 
   lyricCurrent.textContent = lyrics[index][1];
 
-  /* 다음 가사 */
+  /* NEXT LYRIC */
 
   if (lyricNext) {
     lyricNext.textContent =
@@ -279,7 +315,7 @@ function updateLyrics() {
 }
 
 /* =========================================
-   09. MUSIC PROGRESS
+   11. MUSIC PROGRESS
 ========================================= */
 
 function updateMusicProgress() {
@@ -307,7 +343,43 @@ function updateMusicProgress() {
 }
 
 /* =========================================
-   10. MUSIC PLAYER
+   12. HIGH PRECISION LYRIC LOOP
+========================================= */
+
+/*
+  음악 재생 중 가사 시간을 자주 확인하여
+  가사 전환 지연을 줄이는 기능
+*/
+
+let lyricAnimationFrame = null;
+
+function runLyricLoop() {
+  if (!bgMusic || bgMusic.paused || bgMusic.ended) {
+    lyricAnimationFrame = null;
+    return;
+  }
+
+  updateLyrics();
+  updateMusicProgress();
+
+  lyricAnimationFrame = requestAnimationFrame(runLyricLoop);
+}
+
+function startLyricLoop() {
+  if (lyricAnimationFrame !== null) return;
+
+  lyricAnimationFrame = requestAnimationFrame(runLyricLoop);
+}
+
+function stopLyricLoop() {
+  if (lyricAnimationFrame !== null) {
+    cancelAnimationFrame(lyricAnimationFrame);
+    lyricAnimationFrame = null;
+  }
+}
+
+/* =========================================
+   13. MUSIC PLAYER
 ========================================= */
 
 if (bgMusic && musicButton) {
@@ -329,7 +401,7 @@ if (bgMusic && musicButton) {
     }
   });
 
-  /* PLAY EVENT */
+  /* PLAY */
 
   bgMusic.addEventListener('play', () => {
     musicButton.textContent = 'PAUSE MUSIC ❚❚';
@@ -339,31 +411,35 @@ if (bgMusic && musicButton) {
 
     updateLyrics();
     updateMusicProgress();
+    startLyricLoop();
   });
 
-  /* PAUSE EVENT */
+  /* PAUSE */
 
   bgMusic.addEventListener('pause', () => {
     musicButton.textContent = 'LISTEN NOW →';
     musicButton.setAttribute('aria-pressed', 'false');
 
+    stopLyricLoop();
+
+    updateLyrics();
     updateMusicProgress();
   });
 
-  /* AUDIO METADATA */
+  /* METADATA */
 
   bgMusic.addEventListener('loadedmetadata', () => {
     updateMusicProgress();
   });
 
-  /* AUDIO TIME UPDATE */
+  /* TIME UPDATE */
 
   bgMusic.addEventListener('timeupdate', () => {
     updateLyrics();
     updateMusicProgress();
   });
 
-  /* AUDIO SEEK */
+  /* SEEK */
 
   bgMusic.addEventListener('seeked', () => {
     lastLyricIndex = -2;
@@ -372,18 +448,11 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* LOOP RESTART */
-
-  bgMusic.addEventListener('timeupdate', () => {
-    if (bgMusic.currentTime < 0.5 && lastLyricIndex >= 0) {
-      lastLyricIndex = -2;
-      updateLyrics();
-    }
-  });
-
-  /* AUDIO ENDED */
+  /* ENDED */
 
   bgMusic.addEventListener('ended', () => {
+    stopLyricLoop();
+
     musicButton.textContent = 'LISTEN NOW →';
     musicButton.setAttribute('aria-pressed', 'false');
 
@@ -393,13 +462,23 @@ if (bgMusic && musicButton) {
     updateMusicProgress();
   });
 
-  /* AUDIO ERROR */
+  /* ERROR */
 
   bgMusic.addEventListener('error', () => {
-    console.error('Eidos music file could not be loaded.');
+    stopLyricLoop();
+
+    console.error('EIDOS music file could not be loaded.');
 
     musicButton.textContent = 'LISTEN NOW →';
     musicButton.setAttribute('aria-pressed', 'false');
+
+    if (introVisualizer) {
+      introVisualizer.classList.remove('is-visible', 'is-playing');
+    }
+
+    if (lyricsDisplay) {
+      lyricsDisplay.classList.remove('is-intro');
+    }
 
     if (lyricCurrent) {
       lyricCurrent.textContent = '음원 파일을 확인해 주세요.';

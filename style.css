@@ -3,9 +3,7 @@
    STYLE.CSS
 ========================================= */
 
-/* =========================================
-   RESET
-========================================= */
+/* RESET */
 
 * {
   margin: 0;
@@ -15,12 +13,13 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #111111;
+  color: #111;
+  background: #fff;
   line-height: 1.5;
 }
 
@@ -31,9 +30,11 @@ a {
 
 img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
 }
 
 /* =========================================
@@ -44,26 +45,25 @@ img {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1000;
+
   width: 100%;
   height: 80px;
+  padding: 0 40px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 40px;
-
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
-  z-index: 1000;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eee;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -1px;
+  flex-shrink: 0;
 }
 
 .logo img {
@@ -74,6 +74,7 @@ img {
 
 .nav {
   display: flex;
+  align-items: center;
   gap: 32px;
 }
 
@@ -81,6 +82,7 @@ img {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
+  white-space: nowrap;
   transition: opacity 0.3s ease;
 }
 
@@ -94,25 +96,37 @@ img {
 
 .hero {
   position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 700px;
+  isolation: isolate;
+  overflow: hidden;
 
   display: flex;
   align-items: flex-end;
-  overflow: hidden;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  background: #111;
 }
 
 .hero-image {
   position: absolute;
   inset: 0;
-  background: #eeeeee;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .hero-image::after {
   content: '';
   position: absolute;
   inset: 0;
+  pointer-events: none;
 
   background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 55%);
 }
@@ -120,35 +134,45 @@ img {
 .hero-content {
   position: relative;
   z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+
   width: 100%;
   padding: 0 50px 60px;
-  color: #ffffff;
 }
 
-.hero-label {
-  font-size: 12px;
-  letter-spacing: 0.15em;
-  margin-bottom: 12px;
-}
-
-.hero h1 {
-  font-size: clamp(80px, 15vw, 220px);
-  line-height: 0.85;
-  font-weight: 700;
-  letter-spacing: -0.07em;
-  margin-left: -8px;
-}
-
-.hero-date {
-  margin-top: 28px;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-}
-
-.hero-logo {
-  width: 700px;
-  height: auto;
+.hero .hero-logo {
   display: block;
+  width: 700px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* FLOWER LOGO */
+
+.hero > img.hero-flower-logo {
+  position: absolute;
+  z-index: 20;
+
+  top: 110px;
+  right: 55px;
+  left: auto;
+  bottom: auto;
+
+  display: block;
+  width: 65px;
+  height: 65px;
+
+  object-fit: contain;
+  object-position: center;
+
+  margin: 0;
+  padding: 0;
+  transform: none;
+
+  pointer-events: none;
 }
 
 /* =========================================
@@ -157,24 +181,12 @@ img {
 
 .section {
   padding: 150px 50px;
-  opacity: 1;
-  transform: none;
 }
-
-/* =========================================
-   SECTION TITLE
-========================================= */
 
 .section-title {
   display: flex;
-  align-items: baseline;
-  gap: 20px;
+  align-items: center;
   margin-bottom: 70px;
-}
-
-.section-title span {
-  font-size: 12px;
-  color: #888888;
 }
 
 .section-title h2 {
@@ -184,16 +196,45 @@ img {
 }
 
 /* =========================================
-   01 MEMBERS
+   ABOUT US
+========================================= */
+
+#about {
+  padding-top: 130px;
+  padding-bottom: 150px;
+  background: #fff;
+}
+
+#about .about-content {
+  max-width: 900px;
+  margin: 65px auto 0;
+  text-align: center;
+}
+
+#about .about-description {
+  font-size: clamp(17px, 2vw, 24px);
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: -0.035em;
+  word-break: keep-all;
+  color: #222;
+}
+
+#about .about-description + .about-description {
+  margin-top: 35px;
+}
+
+/* =========================================
+   MEMBERS
 ========================================= */
 
 .members {
-  background: #ffffff;
+  background: #fff;
 }
 
 .member-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -208,37 +249,25 @@ img {
   position: relative;
   width: 100%;
   height: 100%;
-  cursor: pointer;
   overflow: hidden;
 }
-
-/* MEMBER IMAGE */
 
 .member-front {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #eeeeee;
+  background: #eee;
 }
 
 .member-front img {
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transition: transform 0.5s ease;
 }
 
 .member:hover .member-front img {
   transform: scale(1.03);
 }
-
-/* MEMBER INFO */
 
 .member-info {
   position: absolute;
@@ -250,8 +279,8 @@ img {
   align-items: center;
   justify-content: center;
 
-  text-align: center;
   padding: 40px;
+  text-align: center;
 
   background: rgba(255, 255, 255, 0.78);
 
@@ -259,8 +288,8 @@ img {
   visibility: hidden;
 
   transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
+    opacity 0.4s ease,
+    visibility 0.4s ease;
 }
 
 .member.active .member-info {
@@ -268,31 +297,24 @@ img {
   visibility: visible;
 }
 
-/* MEMBER TEXT */
-
 .member-number {
-  display: block;
   margin-bottom: 20px;
   font-size: 12px;
-  color: #666666;
-  letter-spacing: 0.08em;
+  color: #666;
 }
 
 .member-info h3 {
-  margin: 0 0 15px;
+  margin-bottom: 15px;
   font-size: 52px;
-  line-height: 1;
   font-weight: 500;
   letter-spacing: -0.06em;
 }
 
 .member-position {
-  margin: 0 0 40px;
+  margin-bottom: 40px;
   font-size: 15px;
-  color: #444444;
+  color: #444;
 }
-
-/* MEMBER DETAIL */
 
 .member-detail {
   width: 100%;
@@ -304,41 +326,46 @@ img {
   display: block;
   margin-bottom: 8px;
   font-size: 10px;
-  color: #777777;
+  color: #777;
   letter-spacing: 0.15em;
 }
 
 .member-detail p {
-  margin: 0;
   font-size: 14px;
   line-height: 1.7;
-  color: #111111;
-}
-
-/* MEMBER ANIMATION */
-
-.member.active .member-info > * {
-  animation: memberInfoShow 0.4s ease both;
-}
-
-@keyframes memberInfoShow {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* =========================================
-   02 MUSIC
+   MUSIC
 ========================================= */
 
-.music {
-  background: #f5f5f3;
+#music {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  background: #101b2b;
+  color: #fff;
+}
+
+#music .music-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background-image:
+    linear-gradient(rgba(8, 18, 35, 0.45), rgba(8, 18, 35, 0.6)),
+    url('images/배경2.jpg');
+
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+
+#music .section-title,
+#music .music-content {
+  position: relative;
+  z-index: 1;
 }
 
 .music-content {
@@ -349,148 +376,254 @@ img {
   max-width: 1200px;
 }
 
-/* ALBUM COVER */
-
 .album {
   width: 100%;
   max-width: 600px;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #dddddd;
+  background: #ddd;
 }
 
 .album img {
-  transition: transform 0.7s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
 .album:hover img {
   transform: scale(1.03);
 }
 
-/* ALBUM INFORMATION */
-
 .album-info {
   padding: 20px 0;
 }
 
 .album-label {
+  margin-bottom: 25px;
   font-size: 11px;
   letter-spacing: 0.15em;
-  color: #777777;
-  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .album-info h2 {
+  margin-bottom: 35px;
   font-size: 72px;
   line-height: 1;
   letter-spacing: -0.06em;
-  margin-bottom: 35px;
+  color: #fff;
 }
 
-.album-description {
-  max-width: 350px;
-  font-size: 15px;
-  color: #555555;
-  margin-bottom: 45px;
+#music .section-title h2 {
+  color: #fff;
 }
 
-/* =========================================
-   MUSIC PLAY / PAUSE BUTTON
-========================================= */
+/* MUSIC BUTTON */
 
-.more,
 #musicButton {
   display: inline-block;
+  padding: 0 0 7px;
 
   background: transparent;
-  color: #111111;
+  color: #fff;
 
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.08em;
-
-  padding: 0 0 7px;
-  margin: 0;
-
-  border: none;
-  border-bottom: 1px solid #111111;
+  border: 0;
+  border-bottom: 1px solid #fff;
   border-radius: 0;
 
-  appearance: none;
-  -webkit-appearance: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
 
-  text-align: left;
   cursor: pointer;
-
-  transition:
-    opacity 0.3s ease,
-    border-color 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-/* BUTTON HOVER */
-
-.more:hover,
 #musicButton:hover {
-  opacity: 0.4;
+  opacity: 0.5;
 }
-
-/* BUTTON FOCUS */
 
 #musicButton:focus-visible {
-  outline: 2px solid #111111;
+  outline: 2px solid #fff;
   outline-offset: 6px;
 }
 
-/* MUSIC PLAYING */
+/* =========================================
+   LYRICS
+========================================= */
 
-#musicButton[aria-pressed='true'] {
-  opacity: 1;
+#music .lyrics-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 280px;
+  padding: 20px 0;
+  border: none;
 }
 
-/* MUSIC PLAYING HOVER */
+#music .lyrics-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-#musicButton[aria-pressed='true']:hover {
-  opacity: 0.4;
+  width: 100%;
+  min-height: 230px;
+  gap: 18px;
+
+  text-align: center;
+}
+
+#music .lyric-line {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+#music .lyric-current {
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 700;
+  line-height: 1.7;
+  color: #fff;
+}
+
+#music .lyric-prev,
+#music .lyric-next {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+#music .lyric-line:empty {
+  display: none;
+}
+
+/* INTRO: HIDE LYRICS */
+
+#music .lyrics-display.is-intro .lyric-line {
+  display: none;
 }
 
 /* =========================================
-   03 CONCEPT PHOTO
+   SOUND BARS
+========================================= */
+
+/* 기본적으로 숨김 */
+
+#music .intro-visualizer {
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 60px;
+  gap: 5px;
+}
+
+/* 재생 중 전주에서만 표시 */
+
+#music .intro-visualizer.is-visible.is-playing {
+  display: flex;
+}
+
+#music .intro-visualizer span {
+  display: block;
+  width: 4px;
+  height: 12px;
+  border-radius: 10px;
+  background: #fff;
+
+  transform-origin: center;
+
+  animation: eidosSoundWave 0.85s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+#music .intro-visualizer.is-playing span {
+  animation-play-state: running;
+}
+
+#music .intro-visualizer span:nth-child(1) {
+  animation-duration: 0.7s;
+  animation-delay: -0.2s;
+}
+
+#music .intro-visualizer span:nth-child(2) {
+  animation-duration: 1.05s;
+  animation-delay: -0.5s;
+}
+
+#music .intro-visualizer span:nth-child(3) {
+  animation-duration: 0.8s;
+  animation-delay: -0.1s;
+}
+
+#music .intro-visualizer span:nth-child(4) {
+  animation-duration: 1.15s;
+  animation-delay: -0.4s;
+}
+
+#music .intro-visualizer span:nth-child(5) {
+  animation-duration: 0.9s;
+  animation-delay: -0.7s;
+}
+
+@keyframes eidosSoundWave {
+  from {
+    transform: scaleY(0.45);
+  }
+
+  to {
+    transform: scaleY(2.5);
+  }
+}
+
+/* =========================================
+   CONCEPT PHOTO
 ========================================= */
 
 .concept {
   overflow: hidden;
+  background: #fff;
 }
 
 .concept-tabs {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   gap: 16px;
+
+  width: 100%;
   margin: 50px 0 40px;
 }
 
 .concept-tab {
+  flex: 0 0 auto;
   padding: 14px 32px;
-  border: 1px solid #999;
+
   background: transparent;
-  color: inherit;
+  color: #111;
+
+  border: 1px solid #999;
 
   font-size: 13px;
   letter-spacing: 2px;
-
   cursor: pointer;
-  transition: all 0.3s ease;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .concept-tab:hover,
 .concept-tab.active {
-  background: #fff;
-  color: #111;
-  border-color: #fff;
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
-
-/* CONCEPT GALLERY */
 
 .concept-gallery {
   width: 100%;
@@ -512,6 +645,7 @@ img {
 .concept-photo {
   flex: 0 0 32%;
   aspect-ratio: 3 / 4;
+
   overflow: hidden;
   scroll-snap-align: start;
 }
@@ -520,8 +654,6 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-
   transition: transform 0.5s ease;
 }
 
@@ -530,30 +662,30 @@ img {
 }
 
 /* =========================================
-   04 SCHEDULE
+   SCHEDULE
 ========================================= */
 
 .schedule {
-  background: #ffffff;
+  background: #fff;
 }
 
 .schedule-list {
-  border-top: 1px solid #111111;
+  border-top: 1px solid #111;
 }
 
 .schedule-item {
   display: grid;
   grid-template-columns: 180px 180px 1fr;
   gap: 30px;
+  align-items: center;
 
   padding: 28px 0;
-  border-bottom: 1px solid #dddddd;
-  align-items: center;
+  border-bottom: 1px solid #ddd;
 }
 
 .schedule-item span {
   font-size: 12px;
-  color: #777777;
+  color: #777;
 }
 
 .schedule-item strong {
@@ -563,11 +695,11 @@ img {
 
 .schedule-item p {
   font-size: 14px;
-  color: #555555;
+  color: #555;
 }
 
 /* =========================================
-   05 NEWS
+   NEWS
 ========================================= */
 
 .news {
@@ -575,7 +707,7 @@ img {
 }
 
 .news-list {
-  border-top: 1px solid #111111;
+  border-top: 1px solid #111;
 }
 
 .news-item {
@@ -585,7 +717,7 @@ img {
   align-items: center;
 
   padding: 30px 0;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
 
   transition: opacity 0.3s ease;
 }
@@ -596,7 +728,7 @@ img {
 
 .news-item span {
   font-size: 12px;
-  color: #777777;
+  color: #777;
 }
 
 .news-item h3 {
@@ -610,15 +742,15 @@ img {
 ========================================= */
 
 .footer {
-  background: #111111;
-  color: #ffffff;
   padding: 100px 50px 40px;
+  background: #111;
+  color: #fff;
 }
 
-.footer h2 {
-  font-size: clamp(80px, 15vw, 200px);
-  line-height: 0.8;
-  letter-spacing: -0.08em;
+.footer > img {
+  width: min(700px, 100%);
+  height: auto;
+  object-fit: contain;
   margin-bottom: 80px;
 }
 
@@ -640,36 +772,108 @@ img {
 
 .footer > p {
   padding-top: 20px;
-  border-top: 1px solid #444444;
+  border-top: 1px solid #444;
   font-size: 10px;
-  color: #888888;
+  color: #888;
 }
 
 /* =========================================
-   MOBILE RESPONSIVE
+   DESKTOP MUSIC LAYOUT
+========================================= */
+
+@media (min-width: 901px) {
+  .music .music-content {
+    grid-template-columns:
+      minmax(0, 1.15fr)
+      minmax(0, 0.8fr)
+      minmax(0, 1fr);
+
+    gap: 35px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .music .music-left {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  .music .album {
+    max-width: none;
+  }
+
+  .music .album-info {
+    grid-column: 2;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .music .album-info h2 {
+    font-size: clamp(42px, 4.5vw, 72px);
+  }
+
+  .music .lyrics-container {
+    grid-column: 3;
+    min-width: 0;
+    padding: 20px 0;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .music .music-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .music .music-left,
+  .music .album-info,
+  .music .lyrics-container {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .music .lyrics-container {
+    min-height: 220px;
+  }
+}
+
+/* =========================================
+   MOBILE
 ========================================= */
 
 @media (max-width: 768px) {
-  /* HEADER */
+  html {
+    scroll-padding-top: 65px;
+  }
 
   .header {
     height: 65px;
     padding: 0 20px;
   }
 
-  .logo {
-    font-size: 20px;
+  .logo img {
+    width: 65px;
   }
 
   .nav {
     gap: 15px;
+    max-width: calc(100% - 85px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .nav a {
     font-size: 9px;
   }
-
-  /* HERO */
 
   .hero {
     min-height: 650px;
@@ -679,33 +883,48 @@ img {
     padding: 0 20px 35px;
   }
 
-  .hero h1 {
-    font-size: 22vw;
-  }
-
-  .hero-logo {
+  .hero .hero-logo {
     width: 90%;
     max-width: 500px;
   }
 
-  /* COMMON SECTION */
+  .hero > img.hero-flower-logo {
+    top: 90px;
+    right: 25px;
+    width: 45px;
+    height: 45px;
+  }
 
   .section {
     padding: 100px 20px;
-    opacity: 1;
-    transform: none;
   }
 
   .section-title {
     margin-bottom: 45px;
-    gap: 12px;
   }
 
   .section-title h2 {
     font-size: 34px;
   }
 
-  /* MEMBERS */
+  #about {
+    padding-top: 80px;
+    padding-bottom: 100px;
+  }
+
+  #about .about-content {
+    margin-top: 40px;
+    padding: 0 10px;
+  }
+
+  #about .about-description {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+  #about .about-description br {
+    display: none;
+  }
 
   .member-grid {
     grid-template-columns: 1fr;
@@ -724,27 +943,36 @@ img {
     margin-bottom: 30px;
   }
 
-  /* MUSIC */
-
-  .music-content {
-    grid-template-columns: 1fr;
-    gap: 50px;
+  #music .music-background {
+    background-position: 55% center;
   }
 
-  .album-info h2 {
+  .music .music-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .music .album-info h2 {
     font-size: 55px;
   }
 
-  #musicButton {
-    font-size: 12px;
-    padding-bottom: 7px;
-    letter-spacing: 0.08em;
+  #music .lyrics-display {
+    min-height: 180px;
+    gap: 14px;
   }
 
-  /* CONCEPT PHOTO */
+  #music .lyric-current {
+    font-size: 20px;
+  }
+
+  #music .lyric-prev,
+  #music .lyric-next {
+    font-size: 12px;
+  }
 
   .concept-tabs {
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .concept-tab {
@@ -757,15 +985,11 @@ img {
     flex: 0 0 75%;
   }
 
-  /* SCHEDULE */
-
   .schedule-item {
     grid-template-columns: 1fr;
     gap: 8px;
     padding: 25px 0;
   }
-
-  /* NEWS */
 
   .news-item {
     grid-template-columns: 1fr 20px;
@@ -780,14 +1004,12 @@ img {
     font-size: 17px;
   }
 
-  /* FOOTER */
-
   .footer {
     padding: 80px 20px 30px;
   }
 
-  .footer h2 {
-    font-size: 28vw;
+  .footer > img {
+    width: 100%;
     margin-bottom: 60px;
   }
 
@@ -799,366 +1021,68 @@ img {
 }
 
 /* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  #music .intro-visualizer span {
+    animation: none;
+  }
+}
+
+/* =========================================
    EIDOS STYLE END
 ========================================= */
 
 /* =========================================
-   EIDOS MUSIC - 3 COLUMN FIX
-   앨범 | 앨범 정보 | 가사
+   EIDOS MUSIC ALBUM TITLE
+   HOW CAN / I KNOW
 ========================================= */
 
-/* 데스크톱 */
+#music .album-info .album-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-@media (min-width: 901px) {
-  .music .music-content {
-    display: grid;
-    grid-template-columns:
-      minmax(0, 1.15fr)
-      minmax(0, 0.8fr)
-      minmax(0, 1fr);
-    gap: 35px;
-    align-items: center;
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-  }
+  width: 100%;
+  max-width: 100%;
 
-  /* 왼쪽 앨범 커버 */
+  margin-bottom: 35px;
 
-  .music .music-left {
-    grid-column: 1;
-    grid-row: 1;
-    min-width: 0;
-  }
+  font-size: clamp(28px, 3.4vw, 60px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.065em;
 
-  .music .album {
-    width: 100%;
-    max-width: none;
-    aspect-ratio: 1 / 1;
-  }
-
-  /* 가운데 앨범 정보 */
-
-  .music .album-info {
-    grid-column: 2;
-    grid-row: 1;
-    min-width: 0;
-    padding: 0;
-  }
-
-  .music .album-info h2 {
-    font-size: clamp(42px, 4.5vw, 72px);
-  }
-
-  /* 오른쪽 가사 */
-
-  .music .lyrics-container {
-    grid-column: 3;
-    grid-row: 1;
-    min-width: 0;
-    width: 100%;
-    margin: 0;
-    padding: 20px 0 20px 28px;
-    border-top: none;
-    border-left: 1px solid #cccccc;
-    align-self: center;
-  }
-
-  .music .lyrics-display {
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    text-align: center;
-  }
-
-  .music .lyric-current {
-    font-size: clamp(17px, 1.8vw, 24px);
-    font-weight: 700;
-  }
-
-  .music .lyric-prev,
-  .music .lyric-next {
-    font-size: 13px;
-    color: #999999;
-  }
-
-  .music .music-progress {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  color: #fff;
 }
 
-/* 태블릿 및 모바일 */
+/* 각각 한 줄로 고정 */
+
+#music .album-info .album-title span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* 두 번째 줄 */
+
+#music .album-info .album-title span:last-child {
+  margin-top: 3px;
+}
+
+/* TABLET */
 
 @media (max-width: 900px) {
-  .music .music-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .music .music-left,
-  .music .album-info,
-  .music .lyrics-container {
-    grid-column: 1;
-    grid-row: auto;
-    width: 100%;
-  }
-
-  .music .lyrics-container {
-    margin-top: 0;
-    padding: 25px 0 0;
-    border-left: none;
-    border-top: 1px solid #cccccc;
-  }
-
-  .music .lyrics-display {
-    text-align: center;
+  #music .album-info .album-title {
+    font-size: clamp(36px, 7vw, 60px);
   }
 }
 
-/* =========================================
-   EIDOS HERO BACKGROUND VIDEO
-========================================= */
+/* MOBILE */
 
-.hero {
-  position: relative;
-  overflow: hidden;
-}
-
-/* VIDEO CONTAINER */
-
-.hero-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #111111;
-}
-
-/* BACKGROUND VIDEO */
-
-.hero-video {
-  position: absolute;
-  inset: 0;
-
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-  object-position: center;
-
-  z-index: 0;
-}
-
-/* DARK GRADIENT */
-
-.hero-image::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 55%);
-}
-
-/* LOGO AND TEXT ABOVE VIDEO */
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-/* =========================================
-   EIDOS MUSIC - CLEAN LYRICS DESIGN
-========================================= */
-
-/* 기존 가사 제목 숨기기 */
-.music .lyrics-header {
-  display: none !important;
-}
-
-/* 기존 재생 시간 및 진행 바 숨기기 */
-.music .music-progress {
-  display: none !important;
-}
-
-/* 가사 전체 영역 */
-.music .lyrics-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  min-height: 280px;
-  padding: 20px;
-
-  box-sizing: border-box;
-}
-
-/* 가사 표시 영역 */
-.music .lyrics-display {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  min-height: 230px;
-  gap: 18px;
-
-  text-align: center;
-}
-
-/* 모든 가사 공통 */
-.music .lyric-line {
-  width: 100%;
-  margin: 0;
-  text-align: center;
-  overflow-wrap: anywhere;
-  transition: opacity 0.3s ease;
-}
-
-/* 현재 가사 - 가장 크게 표시 */
-.music .lyric-current {
-  font-size: clamp(18px, 2vw, 26px);
-  font-weight: 700;
-  line-height: 1.7;
-  opacity: 1;
-}
-
-/* 이전 가사 */
-.music .lyric-prev {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.6;
-  opacity: 0.45;
-}
-
-/* 다음 가사 */
-.music .lyric-next {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.6;
-  opacity: 0.45;
-}
-
-/* 빈 가사는 공간 차지하지 않도록 */
-.music .lyric-line:empty {
-  display: none;
-}
-
-/* 모바일 화면 */
 @media (max-width: 768px) {
-  .music .lyrics-container {
-    min-height: 220px;
-    padding: 20px 10px;
-  }
-
-  .music .lyrics-display {
-    min-height: 180px;
-    gap: 14px;
-  }
-
-  .music .lyric-current {
-    font-size: 20px;
-  }
-
-  .music .lyric-prev,
-  .music .lyric-next {
-    font-size: 12px;
-  }
-}
-
-/* =========================================
-   MUSIC SECTION - WHITE TEXT
-========================================= */
-
-/* MUSIC 제목과 번호 */
-#music .section-title,
-#music .section-title h2,
-#music .section-title span {
-  color: #ffffff !important;
-}
-
-/* 앨범 정보 전체 */
-#music .album-info,
-#music .album-info h2,
-#music .album-label,
-#music .album-description {
-  color: #ffffff !important;
-}
-
-/* LISTEN NOW 버튼 */
-#music .more {
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-/* 가사 전체 */
-#music .lyrics-container,
-#music .lyrics-display,
-#music .lyric-line,
-#music .lyric-current {
-  color: #ffffff !important;
-}
-
-/* 이전 가사와 다음 가사는 연한 흰색 */
-#music .lyric-prev,
-#music .lyric-next {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-
-/* 가사 영역 왼쪽 구분선 */
-#music .lyrics-container {
-  border-color: rgba(255, 255, 255, 0.35) !important;
-}
-
-/* =========================================
-   MUSIC - 가사 왼쪽 세로선 제거
-========================================= */
-
-#music .lyrics-container {
-  border-left: none !important;
-  border-right: none !important;
-}
-
-/* =========================================
-   CONCEPT PHOTO BUTTON LEFT ALIGN
-========================================= */
-
-/* 컨셉 버튼 전체 왼쪽 정렬 */
-#concept .concept-tabs {
-  display: flex !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-
-  width: 100%;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-
-  gap: 16px;
-  text-align: left !important;
-}
-
-/* 컨셉 버튼 크기 유지 */
-#concept .concept-tab {
-  flex: 0 0 auto;
-}
-
-/* 모바일에서도 왼쪽 정렬 */
-@media (max-width: 768px) {
-  #concept .concept-tabs {
-    justify-content: flex-start !important;
-    flex-wrap: wrap;
-    gap: 10px;
+  #music .album-info .album-title {
+    font-size: clamp(30px, 9vw, 52px);
+    line-height: 1.05;
   }
 }
