@@ -3,11 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>EIDOS OFFICIAL WEBSITE</title>
 
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+
+    <style>
+      /* =========================================
+       ABOUT US - SCROLL CHARACTER REVEAL
+    ========================================= */
+
+      #about {
+        position: relative;
+        min-height: 240vh;
+        padding: 150px 50px 0;
+        background: #080808;
+        color: #fff;
+        overflow: clip;
+      }
+
+      #about .section-title {
+        margin-bottom: 0;
+      }
+
+      #about .section-title h2 {
+        color: #fff;
+      }
+
+      #about .about-content {
+        position: sticky;
+        top: 24vh;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 45px 0 80px;
+      }
+
+      /* 모든 본문 문장 동일한 크기 */
+
+      #about .about-scroll-text {
+        margin: 0 0 36px;
+        color: #fff;
+        font-size: clamp(25px, 3.2vw, 44px);
+        font-weight: 400;
+        line-height: 1.7;
+        letter-spacing: -0.045em;
+        overflow-wrap: break-word;
+      }
+
+      /* 기본 상태: 흐린 흰색 */
+
+      #about .about-char {
+        color: rgba(255, 255, 255, 0.12);
+        transition: color 0.12s linear;
+      }
+
+      /* 스크롤 진행에 따라 흰색 */
+
+      #about .about-char.visible {
+        color: #fff;
+      }
+
+      @media (max-width: 768px) {
+        #about {
+          min-height: 230vh;
+          padding: 100px 20px 0;
+        }
+
+        #about .about-content {
+          top: 20vh;
+          padding: 35px 0 60px;
+        }
+
+        #about .about-scroll-text {
+          font-size: clamp(22px, 5vw, 30px);
+          line-height: 1.8;
+          margin-bottom: 28px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #about .about-char {
+          color: #fff;
+          transition: none;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -64,6 +145,7 @@
 
       <!-- =====================================
          ABOUT US
+         SCROLL CHARACTER REVEAL
     ====================================== -->
 
       <section id="about" class="section about">
@@ -71,22 +153,19 @@
           <h2>ABOUT US</h2>
         </div>
 
-        <div class="about-layout">
-          <!-- LEFT IMAGE -->
-          <div class="about-image">
-            <img src="images/EIDOS Adout Us.png" alt="EIDOS About Us" />
-          </div>
+        <div class="about-content">
+          <p class="about-scroll-text">
+            EIDOS는 자유롭고 꾸밈없는 모습으로 각자의 개성을 표현하는
+            그룹입니다.
+          </p>
 
-          <!-- RIGHT DESCRIPTION -->
-          <div class="about-content">
-            <p class="about-description">
-              EIDOS는 자유롭고 꾸밈없는 모습으로 각자의 개성을 표현하는
-              그룹입니다.<br />
-              태양 아래의 따뜻함과 여유, 자유로운 에너지를 음악과 이미지에
-              담아<br />
-              일상의 평범한 순간을 특별하게 전달합니다.
-            </p>
-          </div>
+          <p class="about-scroll-text">
+            태양 아래의 따뜻함과 여유, 자유로운 에너지를 음악과 이미지에 담아
+          </p>
+
+          <p class="about-scroll-text">
+            일상의 평범한 순간을 특별하게 전달합니다.
+          </p>
         </div>
       </section>
 
@@ -101,6 +180,7 @@
 
         <div class="member-grid">
           <!-- DAYEON -->
+
           <div class="member" onclick="openMember(0)">
             <div class="member-card">
               <div class="member-front">
@@ -109,7 +189,6 @@
 
               <div class="member-info">
                 <span class="member-number">01</span>
-
                 <h3>Dayeon</h3>
 
                 <p class="member-position">Producer &amp; Main Vocalist</p>
@@ -126,6 +205,7 @@
           </div>
 
           <!-- ION -->
+
           <div class="member" onclick="openMember(1)">
             <div class="member-card">
               <div class="member-front">
@@ -134,7 +214,6 @@
 
               <div class="member-info">
                 <span class="member-number">02</span>
-
                 <h3>Ion</h3>
 
                 <p class="member-position">Main Dancer</p>
@@ -148,6 +227,7 @@
           </div>
 
           <!-- LINA -->
+
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
@@ -156,7 +236,6 @@
 
               <div class="member-info">
                 <span class="member-number">03</span>
-
                 <h3>Lina</h3>
 
                 <p class="member-position">Main Vocalist</p>
@@ -173,20 +252,18 @@
 
       <!-- =====================================
          MUSIC
-         KARAOKE + WAVE LYRICS
     ====================================== -->
 
       <section id="music" class="section music">
-        <!-- BACKGROUND -->
         <div class="music-background" aria-hidden="true"></div>
 
-        <!-- MUSIC TITLE -->
         <div class="section-title">
           <h2>MUSIC</h2>
         </div>
 
         <div class="music-content">
           <!-- ALBUM COVER -->
+
           <div class="music-left">
             <div class="album">
               <img
@@ -197,9 +274,8 @@
           </div>
 
           <!-- ALBUM INFORMATION -->
-          <div class="album-info">
-            <p class="album-label">1ST SINGLE ALBUM HELIOPHILE</p>
 
+          <div class="album-info">
             <h2 class="album-title">
               <span>HOW CAN</span>
               <span>I KNOW</span>
@@ -216,9 +292,7 @@
             </button>
           </div>
 
-          <!-- =================================
-             KARAOKE LYRICS
-        ================================== -->
+          <!-- KARAOKE LYRICS -->
 
           <div
             class="lyrics-container"
@@ -226,7 +300,6 @@
             aria-label="EIDOS HOW CAN I KNOW lyrics"
           >
             <div class="lyrics-display is-intro" id="lyricsDisplay">
-              <!-- INTRO SOUND BARS -->
               <div
                 class="intro-visualizer"
                 id="introVisualizer"
@@ -239,33 +312,11 @@
                 <span></span>
               </div>
 
-              <!--
-              LYRICS VIEWPORT
-
-              화면에 표시되는 가사 영역.
-              위아래 가사는 흐릿하게 보이고
-              현재 가사는 중앙에 위치함.
-            -->
-
               <div
                 class="lyrics-viewport"
                 id="lyricsViewport"
                 aria-label="Synchronized song lyrics"
               >
-                <!--
-                LYRICS TRACK
-
-                JavaScript가 가사 줄을 생성하고
-                음악에 맞춰 위로 스크롤함.
-
-                각 가사 줄은 다시 글자별 span으로
-                분리되어 다음 효과가 적용됨.
-
-                1. 왼쪽부터 흰색 채우기
-                2. 글자별 파도 애니메이션
-                3. 이전 / 다음 가사 흐림 효과
-              -->
-
                 <div class="lyrics-track" id="lyricsTrack"></div>
               </div>
             </div>
@@ -373,12 +424,109 @@
     </footer>
 
     <!-- =====================================
-       AUDIO
+       AUDIO PLAYER
   ====================================== -->
 
     <audio id="eidosMusic" loop preload="metadata">
       <source src="music/eidos.mp3.wav" type="audio/wav" />
       브라우저가 오디오 재생을 지원하지 않습니다.
     </audio>
+
+    <!-- =====================================
+       ABOUT US SCROLL CHARACTER SCRIPT
+  ====================================== -->
+
+    <script>
+      function initializeAboutScrollText() {
+        const about = document.getElementById('about');
+
+        if (!about) return;
+
+        const paragraphs = [...about.querySelectorAll('.about-scroll-text')];
+
+        const characters = [];
+
+        // 각 문장을 한 글자씩 분리
+        paragraphs.forEach((paragraph) => {
+          const originalText = paragraph.textContent.trim();
+
+          paragraph.textContent = '';
+
+          [...originalText].forEach((character) => {
+            const span = document.createElement('span');
+
+            span.className = 'about-char';
+            span.textContent = character;
+
+            paragraph.appendChild(span);
+            characters.push(span);
+          });
+        });
+
+        const reducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        );
+
+        function updateAboutText() {
+          if (reducedMotion.matches) {
+            characters.forEach((char) => {
+              char.classList.add('visible');
+            });
+            return;
+          }
+
+          const rect = about.getBoundingClientRect();
+
+          const scrollableDistance = about.offsetHeight - window.innerHeight;
+
+          if (scrollableDistance <= 0) {
+            return;
+          }
+
+          // ABOUT US 구간의 스크롤 진행도
+          const progress = Math.max(
+            0,
+            Math.min(1, -rect.top / scrollableDistance),
+          );
+
+          // 진행도에 따라 표시할 글자 수 계산
+          const visibleCount = Math.floor(progress * characters.length);
+
+          // 스크롤 내리면 흰색, 올리면 다시 흐리게
+          characters.forEach((char, index) => {
+            char.classList.toggle('visible', index < visibleCount);
+          });
+        }
+
+        let ticking = false;
+
+        function onScroll() {
+          if (ticking) return;
+
+          ticking = true;
+
+          requestAnimationFrame(() => {
+            updateAboutText();
+            ticking = false;
+          });
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        window.addEventListener('resize', onScroll);
+
+        updateAboutText();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener(
+          'DOMContentLoaded',
+          initializeAboutScrollText,
+          { once: true },
+        );
+      } else {
+        initializeAboutScrollText();
+      }
+    </script>
   </body>
 </html>

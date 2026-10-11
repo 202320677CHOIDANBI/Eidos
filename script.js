@@ -1,55 +1,33 @@
 /* =========================================
    EIDOS OFFICIAL WEBSITE
-   SCRIPT.JS
-
-   KARAOKE LYRICS + WAVE ANIMATION
-   SCROLLING LYRICS VERSION
+   APPLE MUSIC STYLE
+   CHARACTER BY CHARACTER LYRICS
 ========================================= */
 
 /* =========================================
-   01. MEMBERS
+   1. MEMBERS
 ========================================= */
 
-const members = [
-  {
-    number: '01',
-    name: 'Dayeon',
-    position: 'Producer & Main Vocalist',
-    info: 'Producer<br>Main Vocalist',
-  },
-  {
-    number: '02',
-    name: 'Ion',
-    position: 'Main Dancer',
-    info: 'Main Dancer',
-  },
-  {
-    number: '03',
-    name: 'Lina',
-    position: 'Main Vocalist',
-    info: 'Main Vocalist',
-  },
-];
-
 function openMember(index) {
-  const elements = document.querySelectorAll('.member');
-  const clicked = elements[index];
+  const members = [...document.querySelectorAll('.member')];
 
-  if (!clicked) return;
+  const selected = members[index];
 
-  const alreadyOpen = clicked.classList.contains('active');
+  if (!selected) return;
 
-  elements.forEach((member) => {
+  const wasActive = selected.classList.contains('active');
+
+  members.forEach((member) => {
     member.classList.remove('active');
   });
 
-  if (!alreadyOpen) {
-    clicked.classList.add('active');
+  if (!wasActive) {
+    selected.classList.add('active');
   }
 }
 
 /* =========================================
-   02. CONCEPT PHOTO DATA
+   2. CONCEPT PHOTOS
 ========================================= */
 
 const conceptPhotos = [
@@ -65,110 +43,280 @@ const conceptPhotos = [
   ['images/concept3_1.png'],
 ];
 
-/* =========================================
-   03. CONCEPT PHOTO SYSTEM
-========================================= */
-
-const conceptTabs = document.querySelectorAll('.concept-tab');
-const conceptTrack = document.getElementById('conceptTrack');
-
 function changeConcept(index) {
-  if (!conceptTrack || !conceptPhotos[index]) return;
+  const gallery = document.getElementById('conceptTrack');
 
-  conceptTabs.forEach((tab, i) => {
-    tab.classList.toggle('active', i === index);
-  });
+  const tabs = [...document.querySelectorAll('.concept-tab')];
 
-  conceptTrack.innerHTML = '';
+  if (!gallery || !conceptPhotos[index]) {
+    return;
+  }
 
-  conceptPhotos[index].forEach((src, photoIndex) => {
+  closeConceptLightbox();
+
+  gallery.replaceChildren();
+
+  conceptPhotos[index].forEach((src, i) => {
     const photo = document.createElement('div');
+
     photo.className = 'concept-photo';
+    photo.tabIndex = 0;
 
-    const img = document.createElement('img');
+    photo.setAttribute('role', 'button');
 
-    img.src = src;
-    img.alt = `Concept ${index + 1} Photo ${photoIndex + 1}`;
-    img.loading = 'lazy';
+    photo.setAttribute('aria-label', `콘셉트 사진 ${i + 1} 확대`);
 
-    photo.appendChild(img);
-    conceptTrack.appendChild(photo);
+    const image = document.createElement('img');
+
+    image.src = src;
+
+    image.alt = `EIDOS Concept ${index + 1} Photo ${i + 1}`;
+
+    image.loading = 'lazy';
+
+    photo.appendChild(image);
+    gallery.appendChild(photo);
   });
 
-  conceptTrack.scrollLeft = 0;
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle('active', i === index);
+
+    tab.setAttribute('aria-selected', String(i === index));
+  });
+
+  gallery.scrollLeft = 0;
 }
 
-conceptTabs.forEach((tab) => {
-  tab.addEventListener('click', () => {
-    changeConcept(Number(tab.dataset.concept));
-  });
-});
-
-changeConcept(0);
-
 /* =========================================
-   04. MUSIC SETTINGS
+   3. CONCEPT LIGHTBOX
 ========================================= */
 
-/*
-  기존 가사 싱크 유지
+let lightboxIndex = 0;
+let lightboxImages = [];
 
-  0 = 원래 시간
-  1 = 1초 빠르게
-  2 = 2초 빠르게
-*/
+let lightboxLastFocus = null;
+let lightboxOldOverflow = '';
 
-const LYRIC_SYNC_OFFSET = 1;
+function getConceptLightbox() {
+  let modal = document.getElementById('conceptLightbox');
 
-/*
-  가사 한 줄이 끝나는 시점에서
-  마지막 글자가 완전히 하얗게
-  채워지도록 설정
+  if (modal) return modal;
 
-  1 = 다음 가사 시작까지 사용
-*/
+  modal = document.createElement('div');
 
-const LYRIC_FILL_SPEED = 1;
+  modal.id = 'conceptLightbox';
+  modal.className = 'concept-lightbox';
 
-/*
-  글자가 파도처럼 움직이는 정도
+  modal.setAttribute('role', 'dialog');
 
-  CSS에서 --wave-strength 값을 사용
-*/
+  modal.setAttribute('aria-modal', 'true');
 
-const LYRIC_WAVE_STRENGTH = 5;
+  modal.setAttribute('aria-label', '콘셉트 사진 확대 보기');
 
-/*
-  글자별 물결 간격
-  숫자가 작을수록 물결이 촘촘함
-*/
+  modal.innerHTML = `
+    <button
+      class="lightbox-close"
+      type="button"
+      aria-label="사진 닫기"
+    >×</button>
 
-const LYRIC_WAVE_DELAY = 0.055;
+    <button
+      class="lightbox-prev"
+      type="button"
+      aria-label="이전 사진"
+    >‹</button>
+
+    <img
+      class="lightbox-image"
+      alt="EIDOS Concept Photo"
+    >
+
+    <button
+      class="lightbox-next"
+      type="button"
+      aria-label="다음 사진"
+    >›</button>
+
+    <span
+      class="lightbox-counter"
+      aria-live="polite"
+    ></span>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal
+    .querySelector('.lightbox-close')
+    .addEventListener('click', closeConceptLightbox);
+
+  modal
+    .querySelector('.lightbox-prev')
+    .addEventListener('click', () => moveConceptLightbox(-1));
+
+  modal
+    .querySelector('.lightbox-next')
+    .addEventListener('click', () => moveConceptLightbox(1));
+
+  modal
+    .querySelector('.lightbox-image')
+    .addEventListener('click', closeConceptLightbox);
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      closeConceptLightbox();
+    }
+  });
+
+  return modal;
+}
+
+function showConceptLightboxPhoto() {
+  const modal = getConceptLightbox();
+
+  const source = lightboxImages[lightboxIndex];
+
+  if (!source) return;
+
+  const image = modal.querySelector('.lightbox-image');
+
+  image.src = source.currentSrc || source.src;
+
+  image.alt = source.alt || 'EIDOS Concept Photo';
+
+  modal.querySelector('.lightbox-counter').textContent =
+    `${lightboxIndex + 1} / ${lightboxImages.length}`;
+}
+
+function openConceptLightbox(index) {
+  lightboxImages = [
+    ...document.querySelectorAll('#conceptTrack .concept-photo img'),
+  ];
+
+  if (!lightboxImages[index]) return;
+
+  lightboxIndex = index;
+
+  lightboxLastFocus = document.activeElement;
+
+  lightboxOldOverflow = document.body.style.overflow;
+
+  const modal = getConceptLightbox();
+
+  showConceptLightboxPhoto();
+
+  modal.classList.add('active');
+
+  document.body.classList.add('concept-lightbox-open');
+
+  document.body.style.overflow = 'hidden';
+
+  modal.querySelector('.lightbox-close').focus();
+}
+
+function moveConceptLightbox(direction) {
+  if (!lightboxImages.length) return;
+
+  lightboxIndex =
+    (lightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+
+  showConceptLightboxPhoto();
+}
+
+function closeConceptLightbox() {
+  const modal = document.getElementById('conceptLightbox');
+
+  if (!modal || !modal.classList.contains('active')) {
+    return;
+  }
+
+  modal.classList.remove('active');
+
+  document.body.classList.remove('concept-lightbox-open');
+
+  document.body.style.overflow = lightboxOldOverflow;
+
+  if (lightboxLastFocus?.isConnected) {
+    lightboxLastFocus.focus({
+      preventScroll: true,
+    });
+  }
+}
+
+document.addEventListener('click', (event) => {
+  const photo = event.target.closest('#conceptTrack .concept-photo');
+
+  if (!photo) return;
+
+  const photos = [...document.querySelectorAll('#conceptTrack .concept-photo')];
+
+  openConceptLightbox(photos.indexOf(photo));
+});
+
+document.addEventListener('keydown', (event) => {
+  const modal = document.getElementById('conceptLightbox');
+
+  if (modal?.classList.contains('active')) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeConceptLightbox();
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      moveConceptLightbox(-1);
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      moveConceptLightbox(1);
+    }
+
+    if (event.key === 'Tab') {
+      const buttons = [...modal.querySelectorAll('button')];
+
+      const first = buttons[0];
+      const last = buttons[buttons.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    return;
+  }
+
+  const photo = event.target.closest('#conceptTrack .concept-photo');
+
+  if (photo && (event.key === 'Enter' || event.key === ' ')) {
+    event.preventDefault();
+
+    const photos = [
+      ...document.querySelectorAll('#conceptTrack .concept-photo'),
+    ];
+
+    openConceptLightbox(photos.indexOf(photo));
+  }
+});
 
 /* =========================================
-   05. EIDOS LYRICS
-   HOW CAN I KNOW
+   4. HOW CAN I KNOW LYRICS
 ========================================= */
 
 const lyrics = [
-  /* VERSE 1 */
-
   [38.2, '은근히 푸석한 날'],
   [40.66, '어제로 돌아갔나'],
   [43.3, '내 지난 새벽은 그렇게도 반짝이던가'],
   [47.07, '오늘은 나아가겠다고 다짐했던 말'],
   [51.83, '또 헤매어 혼자'],
-
-  /* PRE-CHORUS 1 */
-
   [53.98, '그때부터였나'],
   [57.2, '특별하게 다가왔지만'],
   [60.63, '애써 난 모른 척했지 다'],
   [64.33, '내가 이상할까 전부 비슷한가'],
   [69.33, '전부 난 알고 싶지만'],
-
-  /* CHORUS 1 */
-
   [71.51, 'HOW CAN I KNOW'],
   [73.02, 'Whoa-oh-oh-oh-oh-oh'],
   [74.5, 'Whoa-oh-oh-oh-oh-oh'],
@@ -177,9 +325,6 @@ const lyrics = [
   [81.4, 'Whoa-oh-oh-oh-oh-oh'],
   [83.95, '불행히 평범했던 날을'],
   [87.02, '따라간 너의 두 얼굴 속 내 모습'],
-
-  /* VERSE 2 */
-
   [89.29, '먼발치 넘어 매일 옆에'],
   [91.22, '웃었던 모습 기억해'],
   [94.2, '근데 그 노을 너머에'],
@@ -187,16 +332,10 @@ const lyrics = [
   [98.32, 'We need to run and run away'],
   [99.85, '잠겨있는 새장 안 속에 있었던 모두'],
   [103.2, '그건 내 착각인걸까'],
-
-  /* PRE-CHORUS 2 */
-
   [106.41, '그때부터였나 특별하게 다가왔지만'],
   [112.76, '애써 난 모른 척했지 다'],
   [116.74, '내가 이상할까 전부 비슷한가'],
   [120.3, '전부 난 알고 싶지만'],
-
-  /* CHORUS 2 */
-
   [123.88, 'HOW CAN I KNOW'],
   [125.14, 'Whoa-oh-oh-oh-oh-oh'],
   [126.74, 'Whoa-oh-oh-oh-oh-oh'],
@@ -208,696 +347,703 @@ const lyrics = [
 ];
 
 /* =========================================
-   06. MUSIC ELEMENTS
+   5. MUSIC SETTINGS
 ========================================= */
 
-const bgMusic = document.getElementById('eidosMusic');
+const LYRIC_SYNC_OFFSET = 0;
 
-const musicButton = document.getElementById('musicButton');
+const INSTRUMENTAL_SECTIONS = [
+  {
+    start: 0,
+    end: 38.2,
+    label: 'SKIP INTRO →',
+  },
+];
 
-const lyricsDisplay = document.getElementById('lyricsDisplay');
+/*
+  글자별 시간 수동 보정
 
-const lyricsViewport = document.getElementById('lyricsViewport');
+  기본적으로 한 줄의 시간을
+  글자 수에 맞춰 나누지만,
 
-const lyricsTrack = document.getElementById('lyricsTrack');
+  실제 보컬 타이밍을 알면
+  아래에 직접 입력할 수 있어.
 
-const introVisualizer = document.getElementById('introVisualizer');
+  예시:
 
-const currentTimeElement = document.getElementById('currentTime');
+  10: [
+    [71.51, 71.65],
+    [71.65, 71.78],
+    ...
+  ]
 
-const durationElement = document.getElementById('duration');
+  공백을 제외한 모든 글자의
+  시작 시간과 종료 시간을 순서대로 입력.
+*/
 
-const progressFill = document.getElementById('progressFill');
+const wordTimingOverrides = {};
 
 /* =========================================
-   07. UTILITY FUNCTIONS
+   6. MUSIC VARIABLES
 ========================================= */
 
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
-}
+let audio = null;
+let musicButton = null;
 
-function formatMusicTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) {
-    return '0:00';
-  }
+let lyricsContainer = null;
+let lyricsDisplay = null;
 
-  const minutes = Math.floor(seconds / 60);
-  const remaining = Math.floor(seconds % 60);
+let introVisualizer = null;
 
-  return `${minutes}:${String(remaining).padStart(2, '0')}`;
-}
+let viewport = null;
+let lyricsTrack = null;
+let skipButton = null;
+
+let lyricElements = [];
+
+let activeIndex = -2;
+
+let frame = null;
+
+let musicStarted = false;
 
 /* =========================================
-   08. FIND CURRENT LYRIC
+   7. CURRENT LYRIC INDEX
 ========================================= */
 
-function findCurrentLyricIndex(time) {
-  let index = -1;
-
-  const adjustedTime = time + LYRIC_SYNC_OFFSET;
+function currentLyricIndex(time) {
+  let result = -1;
 
   for (let i = 0; i < lyrics.length; i++) {
-    if (adjustedTime >= lyrics[i][0]) {
-      index = i;
+    if (time >= lyrics[i][0]) {
+      result = i;
     } else {
       break;
     }
   }
 
-  return index;
+  return result;
 }
 
 /* =========================================
-   09. LYRIC DURATION
+   8. CHARACTER BY CHARACTER TIMING
 ========================================= */
 
-/*
-  현재 가사 시작 시간부터
-  다음 가사 시작 시간까지를
-  한 줄의 재생 구간으로 사용
+function getWordTimings(index) {
+  const [start, text] = lyrics[index];
 
-  마지막 가사는 4초를 기본값으로 사용
-*/
+  const end =
+    lyrics[index + 1]?.[0] ?? Math.min(audio?.duration || start + 5, start + 5);
 
-function getLyricDuration(index) {
-  const current = lyrics[index];
+  const characters = Array.from(text);
 
-  if (!current) return 1;
+  const visibleCharacters = characters.filter((char) => !/\s/.test(char));
 
-  const next = lyrics[index + 1];
+  const override = wordTimingOverrides[index];
 
-  if (next) {
-    return Math.max(0.1, next[0] - current[0]);
+  /*
+    수동으로 입력한 글자별 타이밍이
+    있으면 해당 시간을 사용.
+  */
+
+  if (override && override.length === visibleCharacters.length) {
+    let n = 0;
+
+    return characters.map((char) => {
+      if (/\s/.test(char)) {
+        return {
+          text: char,
+          space: true,
+        };
+      }
+
+      const timing = override[n++];
+
+      return {
+        text: char,
+        start: timing[0],
+        end: timing[1],
+      };
+    });
   }
 
-  if (
-    bgMusic &&
-    Number.isFinite(bgMusic.duration) &&
-    bgMusic.duration > current[0]
-  ) {
-    return Math.max(0.1, Math.min(4, bgMusic.duration - current[0]));
-  }
+  /*
+    수동 타이밍이 없으면
+    한 글자씩 균등하게 시간 배분.
+  */
 
-  return 4;
+  const duration = Math.max(0.01, end - start);
+
+  const characterDuration = duration / Math.max(1, visibleCharacters.length);
+
+  let cursor = start;
+
+  return characters.map((char) => {
+    if (/\s/.test(char)) {
+      return {
+        text: char,
+        space: true,
+      };
+    }
+
+    const result = {
+      text: char,
+      start: cursor,
+      end: cursor + characterDuration,
+    };
+
+    cursor += characterDuration;
+
+    return result;
+  });
 }
 
 /* =========================================
-   10. CREATE KARAOKE CHARACTERS
+   9. CREATE CHARACTER ELEMENTS
 ========================================= */
 
-/*
-  가사를 한 글자씩 분리해서 생성
-
-  각 글자는 다음 구조를 가짐
-
-  span.lyric-char
-    span.lyric-char-inner
-      실제 글자
-
-  CSS에서
-  lyric-char-inner에 물결 애니메이션 적용
-
-  JS에서는 각 글자의 진행률을
-  --char-progress 변수로 전달
-*/
-
-let lyricItems = [];
-
-let lyricCharacters = [];
-
-function createLyricCharacters(text, index) {
+function makeCharacters(text, index) {
   const fragment = document.createDocumentFragment();
 
-  const characters = [];
+  const timings = getWordTimings(index);
 
-  const chars = Array.from(text);
+  timings.forEach((character) => {
+    if (character.space) {
+      fragment.appendChild(document.createTextNode(character.text));
 
-  chars.forEach((character, charIndex) => {
-    const outer = document.createElement('span');
+      return;
+    }
 
-    outer.className = 'lyric-char';
+    const span = document.createElement('span');
 
-    outer.style.setProperty('--char-index', charIndex);
+    span.className = 'lyric-word lyric-character';
 
-    outer.style.setProperty('--wave-strength', `${LYRIC_WAVE_STRENGTH}px`);
+    span.dataset.start = String(character.start);
 
-    outer.style.setProperty('--wave-delay', `${charIndex * LYRIC_WAVE_DELAY}s`);
+    span.dataset.end = String(character.end);
 
-    const inner = document.createElement('span');
+    span.style.setProperty('--word-progress', '0%');
 
-    inner.className = 'lyric-char-inner';
+    span.textContent = character.text;
 
-    inner.textContent = character === ' ' ? '\u00A0' : character;
-
-    outer.appendChild(inner);
-
-    fragment.appendChild(outer);
-
-    characters.push(outer);
+    fragment.appendChild(span);
   });
-
-  lyricCharacters[index] = characters;
 
   return fragment;
 }
 
 /* =========================================
-   11. CREATE ALL LYRICS
+   10. CREATE LYRICS UI
 ========================================= */
 
-function createLyricElements() {
-  if (!lyricsTrack) return;
+function createLyricUI() {
+  if (!lyricsDisplay) return;
 
-  lyricsTrack.innerHTML = '';
+  viewport = document.getElementById('lyricsViewport');
 
-  lyricItems = [];
-  lyricCharacters = [];
+  lyricsTrack = document.getElementById('lyricsTrack');
 
-  lyrics.forEach((lyric, index) => {
-    const item = document.createElement('p');
+  if (!viewport) {
+    viewport = document.createElement('div');
 
-    item.className = 'lyric-item upcoming';
+    viewport.id = 'lyricsViewport';
 
-    item.dataset.index = index;
-    item.dataset.time = lyric[0];
+    viewport.className = 'lyrics-viewport';
 
-    item.setAttribute('aria-label', lyric[1]);
+    lyricsDisplay.appendChild(viewport);
+  }
 
-    const fragment = createLyricCharacters(lyric[1], index);
+  if (!lyricsTrack) {
+    lyricsTrack = document.createElement('div');
 
-    item.appendChild(fragment);
+    lyricsTrack.id = 'lyricsTrack';
 
-    lyricsTrack.appendChild(item);
+    lyricsTrack.className = 'lyrics-track';
 
-    lyricItems.push(item);
+    viewport.appendChild(lyricsTrack);
+  }
+
+  lyricsTrack.replaceChildren();
+
+  lyricElements = lyrics.map(([time, text], index) => {
+    const line = document.createElement('p');
+
+    line.className = 'lyric-item upcoming';
+
+    line.tabIndex = 0;
+
+    line.setAttribute('role', 'button');
+
+    line.setAttribute('aria-label', `${text}, 해당 가사부터 재생`);
+
+    line.appendChild(makeCharacters(text, index));
+
+    line.addEventListener('click', () => seekToLyric(index));
+
+    line.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+
+        seekToLyric(index);
+      }
+    });
+
+    lyricsTrack.appendChild(line);
+
+    return line;
   });
 }
 
-createLyricElements();
-
 /* =========================================
-   12. KARAOKE PROGRESS
+   11. SEEK TO LYRIC
 ========================================= */
 
-/*
-  음악 시간에 따라
-  현재 가사가 얼마나 진행되었는지 계산
-
-  0 = 시작
-  1 = 끝
-
-  글자별로 진행률을 나누어
-  순서대로 흰색으로 변경
-*/
-
-function getLyricProgress(index, time) {
-  if (index < 0 || !lyrics[index]) {
-    return 0;
-  }
-
-  const startTime = lyrics[index][0];
-
-  const duration = getLyricDuration(index);
-
-  const adjustedTime = time + LYRIC_SYNC_OFFSET;
-
-  const elapsed = adjustedTime - startTime;
-
-  return clamp((elapsed / duration) * LYRIC_FILL_SPEED, 0, 1);
-}
-
-/* =========================================
-   13. UPDATE CHARACTER FILL
-========================================= */
-
-/*
-  예시
-
-  가사: 은근히 푸석한 날
-
-  진행률 0%
-  모든 글자 회색
-
-  진행률 50%
-  앞부분 글자 흰색
-
-  진행률 100%
-  모든 글자 흰색
-
-  글자별로 --char-progress 전달
-*/
-
-function updateCharacterFill(index, progress) {
-  const characters = lyricCharacters[index];
-
-  if (!characters || characters.length === 0) {
+function seekToLyric(index) {
+  if (!audio || !lyrics[index]) {
     return;
   }
 
-  const count = characters.length;
+  audio.currentTime = Math.max(0, lyrics[index][0] - LYRIC_SYNC_OFFSET);
 
-  characters.forEach((character, charIndex) => {
-    /*
-      각 글자가 차지하는 진행 구간
+  showMusicContent();
 
-      첫 글자:
-      0 ~ 1/count
+  updateLyrics(true);
 
-      두 번째 글자:
-      1/count ~ 2/count
-    */
-
-    const charStart = charIndex / count;
-    const charEnd = (charIndex + 1) / count;
-
-    const charProgress = clamp(
-      (progress - charStart) / (charEnd - charStart),
-      0,
-      1,
-    );
-
-    character.style.setProperty('--char-progress', charProgress.toFixed(4));
-
-    character.classList.toggle('is-filled', charProgress >= 1);
-
-    character.classList.toggle(
-      'is-filling',
-      charProgress > 0 && charProgress < 1,
-    );
-
-    /*
-      파도 애니메이션은
-      해당 글자의 색이 채워지기 시작하면 실행
-    */
-
-    character.classList.toggle(
-      'is-waving',
-      charProgress > 0 && charProgress < 1,
-    );
+  audio.play().catch((error) => {
+    console.warn('Music playback blocked:', error);
   });
 }
 
 /* =========================================
-   14. RESET CHARACTER FILL
+   12. CENTER ACTIVE LYRIC
 ========================================= */
 
-function resetCharacterFill(index) {
-  const characters = lyricCharacters[index];
-
-  if (!characters) return;
-
-  characters.forEach((character) => {
-    character.style.setProperty('--char-progress', '0');
-
-    character.classList.remove('is-filled', 'is-filling', 'is-waving');
-  });
-}
-
-/* =========================================
-   15. COMPLETE CHARACTER FILL
-========================================= */
-
-function completeCharacterFill(index) {
-  const characters = lyricCharacters[index];
-
-  if (!characters) return;
-
-  characters.forEach((character) => {
-    character.style.setProperty('--char-progress', '1');
-
-    character.classList.add('is-filled');
-
-    character.classList.remove('is-filling', 'is-waving');
-  });
-}
-
-/* =========================================
-   16. SOUND BAR CONTROL
-========================================= */
-
-function updateIntroVisualizer(isIntro) {
-  if (!bgMusic) return;
-
-  const isPlaying = !bgMusic.paused && !bgMusic.ended;
-
-  const showSoundBar = isIntro && isPlaying;
-
-  if (introVisualizer) {
-    introVisualizer.classList.toggle('is-visible', showSoundBar);
-
-    introVisualizer.classList.toggle('is-playing', showSoundBar);
+function centerLine(index) {
+  if (!viewport || !lyricsTrack || index < 0 || !lyricElements[index]) {
+    return;
   }
+
+  const line = lyricElements[index];
+
+  const lineCenter = line.offsetTop + line.offsetHeight / 2;
+
+  const translateY = viewport.clientHeight / 2 - lineCenter;
+
+  lyricsTrack.style.transform = `translateY(${translateY}px)`;
+}
+
+/* =========================================
+   13. UPDATE CHARACTER ANIMATION
+========================================= */
+
+function updateCharacters(index, time) {
+  const line = lyricElements[index];
+
+  if (!line || !audio) {
+    return;
+  }
+
+  const characters = line.querySelectorAll('.lyric-character');
+
+  characters.forEach((character) => {
+    const start = Number(character.dataset.start);
+
+    const end = Number(character.dataset.end);
+
+    const duration = Math.max(0.01, end - start);
+
+    /*
+      현재 음악 시간에 맞춰
+      각 글자의 진행률 계산.
+    */
+
+    const progress = Math.max(0, Math.min(1, (time - start) / duration));
+
+    /*
+      글자별로 0% → 100% 채우기.
+    */
+
+    character.style.setProperty(
+      '--word-progress',
+      `${(progress * 100).toFixed(2)}%`,
+    );
+
+    /*
+      현재 발음 중인 글자에만
+      부드러운 움직임 적용.
+    */
+
+    const isActive = progress > 0 && progress < 1 && !audio.paused;
+
+    character.classList.toggle('is-active', isActive);
+  });
+}
+
+/* =========================================
+   14. SHOW MUSIC CONTENT
+========================================= */
+
+function showMusicContent() {
+  musicStarted = true;
+
+  if (lyricsContainer) {
+    lyricsContainer.classList.add('music-started');
+  }
+}
+
+/* =========================================
+   15. SKIP INTRO
+========================================= */
+
+function updateSkipButton(time) {
+  if (!skipButton) return;
+
+  const section = INSTRUMENTAL_SECTIONS.find(
+    (item) => time >= item.start && time < item.end - 0.3,
+  );
+
+  const visible = musicStarted && Boolean(section);
+
+  skipButton.hidden = !visible;
+
+  skipButton.style.display = visible ? 'inline-block' : 'none';
+
+  if (section && visible) {
+    skipButton.textContent = section.label;
+
+    skipButton.dataset.target = String(section.end);
+  } else {
+    delete skipButton.dataset.target;
+  }
+}
+
+/* =========================================
+   16. UPDATE ALL LYRICS
+========================================= */
+
+function updateLyrics(force = false) {
+  if (!audio) return;
+
+  const time = audio.currentTime + LYRIC_SYNC_OFFSET;
+
+  const index = currentLyricIndex(time);
+
+  const isIntro = index < 0;
+
+  /*
+    INTRO 상태
+  */
 
   if (lyricsDisplay) {
     lyricsDisplay.classList.toggle('is-intro', isIntro);
   }
-}
-
-/* =========================================
-   17. SCROLL CURRENT LYRIC
-========================================= */
-
-/*
-  현재 가사를 화면 중앙으로 이동
-
-  글자별 색 변화와는 별개로
-  가사 줄 전체가 부드럽게 스크롤됨
-*/
-
-function scrollToLyric(index, instant = false) {
-  if (!lyricsViewport || !lyricsTrack || !lyricItems[index]) {
-    return;
-  }
-
-  const activeItem = lyricItems[index];
-
-  const viewportHeight = lyricsViewport.clientHeight;
-
-  const itemCenter = activeItem.offsetTop + activeItem.offsetHeight / 2;
-
-  const targetY = viewportHeight / 2 - itemCenter;
-
-  if (instant) {
-    lyricsTrack.style.transition = 'none';
-  } else {
-    lyricsTrack.style.transition =
-      'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
-  }
-
-  lyricsTrack.style.transform = `translate3d(0, ${targetY}px, 0)`;
-
-  if (instant) {
-    void lyricsTrack.offsetHeight;
-
-    lyricsTrack.style.transition =
-      'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
-  }
-}
-
-/* =========================================
-   18. UPDATE LYRIC APPEARANCE
-========================================= */
-
-function updateLyricAppearance(index) {
-  lyricItems.forEach((item, i) => {
-    item.classList.remove('active', 'passed', 'upcoming');
-
-    if (i === index) {
-      item.classList.add('active');
-
-      item.setAttribute('aria-current', 'true');
-    } else if (i < index) {
-      item.classList.add('passed');
-
-      item.removeAttribute('aria-current');
-    } else {
-      item.classList.add('upcoming');
-
-      item.removeAttribute('aria-current');
-    }
-  });
-}
-
-/* =========================================
-   19. UPDATE ALL LYRIC STATES
-========================================= */
-
-let lastLyricIndex = -2;
-
-let forceInstantScroll = false;
-
-function updateLyricStates(index) {
-  lyricItems.forEach((item, i) => {
-    if (i < index) {
-      completeCharacterFill(i);
-    } else if (i > index) {
-      resetCharacterFill(i);
-    } else if (index === -1) {
-      resetCharacterFill(i);
-    }
-  });
-}
-
-/* =========================================
-   20. UPDATE LYRICS
-========================================= */
-
-function updateLyrics() {
-  if (!bgMusic || !lyricsTrack) return;
-
-  const time = bgMusic.currentTime;
-
-  const index = findCurrentLyricIndex(time);
-
-  const isIntro = index === -1;
-
-  updateIntroVisualizer(isIntro);
 
   /*
-    가사 줄이 변경된 경우
+    INTRO VISUALIZER
   */
 
-  if (index !== lastLyricIndex) {
-    const previousIndex = lastLyricIndex;
+  if (introVisualizer) {
+    introVisualizer.classList.toggle('is-visible', isIntro && musicStarted);
 
-    lastLyricIndex = index;
-
-    updateLyricAppearance(index);
-
-    updateLyricStates(index);
-
-    if (isIntro) {
-      lyricsTrack.style.transition = 'none';
-
-      lyricsTrack.style.transform = 'translate3d(0, 0, 0)';
-
-      forceInstantScroll = false;
-    } else {
-      const isLargeJump =
-        previousIndex >= 0 && Math.abs(index - previousIndex) > 1;
-
-      scrollToLyric(index, forceInstantScroll || isLargeJump);
-
-      forceInstantScroll = false;
-    }
+    introVisualizer.classList.toggle(
+      'is-playing',
+      isIntro && musicStarted && !audio.paused,
+    );
   }
 
   /*
-    현재 가사의 진행률을
-    매 프레임 계산
+    가사 영역 표시
+  */
+
+  if (viewport) {
+    viewport.style.opacity = isIntro ? '0' : '1';
+
+    viewport.style.visibility = isIntro ? 'hidden' : 'visible';
+
+    viewport.style.pointerEvents = isIntro ? 'none' : 'auto';
+  }
+
+  updateSkipButton(time);
+
+  /*
+    현재 가사가 바뀌면
+    중앙 스크롤 및 상태 갱신.
+  */
+
+  if (index !== activeIndex || force) {
+    activeIndex = index;
+
+    lyricElements.forEach((line, i) => {
+      line.classList.toggle('active', i === index);
+
+      line.classList.toggle('passed', i < index);
+
+      line.classList.toggle('upcoming', i > index);
+
+      /*
+          이전 가사 글자는 100%,
+          다음 가사는 0%로 설정.
+        */
+
+      line.querySelectorAll('.lyric-character').forEach((character) => {
+        character.style.setProperty(
+          '--word-progress',
+          i < index ? '100%' : '0%',
+        );
+
+        character.classList.remove('is-active');
+      });
+    });
+
+    centerLine(index);
+  }
+
+  /*
+    현재 줄은
+    한 글자씩 실시간 업데이트.
   */
 
   if (index >= 0) {
-    const progress = getLyricProgress(index, time);
-
-    updateCharacterFill(index, progress);
+    updateCharacters(index, time);
   }
 }
 
 /* =========================================
-   21. MUSIC PROGRESS
+   17. MUSIC BUTTON
 ========================================= */
 
-function updateMusicProgress() {
-  if (!bgMusic) return;
-
-  const current = bgMusic.currentTime;
-  const duration = bgMusic.duration;
-
-  if (currentTimeElement) {
-    currentTimeElement.textContent = formatMusicTime(current);
-  }
-
-  if (durationElement) {
-    durationElement.textContent = formatMusicTime(duration);
-  }
-
-  if (progressFill) {
-    const percent =
-      Number.isFinite(duration) && duration > 0
-        ? (current / duration) * 100
-        : 0;
-
-    progressFill.style.width = `${clamp(percent, 0, 100)}%`;
-  }
-}
-
-/* =========================================
-   22. HIGH PRECISION MUSIC LOOP
-========================================= */
-
-let lyricAnimationFrame = null;
-
-function runLyricLoop() {
-  if (!bgMusic || bgMusic.paused || bgMusic.ended) {
-    lyricAnimationFrame = null;
+function updateButton() {
+  if (!musicButton || !audio) {
     return;
   }
 
+  musicButton.textContent = audio.paused ? 'LISTEN NOW →' : 'PAUSE MUSIC ❚❚';
+
+  musicButton.setAttribute('aria-pressed', String(!audio.paused));
+}
+
+/* =========================================
+   18. ANIMATION LOOP
+========================================= */
+
+function animate() {
   updateLyrics();
-  updateMusicProgress();
 
-  lyricAnimationFrame = requestAnimationFrame(runLyricLoop);
+  if (audio && !audio.paused && !audio.ended) {
+    frame = requestAnimationFrame(animate);
+  } else {
+    frame = null;
+  }
 }
 
-function startLyricLoop() {
-  if (lyricAnimationFrame !== null) {
-    return;
+function startAnimation() {
+  if (frame === null) {
+    frame = requestAnimationFrame(animate);
   }
-
-  lyricAnimationFrame = requestAnimationFrame(runLyricLoop);
 }
 
-function stopLyricLoop() {
-  if (lyricAnimationFrame !== null) {
-    cancelAnimationFrame(lyricAnimationFrame);
-
-    lyricAnimationFrame = null;
+function stopAnimation() {
+  if (frame !== null) {
+    cancelAnimationFrame(frame);
   }
+
+  frame = null;
 }
 
 /* =========================================
-   23. MUSIC PLAYER
+   19. CREATE SKIP BUTTON
 ========================================= */
 
-if (bgMusic && musicButton) {
-  bgMusic.volume = 0.7;
-  bgMusic.autoplay = false;
-  bgMusic.loop = true;
+function createSkipButton() {
+  if (!lyricsDisplay) return;
 
-  /* PLAY / PAUSE */
+  skipButton =
+    document.getElementById('skipInstrumentalButton') ||
+    document.createElement('button');
 
-  musicButton.addEventListener('click', async () => {
-    if (bgMusic.paused) {
-      try {
-        await bgMusic.play();
-      } catch (error) {
-        console.error('Music playback failed:', error);
-      }
+  skipButton.id = 'skipInstrumentalButton';
+
+  skipButton.type = 'button';
+
+  skipButton.textContent = 'SKIP INTRO →';
+
+  skipButton.hidden = true;
+
+  skipButton.addEventListener('click', () => {
+    if (!audio || !skipButton.dataset.target) {
+      return;
+    }
+
+    const target = Number(skipButton.dataset.target);
+
+    if (!Number.isFinite(target)) {
+      return;
+    }
+
+    audio.currentTime = Math.max(0, target - LYRIC_SYNC_OFFSET);
+
+    showMusicContent();
+
+    updateLyrics(true);
+
+    audio.play().catch((error) => {
+      console.warn('Music playback blocked:', error);
+    });
+  });
+
+  lyricsDisplay.appendChild(skipButton);
+}
+
+/* =========================================
+   20. INITIALIZE EIDOS
+========================================= */
+
+function initializeEidos() {
+  /*
+    CONCEPT TABS
+  */
+
+  document.querySelectorAll('.concept-tab').forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      changeConcept(Number(tab.dataset.concept ?? i));
+    });
+  });
+
+  changeConcept(0);
+
+  /*
+    MUSIC ELEMENTS
+  */
+
+  audio = document.getElementById('eidosMusic');
+
+  musicButton = document.getElementById('musicButton');
+
+  lyricsContainer = document.getElementById('lyricsContainer');
+
+  lyricsDisplay = document.getElementById('lyricsDisplay');
+
+  introVisualizer = document.getElementById('introVisualizer');
+
+  if (!audio) {
+    console.warn('EIDOS music audio element not found.');
+
+    return;
+  }
+
+  audio.volume = 0.7;
+
+  /*
+    CREATE LYRICS
+  */
+
+  createLyricUI();
+
+  createSkipButton();
+
+  /*
+    MUSIC BUTTON CLICK
+  */
+
+  musicButton?.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().catch((error) => {
+        console.warn('Music playback blocked:', error);
+      });
     } else {
-      bgMusic.pause();
+      audio.pause();
     }
   });
 
-  /* PLAY */
+  /*
+    AUDIO PLAY
+  */
 
-  bgMusic.addEventListener('play', () => {
-    musicButton.textContent = 'PAUSE MUSIC ❚❚';
+  audio.addEventListener('play', () => {
+    showMusicContent();
 
-    musicButton.setAttribute('aria-pressed', 'true');
+    updateButton();
+
+    updateLyrics(true);
+
+    startAnimation();
+  });
+
+  /*
+    AUDIO PAUSE
+  */
+
+  audio.addEventListener('pause', () => {
+    updateButton();
 
     updateLyrics();
-    updateMusicProgress();
 
-    startLyricLoop();
+    stopAnimation();
   });
 
-  /* PAUSE */
+  /*
+    AUDIO SEEK
+  */
 
-  bgMusic.addEventListener('pause', () => {
-    musicButton.textContent = 'LISTEN NOW →';
+  audio.addEventListener('seeked', () => {
+    updateLyrics(true);
+  });
 
-    musicButton.setAttribute('aria-pressed', 'false');
+  /*
+    AUDIO TIME UPDATE
+  */
 
-    stopLyricLoop();
-
+  audio.addEventListener('timeupdate', () => {
     updateLyrics();
-    updateMusicProgress();
   });
 
-  /* METADATA */
+  /*
+    AUDIO METADATA
+  */
 
-  bgMusic.addEventListener('loadedmetadata', () => {
-    updateMusicProgress();
+  audio.addEventListener('loadedmetadata', () => {
+    updateLyrics(true);
   });
 
-  /* TIME UPDATE */
+  /*
+    AUDIO ENDED
+  */
 
-  bgMusic.addEventListener('timeupdate', () => {
-    updateLyrics();
-    updateMusicProgress();
+  audio.addEventListener('ended', () => {
+    updateButton();
+
+    stopAnimation();
   });
 
-  /* SEEK */
+  /*
+    WINDOW RESIZE
+  */
 
-  bgMusic.addEventListener('seeked', () => {
-    lastLyricIndex = -2;
-    forceInstantScroll = true;
-
-    updateLyrics();
-    updateMusicProgress();
+  window.addEventListener('resize', () => {
+    centerLine(activeIndex);
   });
 
-  /* LOOP / RESTART */
+  /*
+    INITIAL STATE
+  */
 
-  bgMusic.addEventListener('ended', () => {
-    stopLyricLoop();
+  updateButton();
 
-    musicButton.textContent = 'LISTEN NOW →';
-
-    musicButton.setAttribute('aria-pressed', 'false');
-
-    lastLyricIndex = -2;
-
-    updateLyrics();
-    updateMusicProgress();
-  });
-
-  /* ERROR */
-
-  bgMusic.addEventListener('error', () => {
-    stopLyricLoop();
-
-    console.error('EIDOS music file could not be loaded.');
-
-    musicButton.textContent = 'LISTEN NOW →';
-
-    musicButton.setAttribute('aria-pressed', 'false');
-
-    if (introVisualizer) {
-      introVisualizer.classList.remove('is-visible', 'is-playing');
-    }
-
-    if (lyricsDisplay) {
-      lyricsDisplay.classList.add('is-intro');
-    }
-
-    if (lyricsTrack) {
-      lyricsTrack.textContent = '음원 파일을 확인해 주세요.';
-    }
-  });
-
-  /* INITIAL STATE */
-
-  updateMusicProgress();
-  updateLyrics();
+  updateLyrics(true);
 }
 
 /* =========================================
-   24. RESIZE SUPPORT
+   21. DOM READY
 ========================================= */
 
-let resizeFrame = null;
-
-window.addEventListener('resize', () => {
-  if (resizeFrame !== null) {
-    cancelAnimationFrame(resizeFrame);
-  }
-
-  resizeFrame = requestAnimationFrame(() => {
-    resizeFrame = null;
-
-    if (!bgMusic) return;
-
-    const index = findCurrentLyricIndex(bgMusic.currentTime);
-
-    if (index >= 0) {
-      scrollToLyric(index, true);
-    }
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeEidos, {
+    once: true,
   });
-});
+} else {
+  initializeEidos();
+}
 
 /* =========================================
-   EIDOS SCRIPT END
+   EIDOS SCRIPT.JS END
 ========================================= */
