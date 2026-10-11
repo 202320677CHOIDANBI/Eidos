@@ -2,7 +2,8 @@
    EIDOS OFFICIAL WEBSITE
    SCRIPT.JS
 
-   LYRIC SYNC: 1 SECOND EARLIER
+   KARAOKE LYRICS + WAVE ANIMATION
+   SCROLLING LYRICS VERSION
 ========================================= */
 
 /* =========================================
@@ -85,6 +86,7 @@ function changeConcept(index) {
     photo.className = 'concept-photo';
 
     const img = document.createElement('img');
+
     img.src = src;
     img.alt = `Concept ${index + 1} Photo ${photoIndex + 1}`;
     img.loading = 'lazy';
@@ -105,24 +107,43 @@ conceptTabs.forEach((tab) => {
 changeConcept(0);
 
 /* =========================================
-   04. LYRIC SYNC SETTINGS
+   04. MUSIC SETTINGS
 ========================================= */
 
 /*
-  전체 가사 싱크 보정값
+  기존 가사 싱크 유지
 
   0 = 원래 시간
-  1 = 1초 빠르게 표시
-  2 = 2초 빠르게 표시
-  3 = 3초 빠르게 표시
-
-  현재 설정: 1초 보정
-
-  이전 2초 보정에서 가사가
-  약 1초 빨랐으므로 1로 변경.
+  1 = 1초 빠르게
+  2 = 2초 빠르게
 */
 
 const LYRIC_SYNC_OFFSET = 1;
+
+/*
+  가사 한 줄이 끝나는 시점에서
+  마지막 글자가 완전히 하얗게
+  채워지도록 설정
+
+  1 = 다음 가사 시작까지 사용
+*/
+
+const LYRIC_FILL_SPEED = 1;
+
+/*
+  글자가 파도처럼 움직이는 정도
+
+  CSS에서 --wave-strength 값을 사용
+*/
+
+const LYRIC_WAVE_STRENGTH = 5;
+
+/*
+  글자별 물결 간격
+  숫자가 작을수록 물결이 촘촘함
+*/
+
+const LYRIC_WAVE_DELAY = 0.055;
 
 /* =========================================
    05. EIDOS LYRICS
@@ -191,22 +212,30 @@ const lyrics = [
 ========================================= */
 
 const bgMusic = document.getElementById('eidosMusic');
+
 const musicButton = document.getElementById('musicButton');
 
-const lyricPrev = document.getElementById('lyricPrev');
-const lyricCurrent = document.getElementById('lyricCurrent');
-const lyricNext = document.getElementById('lyricNext');
-
 const lyricsDisplay = document.getElementById('lyricsDisplay');
+
+const lyricsViewport = document.getElementById('lyricsViewport');
+
+const lyricsTrack = document.getElementById('lyricsTrack');
+
 const introVisualizer = document.getElementById('introVisualizer');
 
 const currentTimeElement = document.getElementById('currentTime');
+
 const durationElement = document.getElementById('duration');
+
 const progressFill = document.getElementById('progressFill');
 
 /* =========================================
-   07. FORMAT MUSIC TIME
+   07. UTILITY FUNCTIONS
 ========================================= */
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
 
 function formatMusicTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) {
@@ -226,8 +255,6 @@ function formatMusicTime(seconds) {
 function findCurrentLyricIndex(time) {
   let index = -1;
 
-  /* 가사를 1초 빠르게 표시 */
-
   const adjustedTime = time + LYRIC_SYNC_OFFSET;
 
   for (let i = 0; i < lyrics.length; i++) {
@@ -242,20 +269,278 @@ function findCurrentLyricIndex(time) {
 }
 
 /* =========================================
-   09. SOUND BAR CONTROL
+   09. LYRIC DURATION
 ========================================= */
 
 /*
-  재생 전: 숨김
-  전주 재생 중: 표시
-  일시정지: 숨김
-  첫 가사 시작: 숨김
+  현재 가사 시작 시간부터
+  다음 가사 시작 시간까지를
+  한 줄의 재생 구간으로 사용
+
+  마지막 가사는 4초를 기본값으로 사용
 */
+
+function getLyricDuration(index) {
+  const current = lyrics[index];
+
+  if (!current) return 1;
+
+  const next = lyrics[index + 1];
+
+  if (next) {
+    return Math.max(0.1, next[0] - current[0]);
+  }
+
+  if (
+    bgMusic &&
+    Number.isFinite(bgMusic.duration) &&
+    bgMusic.duration > current[0]
+  ) {
+    return Math.max(0.1, Math.min(4, bgMusic.duration - current[0]));
+  }
+
+  return 4;
+}
+
+/* =========================================
+   10. CREATE KARAOKE CHARACTERS
+========================================= */
+
+/*
+  가사를 한 글자씩 분리해서 생성
+
+  각 글자는 다음 구조를 가짐
+
+  span.lyric-char
+    span.lyric-char-inner
+      실제 글자
+
+  CSS에서
+  lyric-char-inner에 물결 애니메이션 적용
+
+  JS에서는 각 글자의 진행률을
+  --char-progress 변수로 전달
+*/
+
+let lyricItems = [];
+
+let lyricCharacters = [];
+
+function createLyricCharacters(text, index) {
+  const fragment = document.createDocumentFragment();
+
+  const characters = [];
+
+  const chars = Array.from(text);
+
+  chars.forEach((character, charIndex) => {
+    const outer = document.createElement('span');
+
+    outer.className = 'lyric-char';
+
+    outer.style.setProperty('--char-index', charIndex);
+
+    outer.style.setProperty('--wave-strength', `${LYRIC_WAVE_STRENGTH}px`);
+
+    outer.style.setProperty('--wave-delay', `${charIndex * LYRIC_WAVE_DELAY}s`);
+
+    const inner = document.createElement('span');
+
+    inner.className = 'lyric-char-inner';
+
+    inner.textContent = character === ' ' ? '\u00A0' : character;
+
+    outer.appendChild(inner);
+
+    fragment.appendChild(outer);
+
+    characters.push(outer);
+  });
+
+  lyricCharacters[index] = characters;
+
+  return fragment;
+}
+
+/* =========================================
+   11. CREATE ALL LYRICS
+========================================= */
+
+function createLyricElements() {
+  if (!lyricsTrack) return;
+
+  lyricsTrack.innerHTML = '';
+
+  lyricItems = [];
+  lyricCharacters = [];
+
+  lyrics.forEach((lyric, index) => {
+    const item = document.createElement('p');
+
+    item.className = 'lyric-item upcoming';
+
+    item.dataset.index = index;
+    item.dataset.time = lyric[0];
+
+    item.setAttribute('aria-label', lyric[1]);
+
+    const fragment = createLyricCharacters(lyric[1], index);
+
+    item.appendChild(fragment);
+
+    lyricsTrack.appendChild(item);
+
+    lyricItems.push(item);
+  });
+}
+
+createLyricElements();
+
+/* =========================================
+   12. KARAOKE PROGRESS
+========================================= */
+
+/*
+  음악 시간에 따라
+  현재 가사가 얼마나 진행되었는지 계산
+
+  0 = 시작
+  1 = 끝
+
+  글자별로 진행률을 나누어
+  순서대로 흰색으로 변경
+*/
+
+function getLyricProgress(index, time) {
+  if (index < 0 || !lyrics[index]) {
+    return 0;
+  }
+
+  const startTime = lyrics[index][0];
+
+  const duration = getLyricDuration(index);
+
+  const adjustedTime = time + LYRIC_SYNC_OFFSET;
+
+  const elapsed = adjustedTime - startTime;
+
+  return clamp((elapsed / duration) * LYRIC_FILL_SPEED, 0, 1);
+}
+
+/* =========================================
+   13. UPDATE CHARACTER FILL
+========================================= */
+
+/*
+  예시
+
+  가사: 은근히 푸석한 날
+
+  진행률 0%
+  모든 글자 회색
+
+  진행률 50%
+  앞부분 글자 흰색
+
+  진행률 100%
+  모든 글자 흰색
+
+  글자별로 --char-progress 전달
+*/
+
+function updateCharacterFill(index, progress) {
+  const characters = lyricCharacters[index];
+
+  if (!characters || characters.length === 0) {
+    return;
+  }
+
+  const count = characters.length;
+
+  characters.forEach((character, charIndex) => {
+    /*
+      각 글자가 차지하는 진행 구간
+
+      첫 글자:
+      0 ~ 1/count
+
+      두 번째 글자:
+      1/count ~ 2/count
+    */
+
+    const charStart = charIndex / count;
+    const charEnd = (charIndex + 1) / count;
+
+    const charProgress = clamp(
+      (progress - charStart) / (charEnd - charStart),
+      0,
+      1,
+    );
+
+    character.style.setProperty('--char-progress', charProgress.toFixed(4));
+
+    character.classList.toggle('is-filled', charProgress >= 1);
+
+    character.classList.toggle(
+      'is-filling',
+      charProgress > 0 && charProgress < 1,
+    );
+
+    /*
+      파도 애니메이션은
+      해당 글자의 색이 채워지기 시작하면 실행
+    */
+
+    character.classList.toggle(
+      'is-waving',
+      charProgress > 0 && charProgress < 1,
+    );
+  });
+}
+
+/* =========================================
+   14. RESET CHARACTER FILL
+========================================= */
+
+function resetCharacterFill(index) {
+  const characters = lyricCharacters[index];
+
+  if (!characters) return;
+
+  characters.forEach((character) => {
+    character.style.setProperty('--char-progress', '0');
+
+    character.classList.remove('is-filled', 'is-filling', 'is-waving');
+  });
+}
+
+/* =========================================
+   15. COMPLETE CHARACTER FILL
+========================================= */
+
+function completeCharacterFill(index) {
+  const characters = lyricCharacters[index];
+
+  if (!characters) return;
+
+  characters.forEach((character) => {
+    character.style.setProperty('--char-progress', '1');
+
+    character.classList.add('is-filled');
+
+    character.classList.remove('is-filling', 'is-waving');
+  });
+}
+
+/* =========================================
+   16. SOUND BAR CONTROL
+========================================= */
 
 function updateIntroVisualizer(isIntro) {
   if (!bgMusic) return;
 
   const isPlaying = !bgMusic.paused && !bgMusic.ended;
+
   const showSoundBar = isIntro && isPlaying;
 
   if (introVisualizer) {
@@ -270,52 +555,148 @@ function updateIntroVisualizer(isIntro) {
 }
 
 /* =========================================
-   10. UPDATE LYRICS
+   17. SCROLL CURRENT LYRIC
 ========================================= */
 
-let lastLyricIndex = -2;
+/*
+  현재 가사를 화면 중앙으로 이동
 
-function updateLyrics() {
-  if (!bgMusic || !lyricCurrent) return;
+  글자별 색 변화와는 별개로
+  가사 줄 전체가 부드럽게 스크롤됨
+*/
 
-  const index = findCurrentLyricIndex(bgMusic.currentTime);
-  const isIntro = index === -1;
-
-  updateIntroVisualizer(isIntro);
-
-  if (index === lastLyricIndex) return;
-
-  lastLyricIndex = index;
-
-  /* INTRO */
-
-  if (isIntro) {
-    if (lyricPrev) lyricPrev.textContent = '';
-    lyricCurrent.textContent = '';
-    if (lyricNext) lyricNext.textContent = '';
+function scrollToLyric(index, instant = false) {
+  if (!lyricsViewport || !lyricsTrack || !lyricItems[index]) {
     return;
   }
 
-  /* PREVIOUS LYRIC */
+  const activeItem = lyricItems[index];
 
-  if (lyricPrev) {
-    lyricPrev.textContent = index > 0 ? lyrics[index - 1][1] : '';
+  const viewportHeight = lyricsViewport.clientHeight;
+
+  const itemCenter = activeItem.offsetTop + activeItem.offsetHeight / 2;
+
+  const targetY = viewportHeight / 2 - itemCenter;
+
+  if (instant) {
+    lyricsTrack.style.transition = 'none';
+  } else {
+    lyricsTrack.style.transition =
+      'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
   }
 
-  /* CURRENT LYRIC */
+  lyricsTrack.style.transform = `translate3d(0, ${targetY}px, 0)`;
 
-  lyricCurrent.textContent = lyrics[index][1];
+  if (instant) {
+    void lyricsTrack.offsetHeight;
 
-  /* NEXT LYRIC */
-
-  if (lyricNext) {
-    lyricNext.textContent =
-      index < lyrics.length - 1 ? lyrics[index + 1][1] : '';
+    lyricsTrack.style.transition =
+      'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
   }
 }
 
 /* =========================================
-   11. MUSIC PROGRESS
+   18. UPDATE LYRIC APPEARANCE
+========================================= */
+
+function updateLyricAppearance(index) {
+  lyricItems.forEach((item, i) => {
+    item.classList.remove('active', 'passed', 'upcoming');
+
+    if (i === index) {
+      item.classList.add('active');
+
+      item.setAttribute('aria-current', 'true');
+    } else if (i < index) {
+      item.classList.add('passed');
+
+      item.removeAttribute('aria-current');
+    } else {
+      item.classList.add('upcoming');
+
+      item.removeAttribute('aria-current');
+    }
+  });
+}
+
+/* =========================================
+   19. UPDATE ALL LYRIC STATES
+========================================= */
+
+let lastLyricIndex = -2;
+
+let forceInstantScroll = false;
+
+function updateLyricStates(index) {
+  lyricItems.forEach((item, i) => {
+    if (i < index) {
+      completeCharacterFill(i);
+    } else if (i > index) {
+      resetCharacterFill(i);
+    } else if (index === -1) {
+      resetCharacterFill(i);
+    }
+  });
+}
+
+/* =========================================
+   20. UPDATE LYRICS
+========================================= */
+
+function updateLyrics() {
+  if (!bgMusic || !lyricsTrack) return;
+
+  const time = bgMusic.currentTime;
+
+  const index = findCurrentLyricIndex(time);
+
+  const isIntro = index === -1;
+
+  updateIntroVisualizer(isIntro);
+
+  /*
+    가사 줄이 변경된 경우
+  */
+
+  if (index !== lastLyricIndex) {
+    const previousIndex = lastLyricIndex;
+
+    lastLyricIndex = index;
+
+    updateLyricAppearance(index);
+
+    updateLyricStates(index);
+
+    if (isIntro) {
+      lyricsTrack.style.transition = 'none';
+
+      lyricsTrack.style.transform = 'translate3d(0, 0, 0)';
+
+      forceInstantScroll = false;
+    } else {
+      const isLargeJump =
+        previousIndex >= 0 && Math.abs(index - previousIndex) > 1;
+
+      scrollToLyric(index, forceInstantScroll || isLargeJump);
+
+      forceInstantScroll = false;
+    }
+  }
+
+  /*
+    현재 가사의 진행률을
+    매 프레임 계산
+  */
+
+  if (index >= 0) {
+    const progress = getLyricProgress(index, time);
+
+    updateCharacterFill(index, progress);
+  }
+}
+
+/* =========================================
+   21. MUSIC PROGRESS
 ========================================= */
 
 function updateMusicProgress() {
@@ -338,18 +719,13 @@ function updateMusicProgress() {
         ? (current / duration) * 100
         : 0;
 
-    progressFill.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+    progressFill.style.width = `${clamp(percent, 0, 100)}%`;
   }
 }
 
 /* =========================================
-   12. HIGH PRECISION LYRIC LOOP
+   22. HIGH PRECISION MUSIC LOOP
 ========================================= */
-
-/*
-  음악 재생 중 가사 시간을 자주 확인하여
-  가사 전환 지연을 줄이는 기능
-*/
 
 let lyricAnimationFrame = null;
 
@@ -366,7 +742,9 @@ function runLyricLoop() {
 }
 
 function startLyricLoop() {
-  if (lyricAnimationFrame !== null) return;
+  if (lyricAnimationFrame !== null) {
+    return;
+  }
 
   lyricAnimationFrame = requestAnimationFrame(runLyricLoop);
 }
@@ -374,12 +752,13 @@ function startLyricLoop() {
 function stopLyricLoop() {
   if (lyricAnimationFrame !== null) {
     cancelAnimationFrame(lyricAnimationFrame);
+
     lyricAnimationFrame = null;
   }
 }
 
 /* =========================================
-   13. MUSIC PLAYER
+   23. MUSIC PLAYER
 ========================================= */
 
 if (bgMusic && musicButton) {
@@ -405,12 +784,12 @@ if (bgMusic && musicButton) {
 
   bgMusic.addEventListener('play', () => {
     musicButton.textContent = 'PAUSE MUSIC ❚❚';
-    musicButton.setAttribute('aria-pressed', 'true');
 
-    lastLyricIndex = -2;
+    musicButton.setAttribute('aria-pressed', 'true');
 
     updateLyrics();
     updateMusicProgress();
+
     startLyricLoop();
   });
 
@@ -418,6 +797,7 @@ if (bgMusic && musicButton) {
 
   bgMusic.addEventListener('pause', () => {
     musicButton.textContent = 'LISTEN NOW →';
+
     musicButton.setAttribute('aria-pressed', 'false');
 
     stopLyricLoop();
@@ -443,17 +823,19 @@ if (bgMusic && musicButton) {
 
   bgMusic.addEventListener('seeked', () => {
     lastLyricIndex = -2;
+    forceInstantScroll = true;
 
     updateLyrics();
     updateMusicProgress();
   });
 
-  /* ENDED */
+  /* LOOP / RESTART */
 
   bgMusic.addEventListener('ended', () => {
     stopLyricLoop();
 
     musicButton.textContent = 'LISTEN NOW →';
+
     musicButton.setAttribute('aria-pressed', 'false');
 
     lastLyricIndex = -2;
@@ -470,6 +852,7 @@ if (bgMusic && musicButton) {
     console.error('EIDOS music file could not be loaded.');
 
     musicButton.textContent = 'LISTEN NOW →';
+
     musicButton.setAttribute('aria-pressed', 'false');
 
     if (introVisualizer) {
@@ -477,19 +860,43 @@ if (bgMusic && musicButton) {
     }
 
     if (lyricsDisplay) {
-      lyricsDisplay.classList.remove('is-intro');
+      lyricsDisplay.classList.add('is-intro');
     }
 
-    if (lyricCurrent) {
-      lyricCurrent.textContent = '음원 파일을 확인해 주세요.';
+    if (lyricsTrack) {
+      lyricsTrack.textContent = '음원 파일을 확인해 주세요.';
     }
   });
 
-  /* INITIAL DISPLAY */
+  /* INITIAL STATE */
 
   updateMusicProgress();
   updateLyrics();
 }
+
+/* =========================================
+   24. RESIZE SUPPORT
+========================================= */
+
+let resizeFrame = null;
+
+window.addEventListener('resize', () => {
+  if (resizeFrame !== null) {
+    cancelAnimationFrame(resizeFrame);
+  }
+
+  resizeFrame = requestAnimationFrame(() => {
+    resizeFrame = null;
+
+    if (!bgMusic) return;
+
+    const index = findCurrentLyricIndex(bgMusic.currentTime);
+
+    if (index >= 0) {
+      scrollToLyric(index, true);
+    }
+  });
+});
 
 /* =========================================
    EIDOS SCRIPT END
