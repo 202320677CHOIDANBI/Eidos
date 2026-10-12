@@ -36,6 +36,7 @@
 
       /* =========================================
        ABOUT US
+       줄 간격 및 문단 간격 축소
     ========================================= */
 
       #about {
@@ -69,11 +70,16 @@
       #about .about-text {
         width: 100%;
         max-width: 1050px;
-        margin: 0 0 35px;
+
+        /* 문단 사이 간격 축소 */
+        margin: 0 0 12px;
 
         font-size: clamp(17px, 1.65vw, 24px);
         font-weight: 400;
-        line-height: 1.85;
+
+        /* 기존 1.85 → 1.5 */
+        line-height: 1.5;
+
         letter-spacing: -0.045em;
 
         text-align: left;
@@ -300,8 +306,13 @@
           width: 100%;
           max-width: 100%;
           font-size: 16px;
-          line-height: 1.85;
-          margin-bottom: 28px;
+
+          /* 모바일 줄 간격 */
+          line-height: 1.55;
+
+          /* 모바일 문단 간격 */
+          margin-bottom: 12px;
+
           text-align: left;
         }
 
@@ -563,6 +574,7 @@
                 <span></span>
                 <span></span>
                 <span></span>
+                <span></span>
               </div>
 
               <div
@@ -733,7 +745,6 @@
         heroVideo.loop = false;
         heroVideo.playsInline = true;
 
-        // 다음 영상으로 전환
         function playNextVideo() {
           currentIndex = (currentIndex + 1) % videoList.length;
 
@@ -753,15 +764,12 @@
           }
         }
 
-        // 영상이 끝나면 다음 영상 재생
         heroVideo.addEventListener('ended', playNextVideo);
 
-        // 영상 파일 오류 확인
         heroVideo.addEventListener('error', function () {
           console.error('HERO 영상 파일 로딩 실패:', heroVideo.currentSrc);
         });
 
-        // 첫 번째 영상 재생
         const firstPlay = heroVideo.play();
 
         if (firstPlay !== undefined) {
