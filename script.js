@@ -1,6 +1,7 @@
 /* =========================================
    EIDOS OFFICIAL WEBSITE
-   APPLE MUSIC STYLE CHARACTER LYRICS
+   FULL SCRIPT.JS
+   CONCEPT PHOTOS + CHARACTER LYRICS
 ========================================= */
 
 /* 1. MEMBERS */
@@ -8,17 +9,23 @@
 function openMember(index) {
   const members = [...document.querySelectorAll('.member')];
   const selected = members[index];
+
   if (!selected) return;
 
   const wasActive = selected.classList.contains('active');
+
   members.forEach((member) => member.classList.remove('active'));
 
   if (!wasActive) selected.classList.add('active');
 }
 
-/* 2. CONCEPT PHOTOS */
+/* =========================================
+   2. CONCEPT PHOTOS
+   새 이미지 9장 추가
+========================================= */
 
 const conceptPhotos = [
+  // CONCEPT 1 - 총 7장
   [
     'images/concept1_1.png',
     'images/concept1_2.jpeg',
@@ -26,9 +33,27 @@ const conceptPhotos = [
     'images/concept1_5.png',
     'images/concept1_6.jpeg',
     'images/concept1_7.png',
+    'images/concept1_8.png',
   ],
-  ['images/concept2_1.png', 'images/concept2_2.png'],
-  ['images/concept3_1.png'],
+
+  // CONCEPT 2 - 총 6장
+  [
+    'images/concept2_1.png',
+    'images/concept2_2.png',
+    'images/concept2_3.png',
+    'images/concept2_4.png',
+    'images/concept2_5.png',
+    'images/concept2_6.jpeg',
+  ],
+
+  // CONCEPT 3 - 총 5장
+  [
+    'images/concept3_1.png',
+    'images/concept3_2.png',
+    'images/concept3_3.png',
+    'images/concept3_4.png',
+    'images/concept3_5.png',
+  ],
 ];
 
 function changeConcept(index) {
@@ -64,7 +89,9 @@ function changeConcept(index) {
   gallery.scrollLeft = 0;
 }
 
-/* 3. CONCEPT LIGHTBOX */
+/* =========================================
+   3. CONCEPT LIGHTBOX
+========================================= */
 
 let lightboxIndex = 0;
 let lightboxImages = [];
@@ -73,6 +100,7 @@ let lightboxOldOverflow = '';
 
 function getConceptLightbox() {
   let modal = document.getElementById('conceptLightbox');
+
   if (modal) return modal;
 
   modal = document.createElement('div');
@@ -121,9 +149,11 @@ function getConceptLightbox() {
 function showConceptLightboxPhoto() {
   const modal = getConceptLightbox();
   const source = lightboxImages[lightboxIndex];
+
   if (!source) return;
 
   const image = modal.querySelector('.lightbox-image');
+
   image.src = source.currentSrc || source.src;
   image.alt = source.alt || 'EIDOS Concept Photo';
 
@@ -143,11 +173,13 @@ function openConceptLightbox(index) {
   lightboxOldOverflow = document.body.style.overflow;
 
   const modal = getConceptLightbox();
+
   showConceptLightboxPhoto();
 
   modal.classList.add('active');
   document.body.classList.add('concept-lightbox-open');
   document.body.style.overflow = 'hidden';
+
   modal.querySelector('.lightbox-close').focus();
 }
 
@@ -176,6 +208,7 @@ function closeConceptLightbox() {
 
 document.addEventListener('click', (event) => {
   const photo = event.target.closest('#conceptTrack .concept-photo');
+
   if (!photo) return;
 
   const photos = [...document.querySelectorAll('#conceptTrack .concept-photo')];
@@ -215,6 +248,7 @@ document.addEventListener('keydown', (event) => {
         first.focus();
       }
     }
+
     return;
   }
 
@@ -231,7 +265,9 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-/* 4. HOW CAN I KNOW LYRICS */
+/* =========================================
+   4. HOW CAN I KNOW LYRICS
+========================================= */
 
 const lyrics = [
   [38.2, '은근히 푸석한 날'],
@@ -273,16 +309,18 @@ const lyrics = [
   [139.43, '따라간 너의 두 얼굴 속 내 모습'],
 ];
 
-/* 5. MUSIC SETTINGS */
+/* =========================================
+   5. MUSIC SETTINGS
+========================================= */
 
 const LYRIC_SYNC_OFFSET = 0;
 
 const INSTRUMENTAL_SECTIONS = [{ start: 0, end: 38.2, label: 'SKIP INTRO →' }];
 
 /*
-  가사 싱크 편집기에서 기록한 글자별 시간
-  [시작 시간, 종료 시간]
-  공백을 제외한 글자 순서대로 적용
+  글자별 싱크 기록
+  각 번호는 lyrics 배열의 인덱스
+  각 배열은 공백 제외 글자별 [시작, 종료] 시간
 */
 
 const wordTimingOverrides = {
@@ -295,7 +333,6 @@ const wordTimingOverrides = {
     [39.446, 40.274],
     [40.274, 40.66],
   ],
-
   1: [
     [40.6, 40.833],
     [40.833, 41.076],
@@ -305,7 +342,6 @@ const wordTimingOverrides = {
     [41.839, 42.553],
     [42.553, 43.3],
   ],
-
   2: [
     [42.913, 43.13],
     [43.13, 43.32],
@@ -323,7 +359,6 @@ const wordTimingOverrides = {
     [45.753, 46.843],
     [46.843, 47.07],
   ],
-
   3: [
     [47.068, 47.276],
     [47.276, 47.455],
@@ -340,7 +375,6 @@ const wordTimingOverrides = {
     [50.365, 51.168],
     [51.168, 51.83],
   ],
-
   4: [
     [52.116, 52.34],
     [52.34, 52.648],
@@ -349,7 +383,6 @@ const wordTimingOverrides = {
     [53.016, 53.457],
     [53.457, 53.98],
   ],
-
   5: [
     [54.008, 54.159],
     [54.159, 54.322],
@@ -358,7 +391,6 @@ const wordTimingOverrides = {
     [54.647, 56.108],
     [56.108, 57.2],
   ],
-
   6: [
     [56.313, 56.483],
     [56.483, 56.684],
@@ -370,7 +402,6 @@ const wordTimingOverrides = {
     [58.054, 60.46],
     [60.46, 60.63],
   ],
-
   7: [
     [60.665, 60.828],
     [60.828, 61.009],
@@ -382,7 +413,6 @@ const wordTimingOverrides = {
     [63.238, 64.225],
     [64.225, 64.33],
   ],
-
   8: [
     [64.415, 64.615],
     [64.615, 64.885],
@@ -397,7 +427,6 @@ const wordTimingOverrides = {
     [67.668, 68.957],
     [68.957, 69.33],
   ],
-
   9: [
     [69.438, 69.662],
     [69.662, 69.867],
@@ -408,7 +437,6 @@ const wordTimingOverrides = {
     [70.733, 70.976],
     [70.976, 71.51],
   ],
-
   10: [
     [71.328, 71.46],
     [71.46, 71.584],
@@ -422,7 +450,6 @@ const wordTimingOverrides = {
     [72.451, 72.575],
     [72.575, 73.02],
   ],
-
   11: [
     [72.699, 72.838],
     [72.838, 72.948],
@@ -444,7 +471,6 @@ const wordTimingOverrides = {
     [74.786, 74.92],
     [74.92, 74.93],
   ],
-
   12: [
     [75.044, 75.172],
     [75.172, 75.295],
@@ -466,7 +492,6 @@ const wordTimingOverrides = {
     [77.17, 77.313],
     [77.313, 77.323],
   ],
-
   14: [
     [78.561, 78.736],
     [78.736, 78.886],
@@ -481,7 +506,6 @@ const wordTimingOverrides = {
     [80.622, 80.919],
     [80.919, 81.4],
   ],
-
   15: [
     [81.363, 81.525],
     [81.525, 81.649],
@@ -503,7 +527,6 @@ const wordTimingOverrides = {
     [83.605, 83.768],
     [83.768, 83.95],
   ],
-
   16: [
     [84.224, 84.376],
     [84.376, 84.516],
@@ -515,7 +538,6 @@ const wordTimingOverrides = {
     [85.523, 86.86],
     [86.86, 87.02],
   ],
-
   17: [
     [87.045, 87.227],
     [87.227, 87.438],
@@ -530,7 +552,6 @@ const wordTimingOverrides = {
     [89.31, 89.534],
     [89.534, 89.544],
   ],
-
   18: [
     [89.743, 89.914],
     [89.914, 90.138],
@@ -542,7 +563,6 @@ const wordTimingOverrides = {
     [91.103, 91.266],
     [91.266, 91.276],
   ],
-
   19: [
     [91.436, 91.599],
     [91.599, 91.761],
@@ -553,7 +573,6 @@ const wordTimingOverrides = {
     [92.645, 93.14],
     [93.14, 94.2],
   ],
-
   20: [
     [93.346, 93.572],
     [93.572, 93.781],
@@ -564,7 +583,6 @@ const wordTimingOverrides = {
     [94.745, 95.366],
     [95.366, 96.1],
   ],
-
   21: [
     [95.548, 95.754],
     [95.754, 95.962],
@@ -577,7 +595,6 @@ const wordTimingOverrides = {
     [97.322, 97.655],
     [97.655, 98.32],
   ],
-
   23: [
     [99.815, 100.02],
     [100.02, 100.202],
@@ -594,7 +611,6 @@ const wordTimingOverrides = {
     [103.023, 104.058],
     [104.058, 104.068],
   ],
-
   24: [
     [104.348, 104.573],
     [104.573, 104.744],
@@ -605,7 +621,6 @@ const wordTimingOverrides = {
     [105.771, 106.382],
     [106.382, 106.41],
   ],
-
   25: [
     [106.547, 106.736],
     [106.736, 106.926],
@@ -623,7 +638,6 @@ const wordTimingOverrides = {
     [111.208, 112.755],
     [112.755, 112.765],
   ],
-
   26: [
     [112.998, 113.223],
     [113.223, 113.467],
@@ -635,7 +649,6 @@ const wordTimingOverrides = {
     [115.494, 116.506],
     [116.506, 116.74],
   ],
-
   27: [
     [116.729, 116.945],
     [116.945, 117.326],
@@ -650,7 +663,6 @@ const wordTimingOverrides = {
     [119.985, 121.706],
     [121.706, 121.716],
   ],
-
   28: [
     [121.907, 122.127],
     [122.127, 122.371],
@@ -661,7 +673,6 @@ const wordTimingOverrides = {
     [123.255, 123.643],
     [123.643, 123.88],
   ],
-
   29: [
     [123.832, 123.994],
     [123.994, 124.138],
@@ -675,7 +686,6 @@ const wordTimingOverrides = {
     [125.364, 125.587],
     [125.587, 125.597],
   ],
-
   33: [
     [130.982, 131.145],
     [131.145, 131.288],
@@ -690,7 +700,6 @@ const wordTimingOverrides = {
     [132.785, 133.225],
     [133.225, 133.235],
   ],
-
   35: [
     [136.229, 136.392],
     [136.392, 136.583],
@@ -702,7 +711,6 @@ const wordTimingOverrides = {
     [138.493, 139.197],
     [139.197, 139.43],
   ],
-
   36: [
     [139.412, 139.629],
     [139.629, 139.961],
@@ -719,7 +727,9 @@ const wordTimingOverrides = {
   ],
 };
 
-/* 6. MUSIC VARIABLES */
+/* =========================================
+   6. MUSIC VARIABLES
+========================================= */
 
 let audio = null;
 let musicButton = null;
@@ -734,7 +744,9 @@ let activeIndex = -2;
 let frame = null;
 let musicStarted = false;
 
-/* 7. CURRENT LYRIC INDEX */
+/* =========================================
+   7. CURRENT LYRIC INDEX
+========================================= */
 
 function currentLyricIndex(time) {
   let result = -1;
@@ -750,7 +762,9 @@ function currentLyricIndex(time) {
   return result;
 }
 
-/* 8. CHARACTER TIMING */
+/* =========================================
+   8. CHARACTER TIMING
+========================================= */
 
 function getWordTimings(index) {
   const [start, text] = lyrics[index];
@@ -763,7 +777,7 @@ function getWordTimings(index) {
 
   const override = wordTimingOverrides[index];
 
-  // 기록된 싱크 데이터가 있으면 우선 사용
+  // 기록된 글자별 시간이 있으면 사용
   if (
     override &&
     override.length === visibleCharacters.length &&
@@ -793,7 +807,7 @@ function getWordTimings(index) {
     });
   }
 
-  // 미기록 구간은 기존 자동 계산 방식 사용
+  // 미기록 구간은 균등 분배
   const duration = Math.max(0.01, end - start);
   const characterDuration = duration / Math.max(1, visibleCharacters.length);
 
@@ -815,7 +829,9 @@ function getWordTimings(index) {
   });
 }
 
-/* 9. CREATE CHARACTER ELEMENTS */
+/* =========================================
+   9. CREATE CHARACTER ELEMENTS
+========================================= */
 
 function makeCharacters(text, index) {
   const fragment = document.createDocumentFragment();
@@ -828,6 +844,7 @@ function makeCharacters(text, index) {
     }
 
     const span = document.createElement('span');
+
     span.className = 'lyric-word lyric-character';
     span.dataset.start = String(character.start);
     span.dataset.end = String(character.end);
@@ -840,7 +857,9 @@ function makeCharacters(text, index) {
   return fragment;
 }
 
-/* 10. CREATE LYRICS UI */
+/* =========================================
+   10. CREATE LYRICS UI
+========================================= */
 
 function createLyricUI() {
   if (!lyricsDisplay) return;
@@ -866,9 +885,9 @@ function createLyricUI() {
 
   lyricElements = lyrics.map(([time, text], index) => {
     const line = document.createElement('p');
+
     line.className = 'lyric-item upcoming';
     line.tabIndex = 0;
-
     line.setAttribute('role', 'button');
     line.setAttribute('aria-label', `${text}, 해당 가사부터 재생`);
 
@@ -886,11 +905,14 @@ function createLyricUI() {
     });
 
     lyricsTrack.appendChild(line);
+
     return line;
   });
 }
 
-/* 11. SEEK TO LYRIC */
+/* =========================================
+   11. SEEK TO LYRIC
+========================================= */
 
 function seekToLyric(index) {
   if (!audio || !lyrics[index]) return;
@@ -905,7 +927,9 @@ function seekToLyric(index) {
   });
 }
 
-/* 12. CENTER ACTIVE LYRIC */
+/* =========================================
+   12. CENTER ACTIVE LYRIC
+========================================= */
 
 function centerLine(index) {
   if (!viewport || !lyricsTrack || index < 0 || !lyricElements[index]) {
@@ -913,6 +937,7 @@ function centerLine(index) {
   }
 
   const line = lyricElements[index];
+
   const lineCenter = line.offsetTop + line.offsetHeight / 2;
 
   const translateY = viewport.clientHeight / 2 - lineCenter;
@@ -920,7 +945,9 @@ function centerLine(index) {
   lyricsTrack.style.transform = `translateY(${translateY}px)`;
 }
 
-/* 13. UPDATE CHARACTER ANIMATION */
+/* =========================================
+   13. UPDATE CHARACTER ANIMATION
+========================================= */
 
 function updateCharacters(index, time) {
   const line = lyricElements[index];
@@ -948,7 +975,9 @@ function updateCharacters(index, time) {
   });
 }
 
-/* 14. SHOW MUSIC CONTENT */
+/* =========================================
+   14. SHOW MUSIC CONTENT
+========================================= */
 
 function showMusicContent() {
   musicStarted = true;
@@ -958,7 +987,9 @@ function showMusicContent() {
   }
 }
 
-/* 15. SKIP INTRO */
+/* =========================================
+   15. SKIP INTRO
+========================================= */
 
 function updateSkipButton(time) {
   if (!skipButton) return;
@@ -980,13 +1011,14 @@ function updateSkipButton(time) {
   }
 }
 
-/* 16. UPDATE ALL LYRICS */
+/* =========================================
+   16. UPDATE ALL LYRICS
+========================================= */
 
 function updateLyrics(force = false) {
   if (!audio) return;
 
   const time = audio.currentTime + LYRIC_SYNC_OFFSET;
-
   const index = currentLyricIndex(time);
   const isIntro = index < 0;
 
@@ -1005,9 +1037,7 @@ function updateLyrics(force = false) {
 
   if (viewport) {
     viewport.style.opacity = isIntro ? '0' : '1';
-
     viewport.style.visibility = isIntro ? 'hidden' : 'visible';
-
     viewport.style.pointerEvents = isIntro ? 'none' : 'auto';
   }
 
@@ -1018,9 +1048,7 @@ function updateLyrics(force = false) {
 
     lyricElements.forEach((line, i) => {
       line.classList.toggle('active', i === index);
-
       line.classList.toggle('passed', i < index);
-
       line.classList.toggle('upcoming', i > index);
 
       line.querySelectorAll('.lyric-character').forEach((character) => {
@@ -1041,7 +1069,9 @@ function updateLyrics(force = false) {
   }
 }
 
-/* 17. MUSIC BUTTON */
+/* =========================================
+   17. MUSIC BUTTON
+========================================= */
 
 function updateButton() {
   if (!musicButton || !audio) return;
@@ -1051,7 +1081,9 @@ function updateButton() {
   musicButton.setAttribute('aria-pressed', String(!audio.paused));
 }
 
-/* 18. ANIMATION LOOP */
+/* =========================================
+   18. ANIMATION LOOP
+========================================= */
 
 function animate() {
   updateLyrics();
@@ -1077,7 +1109,9 @@ function stopAnimation() {
   frame = null;
 }
 
-/* 19. CREATE SKIP BUTTON */
+/* =========================================
+   19. CREATE SKIP BUTTON
+========================================= */
 
 function createSkipButton() {
   if (!lyricsDisplay) return;
@@ -1113,10 +1147,13 @@ function createSkipButton() {
   lyricsDisplay.appendChild(skipButton);
 }
 
-/* 20. INITIALIZE EIDOS */
+/* =========================================
+   20. INITIALIZE EIDOS
+========================================= */
 
 function initializeEidos() {
   // CONCEPT TABS
+
   document.querySelectorAll('.concept-tab').forEach((tab, i) => {
     tab.addEventListener('click', () => {
       changeConcept(Number(tab.dataset.concept ?? i));
@@ -1126,14 +1163,11 @@ function initializeEidos() {
   changeConcept(0);
 
   // MUSIC ELEMENTS
+
   audio = document.getElementById('eidosMusic');
-
   musicButton = document.getElementById('musicButton');
-
   lyricsContainer = document.getElementById('lyricsContainer');
-
   lyricsDisplay = document.getElementById('lyricsDisplay');
-
   introVisualizer = document.getElementById('introVisualizer');
 
   if (!audio) {
@@ -1144,10 +1178,12 @@ function initializeEidos() {
   audio.volume = 0.7;
 
   // CREATE LYRICS
+
   createLyricUI();
   createSkipButton();
 
   // MUSIC BUTTON CLICK
+
   musicButton?.addEventListener('click', () => {
     if (audio.paused) {
       audio.play().catch((error) => {
@@ -1159,6 +1195,7 @@ function initializeEidos() {
   });
 
   // AUDIO PLAY
+
   audio.addEventListener('play', () => {
     showMusicContent();
     updateButton();
@@ -1167,6 +1204,7 @@ function initializeEidos() {
   });
 
   // AUDIO PAUSE
+
   audio.addEventListener('pause', () => {
     updateButton();
     updateLyrics();
@@ -1174,37 +1212,45 @@ function initializeEidos() {
   });
 
   // AUDIO SEEK
+
   audio.addEventListener('seeked', () => {
     updateLyrics(true);
   });
 
   // AUDIO TIME UPDATE
+
   audio.addEventListener('timeupdate', () => {
     updateLyrics();
   });
 
   // AUDIO METADATA
+
   audio.addEventListener('loadedmetadata', () => {
     updateLyrics(true);
   });
 
   // AUDIO ENDED
+
   audio.addEventListener('ended', () => {
     updateButton();
     stopAnimation();
   });
 
   // WINDOW RESIZE
+
   window.addEventListener('resize', () => {
     centerLine(activeIndex);
   });
 
   // INITIAL STATE
+
   updateButton();
   updateLyrics(true);
 }
 
-/* 21. DOM READY */
+/* =========================================
+   21. DOM READY
+========================================= */
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeEidos, {

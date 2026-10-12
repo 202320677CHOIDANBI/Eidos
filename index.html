@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>EIDOS OFFICIAL WEBSITE</title>
 
     <link rel="stylesheet" href="style.css" />
@@ -10,82 +11,343 @@
 
     <style>
       /* =========================================
-       ABOUT US - SCROLL CHARACTER REVEAL
+       ABOUT US
     ========================================= */
 
       #about {
         position: relative;
-        min-height: 240vh;
-        padding: 150px 50px 0;
-        background: #080808;
-        color: #fff;
-        overflow: clip;
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        padding: 150px 50px;
+        box-sizing: border-box;
+        overflow: visible;
       }
 
       #about .section-title {
-        margin-bottom: 0;
-      }
-
-      #about .section-title h2 {
-        color: #fff;
+        margin-bottom: 55px;
       }
 
       #about .about-content {
-        position: sticky;
-        top: 24vh;
+        position: static;
+        top: auto;
         width: 100%;
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        padding: 45px 0 80px;
+        padding: 0;
+        transform: none;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
-      /* 모든 본문 문장 동일한 크기 */
+      #about .about-text {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 0 35px;
 
-      #about .about-scroll-text {
-        margin: 0 0 36px;
-        color: #fff;
-        font-size: clamp(25px, 3.2vw, 44px);
+        font-size: clamp(17px, 1.65vw, 24px);
         font-weight: 400;
-        line-height: 1.7;
+        line-height: 1.85;
         letter-spacing: -0.045em;
+
+        text-align: left;
+        word-break: keep-all;
         overflow-wrap: break-word;
+
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        animation: none;
+        transition: none;
       }
 
-      /* 기본 상태: 흐린 흰색 */
-
-      #about .about-char {
-        color: rgba(255, 255, 255, 0.12);
-        transition: color 0.12s linear;
+      #about .about-text:last-child {
+        margin-bottom: 0;
       }
 
-      /* 스크롤 진행에 따라 흰색 */
+      /* =========================================
+       MEMBERS
+    ========================================= */
 
-      #about .about-char.visible {
-        color: #fff;
+      .member-number,
+      .member-detail {
+        display: none !important;
       }
+
+      .member-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .member-info h3 {
+        margin: 0 0 15px;
+        font-size: 52px;
+        font-weight: 500;
+        line-height: 1.1;
+      }
+
+      .member-position {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 400;
+        color: #444;
+      }
+
+      /* =========================================
+       SCHEDULE
+    ========================================= */
+
+      #schedule {
+        background: #ffffff;
+      }
+
+      #schedule .schedule-list {
+        width: 100%;
+        border-top: 1px solid #111;
+      }
+
+      #schedule .schedule-header,
+      #schedule .schedule-item {
+        display: grid;
+        grid-template-columns: 180px 180px minmax(0, 1fr);
+        gap: 30px;
+        align-items: center;
+      }
+
+      #schedule .schedule-header {
+        padding: 22px 0;
+        border-bottom: 1px solid #111;
+      }
+
+      #schedule .schedule-header span {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: #777;
+      }
+
+      #schedule .schedule-item {
+        padding: 30px 0;
+        border-bottom: 1px solid #ddd;
+        transition: background 0.3s ease;
+      }
+
+      #schedule .schedule-item span {
+        font-size: 12px;
+        font-weight: 400;
+        color: #777;
+      }
+
+      #schedule .schedule-item strong {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: #111;
+      }
+
+      #schedule .schedule-item p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      #schedule .schedule-item:hover {
+        background: rgba(0, 0, 0, 0.025);
+      }
+
+      /* =========================================
+       NEWS
+    ========================================= */
+
+      #news {
+        background: #f7f7f7;
+        padding: 150px 50px;
+      }
+
+      #news .section-title {
+        margin-bottom: 70px;
+      }
+
+      #news .section-title h2 {
+        font-size: 48px;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        color: #111;
+      }
+
+      #news .news-list {
+        width: 100%;
+        border-top: 1px solid #ccc;
+      }
+
+      #news .news-item {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 30px;
+        gap: 30px;
+        align-items: center;
+
+        padding: 30px 0;
+        border-bottom: 1px solid #ccc;
+
+        text-decoration: none;
+        color: #111;
+
+        transition:
+          opacity 0.3s ease,
+          background 0.3s ease;
+      }
+
+      #news .news-date {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        color: #777;
+        white-space: nowrap;
+      }
+
+      #news .news-item h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+        color: #111;
+      }
+
+      #news .news-arrow {
+        display: block;
+        font-size: 20px;
+        font-weight: 400;
+        color: #444;
+        text-align: right;
+        transition: transform 0.3s ease;
+      }
+
+      #news .news-item:hover {
+        opacity: 0.6;
+      }
+
+      #news .news-item:hover .news-arrow {
+        transform: translateX(5px);
+      }
+
+      /* =========================================
+       TABLET
+    ========================================= */
+
+      @media (max-width: 900px) {
+        #news .news-item {
+          grid-template-columns: 120px minmax(0, 1fr) 25px;
+          gap: 20px;
+        }
+
+        #news .news-item h3 {
+          font-size: 16px;
+        }
+      }
+
+      /* =========================================
+       MOBILE
+    ========================================= */
 
       @media (max-width: 768px) {
         #about {
-          min-height: 230vh;
-          padding: 100px 20px 0;
+          min-height: auto;
+          padding: 100px 20px;
+        }
+
+        #about .section-title {
+          margin-bottom: 35px;
         }
 
         #about .about-content {
-          top: 20vh;
-          padding: 35px 0 60px;
+          width: 100%;
+          max-width: 100%;
         }
 
-        #about .about-scroll-text {
-          font-size: clamp(22px, 5vw, 30px);
-          line-height: 1.8;
+        #about .about-text {
+          width: 100%;
+          max-width: 100%;
+          font-size: 16px;
+          line-height: 1.85;
           margin-bottom: 28px;
+          text-align: left;
         }
-      }
 
-      @media (prefers-reduced-motion: reduce) {
-        #about .about-char {
-          color: #fff;
-          transition: none;
+        .member-info h3 {
+          font-size: 42px;
+        }
+
+        .member-position {
+          font-size: 14px;
+        }
+
+        #schedule .schedule-header {
+          display: none;
+        }
+
+        #schedule .schedule-item {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 8px;
+          padding: 25px 0;
+        }
+
+        #schedule .schedule-item span {
+          font-size: 11px;
+        }
+
+        #schedule .schedule-item strong {
+          font-size: 13px;
+        }
+
+        #schedule .schedule-item p {
+          font-size: 13px;
+        }
+
+        #news {
+          padding: 100px 20px;
+        }
+
+        #news .section-title {
+          margin-bottom: 45px;
+        }
+
+        #news .section-title h2 {
+          font-size: 34px;
+        }
+
+        #news .news-item {
+          grid-template-columns: minmax(0, 1fr) 20px;
+          gap: 8px 15px;
+          padding: 24px 0;
+        }
+
+        #news .news-date {
+          grid-column: 1;
+          grid-row: 1;
+          font-size: 11px;
+          display: block;
+        }
+
+        #news .news-item h3 {
+          grid-column: 1;
+          grid-row: 2;
+          font-size: 15px;
+          line-height: 1.5;
+        }
+
+        #news .news-arrow {
+          grid-column: 2;
+          grid-row: 1 / 3;
+          align-self: center;
+          font-size: 18px;
         }
       }
     </style>
@@ -145,7 +407,6 @@
 
       <!-- =====================================
          ABOUT US
-         SCROLL CHARACTER REVEAL
     ====================================== -->
 
       <section id="about" class="section about">
@@ -154,16 +415,13 @@
         </div>
 
         <div class="about-content">
-          <p class="about-scroll-text">
+          <p class="about-text">
             EIDOS는 자유롭고 꾸밈없는 모습으로 각자의 개성을 표현하는
             그룹입니다.
           </p>
 
-          <p class="about-scroll-text">
+          <p class="about-text">
             태양 아래의 따뜻함과 여유, 자유로운 에너지를 음악과 이미지에 담아
-          </p>
-
-          <p class="about-scroll-text">
             일상의 평범한 순간을 특별하게 전달합니다.
           </p>
         </div>
@@ -180,7 +438,6 @@
 
         <div class="member-grid">
           <!-- DAYEON -->
-
           <div class="member" onclick="openMember(0)">
             <div class="member-card">
               <div class="member-front">
@@ -188,24 +445,13 @@
               </div>
 
               <div class="member-info">
-                <span class="member-number">01</span>
                 <h3>Dayeon</h3>
-
-                <p class="member-position">Producer &amp; Main Vocalist</p>
-
-                <div class="member-detail">
-                  <span>POSITION</span>
-                  <p>
-                    Producer<br />
-                    Main Vocalist
-                  </p>
-                </div>
+                <p class="member-position">Main Vocalist</p>
               </div>
             </div>
           </div>
 
           <!-- ION -->
-
           <div class="member" onclick="openMember(1)">
             <div class="member-card">
               <div class="member-front">
@@ -213,21 +459,13 @@
               </div>
 
               <div class="member-info">
-                <span class="member-number">02</span>
                 <h3>Ion</h3>
-
-                <p class="member-position">Main Dancer</p>
-
-                <div class="member-detail">
-                  <span>POSITION</span>
-                  <p>Main Dancer</p>
-                </div>
+                <p class="member-position">Producer</p>
               </div>
             </div>
           </div>
 
           <!-- LINA -->
-
           <div class="member" onclick="openMember(2)">
             <div class="member-card">
               <div class="member-front">
@@ -235,15 +473,8 @@
               </div>
 
               <div class="member-info">
-                <span class="member-number">03</span>
                 <h3>Lina</h3>
-
-                <p class="member-position">Main Vocalist</p>
-
-                <div class="member-detail">
-                  <span>POSITION</span>
-                  <p>Main Vocalist</p>
-                </div>
+                <p class="member-position">Lead Vocalist</p>
               </div>
             </div>
           </div>
@@ -263,7 +494,6 @@
 
         <div class="music-content">
           <!-- ALBUM COVER -->
-
           <div class="music-left">
             <div class="album">
               <img
@@ -274,7 +504,6 @@
           </div>
 
           <!-- ALBUM INFORMATION -->
-
           <div class="album-info">
             <h2 class="album-title">
               <span>HOW CAN</span>
@@ -293,7 +522,6 @@
           </div>
 
           <!-- KARAOKE LYRICS -->
-
           <div
             class="lyrics-container"
             id="lyricsContainer"
@@ -354,6 +582,7 @@
 
       <!-- =====================================
          SCHEDULE
+         EARLIEST DATE FIRST
     ====================================== -->
 
       <section id="schedule" class="section schedule">
@@ -362,28 +591,45 @@
         </div>
 
         <div class="schedule-list">
+          <div class="schedule-header">
+            <span>DATE</span>
+            <span>CATEGORY</span>
+            <span>SCHEDULE</span>
+          </div>
+
+          <!-- 2026.10.15 -->
+          <div class="schedule-item">
+            <span>2026.10.15</span>
+            <strong>CONCEPT PHOTO</strong>
+            <p>EIDOS Official Concept Photo Release</p>
+          </div>
+
+          <!-- 2026.11.16 -->
+          <div class="schedule-item">
+            <span>2026.11.16</span>
+            <strong>DEBUT</strong>
+            <p>EIDOS 1st Single Album Release</p>
+          </div>
+
+          <!-- 2026.11.16 -->
+          <div class="schedule-item">
+            <span>2026.11.16</span>
+            <strong>M/V</strong>
+            <p>EIDOS Official Music Video Release</p>
+          </div>
+
+          <!-- 2026.11.17 -->
           <div class="schedule-item">
             <span>2026.11.17</span>
-            <strong>DEBUT</strong>
-            <p>Eidos 1st Single Album Release</p>
-          </div>
-
-          <div class="schedule-item">
-            <span>2026.00.00</span>
-            <strong>MEDIA</strong>
-            <p>Official Content Release</p>
-          </div>
-
-          <div class="schedule-item">
-            <span>2026.00.00</span>
             <strong>EVENT</strong>
-            <p>Special Event</p>
+            <p>EIDOS Special Event</p>
           </div>
         </div>
       </section>
 
       <!-- =====================================
          NEWS
+         EARLIEST DATE FIRST
     ====================================== -->
 
       <section id="news" class="section news">
@@ -392,16 +638,32 @@
         </div>
 
         <div class="news-list">
+          <!-- 2026.10.15 -->
           <a href="#" class="news-item">
-            <span>2026.00.00</span>
-            <h3>Eidos Official Website Open</h3>
-            <span>→</span>
+            <span class="news-date">2026.10.15</span>
+            <h3>EIDOS Official Concept Photo Released</h3>
+            <span class="news-arrow">→</span>
           </a>
 
+          <!-- 2026.11.16 -->
           <a href="#" class="news-item">
-            <span>2026.00.00</span>
-            <h3>Eidos 1st Single Album Coming Soon</h3>
-            <span>→</span>
+            <span class="news-date">2026.11.16</span>
+            <h3>EIDOS 1st Single Album Released</h3>
+            <span class="news-arrow">→</span>
+          </a>
+
+          <!-- 2026.11.16 -->
+          <a href="#" class="news-item">
+            <span class="news-date">2026.11.16</span>
+            <h3>EIDOS Official Music Video Released</h3>
+            <span class="news-arrow">→</span>
+          </a>
+
+          <!-- 2026.11.17 -->
+          <a href="#" class="news-item">
+            <span class="news-date">2026.11.17</span>
+            <h3>EIDOS Special Event Announcement</h3>
+            <span class="news-arrow">→</span>
           </a>
         </div>
       </section>
@@ -431,102 +693,5 @@
       <source src="music/eidos.mp3.wav" type="audio/wav" />
       브라우저가 오디오 재생을 지원하지 않습니다.
     </audio>
-
-    <!-- =====================================
-       ABOUT US SCROLL CHARACTER SCRIPT
-  ====================================== -->
-
-    <script>
-      function initializeAboutScrollText() {
-        const about = document.getElementById('about');
-
-        if (!about) return;
-
-        const paragraphs = [...about.querySelectorAll('.about-scroll-text')];
-
-        const characters = [];
-
-        // 각 문장을 한 글자씩 분리
-        paragraphs.forEach((paragraph) => {
-          const originalText = paragraph.textContent.trim();
-
-          paragraph.textContent = '';
-
-          [...originalText].forEach((character) => {
-            const span = document.createElement('span');
-
-            span.className = 'about-char';
-            span.textContent = character;
-
-            paragraph.appendChild(span);
-            characters.push(span);
-          });
-        });
-
-        const reducedMotion = window.matchMedia(
-          '(prefers-reduced-motion: reduce)',
-        );
-
-        function updateAboutText() {
-          if (reducedMotion.matches) {
-            characters.forEach((char) => {
-              char.classList.add('visible');
-            });
-            return;
-          }
-
-          const rect = about.getBoundingClientRect();
-
-          const scrollableDistance = about.offsetHeight - window.innerHeight;
-
-          if (scrollableDistance <= 0) {
-            return;
-          }
-
-          // ABOUT US 구간의 스크롤 진행도
-          const progress = Math.max(
-            0,
-            Math.min(1, -rect.top / scrollableDistance),
-          );
-
-          // 진행도에 따라 표시할 글자 수 계산
-          const visibleCount = Math.floor(progress * characters.length);
-
-          // 스크롤 내리면 흰색, 올리면 다시 흐리게
-          characters.forEach((char, index) => {
-            char.classList.toggle('visible', index < visibleCount);
-          });
-        }
-
-        let ticking = false;
-
-        function onScroll() {
-          if (ticking) return;
-
-          ticking = true;
-
-          requestAnimationFrame(() => {
-            updateAboutText();
-            ticking = false;
-          });
-        }
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-
-        window.addEventListener('resize', onScroll);
-
-        updateAboutText();
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener(
-          'DOMContentLoaded',
-          initializeAboutScrollText,
-          { once: true },
-        );
-      } else {
-        initializeAboutScrollText();
-      }
-    </script>
   </body>
 </html>

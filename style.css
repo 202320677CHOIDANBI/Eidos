@@ -1,6 +1,6 @@
 /* =========================================
    EIDOS OFFICIAL WEBSITE
-   APPLE MUSIC STYLE LYRICS
+   STYLE.CSS
 ========================================= */
 
 /* RESET */
@@ -38,7 +38,9 @@ button {
   font-family: inherit;
 }
 
-/* HEADER */
+/* =========================================
+   HEADER
+========================================= */
 
 .header {
   position: fixed;
@@ -85,7 +87,9 @@ button {
   opacity: 0.4;
 }
 
-/* HERO */
+/* =========================================
+   HERO
+========================================= */
 
 .hero {
   position: relative;
@@ -174,7 +178,9 @@ button {
   z-index: 10;
 }
 
-/* COMMON SECTIONS */
+/* =========================================
+   COMMON SECTIONS
+========================================= */
 
 .section {
   padding: 150px 50px;
@@ -200,59 +206,65 @@ button {
   letter-spacing: -0.04em;
 }
 
-/* ABOUT US */
+/* =========================================
+   ABOUT US
+========================================= */
 
 #about {
   position: relative;
   width: 100%;
-  min-height: 240vh;
-  padding: 150px 50px 0;
-  background: #080808;
-  color: #fff;
-  overflow: clip;
+  height: auto;
+  min-height: auto;
+  padding: 150px 50px;
+  background: #f5f3ee;
+  color: #242424;
+  overflow: visible;
 }
 
 #about .section-title {
-  margin-bottom: 0;
+  margin-bottom: 55px;
 }
 
 #about .section-title h2 {
-  color: #fff;
+  color: #242424;
 }
 
 #about .about-content {
-  position: sticky;
-  top: 24vh;
+  position: static;
+  top: auto;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 45px 0 80px;
+  padding: 0;
+  transform: none;
 }
 
-#about .about-scroll-text {
-  margin: 0 0 36px;
-  font-size: clamp(25px, 3.2vw, 44px);
+#about .about-text {
+  margin: 0 0 35px;
+  color: #242424;
+  font-size: clamp(18px, 1.8vw, 26px);
   font-weight: 400;
-  line-height: 1.7;
-  letter-spacing: -0.045em;
-  color: #fff;
+  line-height: 1.9;
+  letter-spacing: -0.035em;
+  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
-#about .about-char {
-  display: inline;
-  color: rgba(255, 255, 255, 0.12);
-  transition: color 0.12s linear;
+#about .about-text:last-child {
+  margin-bottom: 0;
 }
 
-#about .about-char.visible {
-  color: #fff;
+/* =========================================
+   MEMBERS
+========================================= */
+
+.members,
+#members {
+  background: #ffffff;
 }
 
-/* MEMBERS */
-
-.members {
-  background: #fff;
+#members {
+  padding: 150px 50px;
 }
 
 .member-grid {
@@ -264,7 +276,7 @@ button {
 .member {
   position: relative;
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 3 / 4;
   cursor: pointer;
 }
 
@@ -373,13 +385,16 @@ button {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* MUSIC */
+/* =========================================
+   MUSIC
+========================================= */
 
 .music {
   background: #f5f5f3;
@@ -396,7 +411,7 @@ button {
 .album {
   width: 100%;
   max-width: 600px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #ddd;
 }
@@ -463,6 +478,10 @@ button {
   outline: 2px solid #fff;
   outline-offset: 6px;
 }
+
+/* =========================================
+   MUSIC BACKGROUND
+========================================= */
 
 #music {
   position: relative;
@@ -532,7 +551,9 @@ button {
   border-color: #fff !important;
 }
 
-/* LYRICS CONTAINER */
+/* =========================================
+   LYRICS CONTAINER
+========================================= */
 
 .music .lyrics-header,
 .music .music-progress {
@@ -570,6 +591,7 @@ button {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -590,7 +612,9 @@ button {
   overflow: hidden;
 }
 
-/* INTRO VISUALIZER */
+/* =========================================
+   INTRO VISUALIZER
+========================================= */
 
 #music #lyricsDisplay.is-intro #lyricsViewport {
   opacity: 0 !important;
@@ -650,6 +674,7 @@ button {
   from {
     transform: scaleY(0.5);
   }
+
   to {
     transform: scaleY(3);
   }
@@ -672,7 +697,9 @@ button {
   transform: translate(-50%, -50%);
 }
 
-/* SKIP INTRO */
+/* =========================================
+   SKIP INTRO
+========================================= */
 
 #skipInstrumentalButton {
   position: absolute;
@@ -703,7 +730,9 @@ button {
   display: none !important;
 }
 
-/* SCROLLING LYRICS */
+/* =========================================
+   SCROLLING LYRICS
+========================================= */
 
 #lyricsViewport {
   position: relative;
@@ -761,14 +790,14 @@ button {
   outline-offset: 3px;
 }
 
-/* APPLE MUSIC WORD SYNC */
+/* =========================================
+   APPLE MUSIC WORD SYNC
+========================================= */
 
 #music .lyric-word {
   display: inline-block;
   white-space: pre;
-
   color: transparent;
-
   background-image: linear-gradient(
     to right,
     #fff 0%,
@@ -776,10 +805,8 @@ button {
     rgba(255, 255, 255, 0.36) var(--word-progress, 0%),
     rgba(255, 255, 255, 0.36) 100%
   );
-
   -webkit-background-clip: text;
   background-clip: text;
-
   transition: transform 0.16s ease;
 }
 
@@ -792,7 +819,9 @@ button {
   transform: translateY(-2px);
 }
 
-/* CONCEPT PHOTO */
+/* =========================================
+   CONCEPT PHOTO
+========================================= */
 
 .concept {
   overflow: hidden;
@@ -847,7 +876,7 @@ button {
   position: relative;
   flex: 0 0 32%;
   width: 32%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   scroll-snap-align: start;
   cursor: zoom-in;
@@ -869,7 +898,9 @@ button {
   outline-offset: -2px;
 }
 
-/* BLACK LIGHTBOX */
+/* =========================================
+   CONCEPT PHOTO LIGHTBOX
+========================================= */
 
 body.concept-lightbox-open {
   overflow: hidden;
@@ -957,6 +988,7 @@ body.concept-lightbox-open {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -967,13 +999,16 @@ body.concept-lightbox-open {
     opacity: 0;
     transform: scale(0.94);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* SCHEDULE */
+/* =========================================
+   SCHEDULE
+========================================= */
 
 .schedule {
   background: #fff;
@@ -1007,7 +1042,9 @@ body.concept-lightbox-open {
   color: #555;
 }
 
-/* NEWS */
+/* =========================================
+   NEWS
+========================================= */
 
 .news {
   background: #f5f5f3;
@@ -1042,7 +1079,9 @@ body.concept-lightbox-open {
   letter-spacing: -0.03em;
 }
 
-/* FOOTER */
+/* =========================================
+   FOOTER
+========================================= */
 
 .footer {
   background: #111;
@@ -1087,7 +1126,9 @@ body.concept-lightbox-open {
   color: #888;
 }
 
-/* DESKTOP MUSIC LAYOUT */
+/* =========================================
+   DESKTOP MUSIC LAYOUT
+========================================= */
 
 @media (min-width: 901px) {
   .music .music-content {
@@ -1137,7 +1178,9 @@ body.concept-lightbox-open {
   }
 }
 
-/* TABLET */
+/* =========================================
+   TABLET
+========================================= */
 
 @media (max-width: 900px) {
   .music .music-content {
@@ -1160,9 +1203,13 @@ body.concept-lightbox-open {
   }
 }
 
-/* MOBILE */
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 768px) {
+  /* HEADER */
+
   .header {
     height: 65px;
     padding: 0 20px;
@@ -1188,6 +1235,8 @@ body.concept-lightbox-open {
     white-space: nowrap;
   }
 
+  /* HERO */
+
   .hero {
     min-height: 650px;
   }
@@ -1211,6 +1260,8 @@ body.concept-lightbox-open {
     width: 45px !important;
   }
 
+  /* COMMON SECTIONS */
+
   .section {
     padding: 100px 20px;
   }
@@ -1224,20 +1275,35 @@ body.concept-lightbox-open {
     font-size: 34px;
   }
 
+  /* ABOUT US */
+
   #about {
-    min-height: 230vh;
-    padding: 100px 20px 0;
+    height: auto;
+    min-height: auto;
+    padding: 100px 20px;
+  }
+
+  #about .section-title {
+    margin-bottom: 35px;
   }
 
   #about .about-content {
-    top: 20vh;
-    padding: 35px 0 60px;
+    position: static;
+    top: auto;
+    padding: 0;
   }
 
-  #about .about-scroll-text {
-    font-size: clamp(22px, 5vw, 30px);
-    line-height: 1.8;
+  #about .about-text {
+    font-size: 17px;
+    line-height: 1.85;
     margin-bottom: 28px;
+  }
+
+  /* MEMBERS */
+
+  #members {
+    background: #fff;
+    padding: 100px 20px;
   }
 
   .member-grid {
@@ -1256,6 +1322,8 @@ body.concept-lightbox-open {
   .member-position {
     margin-bottom: 30px;
   }
+
+  /* MUSIC */
 
   .music-content {
     grid-template-columns: 1fr;
@@ -1304,6 +1372,8 @@ body.concept-lightbox-open {
     min-height: 250px;
   }
 
+  /* CONCEPT PHOTO */
+
   .concept-tabs {
     flex-wrap: wrap;
     gap: 10px;
@@ -1319,6 +1389,8 @@ body.concept-lightbox-open {
     flex: 0 0 75%;
     width: 75%;
   }
+
+  /* LIGHTBOX */
 
   .concept-lightbox {
     padding: 20px;
@@ -1349,11 +1421,15 @@ body.concept-lightbox-open {
     right: 5px;
   }
 
+  /* SCHEDULE */
+
   .schedule-item {
     grid-template-columns: 1fr;
     gap: 8px;
     padding: 25px 0;
   }
+
+  /* NEWS */
 
   .news-item {
     grid-template-columns: 1fr 20px;
@@ -1367,6 +1443,8 @@ body.concept-lightbox-open {
   .news-item h3 {
     font-size: 17px;
   }
+
+  /* FOOTER */
 
   .footer {
     padding: 80px 20px 30px;
@@ -1388,16 +1466,13 @@ body.concept-lightbox-open {
   }
 }
 
-/* REDUCED MOTION */
+/* =========================================
+   REDUCED MOTION
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  #about .about-char {
-    color: #fff;
-    transition: none;
   }
 
   #conceptTrack .concept-photo img,
@@ -1426,9 +1501,7 @@ body.concept-lightbox-open {
 
 #music .lyric-character {
   display: inline-block;
-
   color: transparent;
-
   background-image: linear-gradient(
     to right,
     #ffffff 0%,
@@ -1436,12 +1509,9 @@ body.concept-lightbox-open {
     rgba(255, 255, 255, 0.3) var(--word-progress, 0%),
     rgba(255, 255, 255, 0.3) 100%
   );
-
   -webkit-background-clip: text;
   background-clip: text;
-
   transition: transform 0.15s ease;
-
   will-change: transform;
 }
 
@@ -1451,4 +1521,374 @@ body.concept-lightbox-open {
 
 #music .lyric-item.active .lyric-character {
   opacity: 1;
+}
+
+/* =========================================
+   EIDOS LYRICS
+   PREVIOUS / CURRENT / NEXT
+   NO MOVEMENT ANIMATION
+========================================= */
+
+/* 가사 표시 영역 */
+#music #lyricsDisplay,
+#music #lyricsViewport {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+/* 가사 줄 이동은 즉시 적용 */
+#music #lyricsTrack {
+  position: relative;
+  width: 100%;
+  transition: none !important;
+  will-change: auto;
+}
+
+/* 기본 가사: 흐릿한 흰색 */
+#music .lyric-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 12px 8px;
+
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 1;
+  visibility: visible;
+
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.8;
+  text-align: center;
+
+  transform: none !important;
+  animation: none !important;
+
+  transition:
+    color 0.5s ease,
+    opacity 0.5s ease;
+}
+
+/* 지나간 가사 */
+#music .lyric-item.passed {
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 1;
+}
+
+/* 앞으로 나올 가사 */
+#music .lyric-item.upcoming {
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 1;
+}
+
+/* 현재 재생 중인 가사 */
+#music .lyric-item.active {
+  color: #ffffff !important;
+  opacity: 1 !important;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  transform: none !important;
+  animation: none !important;
+}
+
+/* 단어별 색상 변화 제거 */
+#music .lyric-word,
+#music .lyric-character {
+  color: inherit !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* 단어별 움직임 제거 */
+#music .lyric-word.is-active,
+#music .lyric-character.is-active {
+  transform: none !important;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  #music #lyricsDisplay,
+  #music #lyricsViewport {
+    height: 250px;
+    min-height: 250px;
+  }
+
+  #music .lyric-item,
+  #music .lyric-item.active {
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 10px 6px;
+  }
+}
+
+/* =========================================
+   ABOUT US TEXT ADJUSTMENT
+========================================= */
+
+#about .about-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+#about .about-text {
+  font-size: clamp(17px, 1.65vw, 24px);
+  line-height: 1.85;
+  letter-spacing: -0.045em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  margin-bottom: 35px;
+}
+
+#about .about-text:last-child {
+  margin-bottom: 0;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  #about .about-content {
+    max-width: 100%;
+  }
+
+  #about .about-text {
+    font-size: 16px;
+    line-height: 1.85;
+    letter-spacing: -0.035em;
+    margin-bottom: 28px;
+  }
+}
+
+/* =========================================
+   ABOUT US - CENTER TEXT
+========================================= */
+
+#about .about-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+
+#about .about-text {
+  width: 100%;
+  margin: 0 auto 35px;
+
+  font-size: clamp(17px, 1.65vw, 24px);
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: -0.045em;
+
+  text-align: center;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+#about .about-text:last-child {
+  margin-bottom: 0;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  #about .about-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  #about .about-text {
+    font-size: 16px;
+    line-height: 1.85;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+}
+
+/* =========================================
+   ABOUT US
+   CENTER POSITION + LEFT ALIGN
+========================================= */
+
+#about .about-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#about .about-text {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 35px;
+
+  font-size: clamp(17px, 1.65vw, 24px);
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: -0.045em;
+
+  text-align: left;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 두 문단의 시작 위치를 동일하게 */
+#about .about-text {
+  width: 100%;
+  max-width: 1050px;
+}
+
+#about .about-text:last-child {
+  margin-bottom: 0;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  #about .about-content {
+    width: 100%;
+    align-items: center;
+  }
+
+  #about .about-text {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    line-height: 1.85;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+}
+
+/* =========================================
+   MEMBERS PROFILE - SIMPLE DESIGN
+========================================= */
+
+/* 프로필 번호 숨기기 */
+.member-number {
+  display: none !important;
+}
+
+/* 하단 POSITION 정보 영역 숨기기 */
+.member-detail {
+  display: none !important;
+}
+
+/* 이름과 역할 설명 중앙 배치 */
+.member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* 멤버 이름 */
+.member-info h3 {
+  margin: 0 0 15px;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+/* 이름 아래 역할 설명 */
+.member-position {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #444;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .member-info h3 {
+    font-size: 42px;
+  }
+
+  .member-position {
+    font-size: 14px;
+  }
+}
+
+/* MEMBERS PROFILE */
+
+.member-number,
+.member-detail {
+  display: none !important;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.member-info h3 {
+  margin: 0 0 15px;
+  font-size: 52px;
+  font-weight: 500;
+}
+
+.member-position {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #444;
+}
+
+@media (max-width: 768px) {
+  .member-info h3 {
+    font-size: 42px;
+  }
+
+  .member-position {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   HERO FLOWER LOGO POSITION FIX
+========================================= */
+
+/* PC */
+.hero .hero-flower-logo {
+  position: absolute !important;
+
+  top: 110px !important;
+  right: 40px !important;
+  left: auto !important;
+  bottom: auto !important;
+
+  width: 65px !important;
+  height: auto !important;
+
+  display: block !important;
+  object-fit: contain;
+
+  margin: 0 !important;
+  z-index: 10;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero .hero-flower-logo {
+    top: 90px !important;
+    right: 20px !important;
+    width: 45px !important;
+  }
 }
