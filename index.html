@@ -11,6 +11,30 @@
 
     <style>
       /* =========================================
+       HERO VIDEO
+    ========================================= */
+
+      .hero .hero-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .hero .hero-video {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* =========================================
        ABOUT US
     ========================================= */
 
@@ -151,6 +175,7 @@
       }
 
       #schedule .schedule-item p {
+        margin: 0;
         font-size: 14px;
         font-weight: 400;
         line-height: 1.6;
@@ -333,7 +358,6 @@
           grid-column: 1;
           grid-row: 1;
           font-size: 11px;
-          display: block;
         }
 
         #news .news-item h3 {
@@ -376,15 +400,16 @@
     <main>
       <!-- =====================================
          HERO
+         VIDEO 1 → VIDEO 2 → REPEAT
     ====================================== -->
 
       <section class="hero">
         <div class="hero-image">
           <video
+            id="heroVideo"
             class="hero-video"
             autoplay
             muted
-            loop
             playsinline
             preload="auto"
             aria-hidden="true"
@@ -597,28 +622,24 @@
             <span>SCHEDULE</span>
           </div>
 
-          <!-- 2026.10.15 -->
           <div class="schedule-item">
             <span>2026.10.15</span>
             <strong>CONCEPT PHOTO</strong>
             <p>EIDOS Official Concept Photo Release</p>
           </div>
 
-          <!-- 2026.11.16 -->
           <div class="schedule-item">
             <span>2026.11.16</span>
             <strong>DEBUT</strong>
             <p>EIDOS 1st Single Album Release</p>
           </div>
 
-          <!-- 2026.11.16 -->
           <div class="schedule-item">
             <span>2026.11.16</span>
             <strong>M/V</strong>
             <p>EIDOS Official Music Video Release</p>
           </div>
 
-          <!-- 2026.11.17 -->
           <div class="schedule-item">
             <span>2026.11.17</span>
             <strong>EVENT</strong>
@@ -638,28 +659,24 @@
         </div>
 
         <div class="news-list">
-          <!-- 2026.10.15 -->
           <a href="#" class="news-item">
             <span class="news-date">2026.10.15</span>
             <h3>EIDOS Official Concept Photo Released</h3>
             <span class="news-arrow">→</span>
           </a>
 
-          <!-- 2026.11.16 -->
           <a href="#" class="news-item">
             <span class="news-date">2026.11.16</span>
             <h3>EIDOS 1st Single Album Released</h3>
             <span class="news-arrow">→</span>
           </a>
 
-          <!-- 2026.11.16 -->
           <a href="#" class="news-item">
             <span class="news-date">2026.11.16</span>
             <h3>EIDOS Official Music Video Released</h3>
             <span class="news-arrow">→</span>
           </a>
 
-          <!-- 2026.11.17 -->
           <a href="#" class="news-item">
             <span class="news-date">2026.11.17</span>
             <h3>EIDOS Special Event Announcement</h3>
@@ -693,5 +710,66 @@
       <source src="music/eidos.mp3.wav" type="audio/wav" />
       브라우저가 오디오 재생을 지원하지 않습니다.
     </audio>
+
+    <!-- =====================================
+       HERO VIDEO PLAYLIST
+       eidos.mp4 → 자연.mp4 → REPEAT
+  ====================================== -->
+
+    <script>
+      (function () {
+        const heroVideo = document.getElementById('heroVideo');
+
+        if (!heroVideo) {
+          console.error('HERO 영상 요소를 찾지 못했습니다.');
+          return;
+        }
+
+        const videoList = ['videos/eidos.mp4', 'videos/자연.mp4'];
+
+        let currentIndex = 0;
+
+        heroVideo.muted = true;
+        heroVideo.loop = false;
+        heroVideo.playsInline = true;
+
+        // 다음 영상으로 전환
+        function playNextVideo() {
+          currentIndex = (currentIndex + 1) % videoList.length;
+
+          const nextVideo = videoList[currentIndex];
+
+          console.log('다음 HERO 영상:', nextVideo);
+
+          heroVideo.src = nextVideo;
+          heroVideo.load();
+
+          const playPromise = heroVideo.play();
+
+          if (playPromise !== undefined) {
+            playPromise.catch(function (error) {
+              console.error('다음 영상 재생 오류:', error);
+            });
+          }
+        }
+
+        // 영상이 끝나면 다음 영상 재생
+        heroVideo.addEventListener('ended', playNextVideo);
+
+        // 영상 파일 오류 확인
+        heroVideo.addEventListener('error', function () {
+          console.error('HERO 영상 파일 로딩 실패:', heroVideo.currentSrc);
+        });
+
+        // 첫 번째 영상 재생
+        const firstPlay = heroVideo.play();
+
+        if (firstPlay !== undefined) {
+          firstPlay.catch(function (error) {
+            console.error('첫 번째 영상 재생 오류:', error);
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
